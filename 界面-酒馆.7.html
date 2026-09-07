@@ -404,6 +404,7 @@ const parseLine = l => {
   if (mu){
     const who = nameFix[mu[1].trim()] || mu[1].trim();
     if (who === '林小满' || who === '宋昭') return { name:who, face:'普通', text:stripQ(mu[2].trim()) };
+    if (who.includes('{{user}}') || /{{user}}/.test(l.slice(0, mu.index + mu[1].length + 4))) return { name:who, face:'', isUser:true, text:stripQ(mu[2].trim()) };
     const g = npcArchetype(who, '');
     return { name:who, face:'', npc:g, isNpc:true, text:stripQ(mu[2].trim()) };
   }
