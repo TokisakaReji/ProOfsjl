@@ -35,6 +35,10 @@
   <div class="hlm-band">
     <div class="hlm-speaker"><span id="hlm-speaker">幻想肥皂泡</span></div>
     <main class="hlm-story" id="hlm-story"></main>
+    <div class="hlm-inputrow">
+      <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送)">
+      <button id="hlm-btn-send">发送 ➤</button>
+    </div>
     <i class="hlm-next" id="hlm-next" style="display:none">▼</i>
     <i class="hlm-band-flower">❀</i>
   </div>
@@ -78,7 +82,7 @@
 <style>
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-400.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-700.css');
-#hlm-app{position:relative;height:86vh;min-height:560px;border-radius:14px;overflow:hidden;
+#hlm-app{position:relative;height:720px;border-radius:14px;overflow:hidden;
   font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:#3b414b;background:#9ec7e8;
   display:flex;flex-direction:column;--xm:#e2647e;--sz:#5a8fc0;--rose:#d95f7f;
   box-shadow:0 10px 40px rgba(30,50,70,.35)}
@@ -164,6 +168,14 @@
 .hlm-story p{margin:0;text-indent:2em}
 .hlm-story p + p{margin-top:.6em}
 .hlm-story b{color:var(--rose);font-weight:700}
+/* 发送栏 */
+.hlm-inputrow{display:flex;gap:8px;margin-top:10px}
+.hlm-inputrow input{flex:1;background:rgba(255,255,255,.9);border:1px solid rgba(217,95,127,.35);border-radius:6px;
+  padding:9px 14px;font-family:inherit;font-size:13.5px;color:#3b414b;outline:none}
+.hlm-inputrow input:focus{border-color:var(--rose)}
+.hlm-inputrow button{background:var(--rose);color:#fff;border:none;border-radius:6px;padding:0 20px;
+  font-size:13px;cursor:pointer;font-family:inherit;letter-spacing:3px;font-weight:700;transition:background .15s}
+.hlm-inputrow button:hover{background:#c04e6d}
 /* 对话行:台词顶格,说话人显示在左上角名牌 */
 .hlm-story .hlm-dlg{margin:0;text-indent:0}
 #hlm-speaker.xm{color:var(--xm)}
@@ -222,7 +234,7 @@
 
 /* ── 手机横屏适配:小屏时铺满视口、压缩字号间距 ── */
 @media (max-height:600px){
-  #hlm-app{height:100vh;min-height:0;border-radius:0;box-shadow:none}
+  #hlm-app{height:720px;border-radius:14px;box-shadow:0 10px 40px rgba(30,50,70,.35)}
   .hlm-topinfo{top:6px;left:10px;right:10px;font-size:10px;letter-spacing:.5px;gap:6px}
   .hlm-favor{gap:5px}
   .hlm-favor b{font-size:12px}
@@ -697,7 +709,7 @@ function toggleLog(){
 }
 /* 交互:点击推进(隐藏态先恢复);键盘:空格/回车推进 ←回退 →前进 A自动 H隐藏 L记录 */
 app.addEventListener('click', e => {
-  if (e.target.closest('.hlm-modal') || e.target.closest('button')) return;   /* 按钮自己的事,不推进也不恢复 */
+  if (e.target.closest('.hlm-modal') || e.target.closest('button') || e.target.closest('input')) return;   /* 按钮/输入框自己的事,不推进也不恢复 */
   if (hideOn){ setHide(false); return; }
   advance(true);
 });
@@ -753,6 +765,20 @@ document.querySelectorAll('.hlm-tab').forEach(t => t.addEventListener('click', (
 $('#hlm-btn-status').addEventListener('click', () => $('#hlm-modal-status').classList.add('open'));
 $('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.close).classList.remove('open')));
+
+/* ---------- 发送消息:走酒馆助手的斜杠命令;/send 入楼 + /trigger 生成;发送后退出全屏让新回复可见 ---------- */
+const inp = $('#hlm-input');
+function sendUser(){
+  const t = inp.value.trim();
+  if (!t || typeof triggerSlash !== 'function'){ if (inp) inp.placeholder = '酒馆助手未连接,无法发送'; return; }
+  const clean = t.replace(/[\r\n]+/g, ' ');
+  inp.value = '';
+  triggerSlash('/send ' + clean);
+  setTimeout(() => { try { triggerSlash('/trigger'); } catch(e){} }, 400);
+  if (fsOn) toggleFs();   // 全屏中发送:退出全屏,让新生成的回复显示出来
+}
+$('#hlm-btn-send').addEventListener('click', sendUser);
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); sendUser(); } });
 
 let fsOn = false, savedStyle = null;
 $('#hlm-btn-fs').addEventListener('click', toggleFs);
