@@ -1,0 +1,822 @@
+<meta charset="utf-8">
+<div id="hlm-app" data-weather="晴">
+  <div class="hlm-bg" id="hlm-bg">
+    <i class="hlm-cloud c1"></i><i class="hlm-cloud c2"></i><i class="hlm-cloud c3"></i>
+    <i class="hlm-sun"></i>
+  </div>
+  <div class="hlm-fx" id="hlm-fx"></div>
+
+  <div class="hlm-topinfo">
+    <span class="hlm-world"><i id="hlm-date">—</i><em></em><i id="hlm-time">—</i><em></em><i id="hlm-weather">—</i><em></em><i id="hlm-loc">—</i></span>
+    <span class="hlm-favor">
+      <span class="xm">林小满 <b id="hlm-xm-num">50</b></span>
+      <span class="hlm-minibar"><span class="hlm-minibar-xm" id="hlm-bar-xm"></span></span>
+      <span class="sz"><b id="hlm-sz-num">50</b> 宋昭</span>
+    </span>
+  </div>
+
+  <div class="hlm-stage">
+    <div class="hlm-sprite xm" id="hlm-sprite-xm"><div class="hlm-stand"><span>林小满</span></div></div>
+    <div class="hlm-sprite sz" id="hlm-sprite-sz"><div class="hlm-stand"><span>宋昭</span></div></div>
+    <div class="hlm-sprite npc" id="hlm-sprite-npc"></div>
+    <div class="hlm-gone-tag" id="hlm-gone-tag" style="display:none"></div>
+  </div>
+
+  <div class="hlm-quicknav">
+    <button class="hlm-qitem" id="hlm-btn-back"><span class="hlm-qico">↶</span><span class="hlm-qlabel">BACK</span></button>
+    <button class="hlm-qitem" id="hlm-btn-auto"><span class="hlm-qico">▶</span><span class="hlm-qlabel">AUTO</span></button>
+    <button class="hlm-qitem" id="hlm-btn-log"><span class="hlm-qico">▤</span><span class="hlm-qlabel">LOG</span></button>
+    <button class="hlm-qitem" id="hlm-btn-hide"><span class="hlm-qico">◻</span><span class="hlm-qlabel">HIDE</span></button>
+    <button class="hlm-qitem" id="hlm-btn-status"><span class="hlm-qico">☰</span><span class="hlm-qlabel">DATA<br>STATUS</span></button>
+    <button class="hlm-qitem" id="hlm-btn-diary"><span class="hlm-qico">❒</span><span class="hlm-qlabel">SECRET<br>DIARY</span></button>
+    <button class="hlm-qitem" id="hlm-btn-fs"><span class="hlm-qico">⛶</span><span class="hlm-qlabel">FULL<br>SCREEN</span></button>
+  </div>
+
+  <div class="hlm-band">
+    <div class="hlm-speaker"><span id="hlm-speaker">幻想肥皂泡</span></div>
+    <main class="hlm-story" id="hlm-story"></main>
+    <div class="hlm-inputrow">
+      <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送)">
+      <button id="hlm-btn-send">发送 ➤</button>
+    </div>
+    <i class="hlm-next" id="hlm-next" style="display:none">▼</i>
+    <i class="hlm-band-flower">❀</i>
+  </div>
+
+  <div class="hlm-modal" id="hlm-modal-status">
+    <div class="hlm-sheet">
+      <div class="hlm-sheet-head"><span class="hlm-s-cn">状态</span><span class="hlm-s-en">DATA STATUS</span><button class="hlm-x" data-close="hlm-modal-status">✕</button></div>
+      <div class="hlm-kv"><span>日期 DATE</span><b id="hlm-s-date">—</b></div>
+      <div class="hlm-kv"><span>时间 TIME</span><b id="hlm-s-time">—</b></div>
+      <div class="hlm-kv"><span>天气 WEATHER</span><b id="hlm-s-weather">—</b></div>
+      <div class="hlm-kv"><span>地点 LOCATION</span><b id="hlm-s-loc">—</b></div>
+      <div class="hlm-kv"><span class="xm">林小满 · 好感 SYNC</span><b class="xm" id="hlm-s-xm">50</b></div>
+      <div class="hlm-kv"><span class="sz">宋昭 · 好感 SYNC</span><b class="sz" id="hlm-s-sz">50</b></div>
+      <div class="hlm-kv"><span>上次变化 LAST</span><b id="hlm-s-last">—</b></div>
+      <div class="hlm-kv"><span>今日变化次数 CHANGES</span><b id="hlm-s-cnt">0</b></div>
+      <div class="hlm-kv"><span class="xm">林小满 STATE</span><b class="xm" id="hlm-s-xm-state">在场</b></div>
+      <div class="hlm-kv"><span class="sz">宋昭 STATE</span><b class="sz" id="hlm-s-sz-state">在场</b></div>
+      <div class="hlm-note">两个人格的好感之和，恒为 100。</div>
+    </div>
+  </div>
+
+  <div class="hlm-modal" id="hlm-modal-diary">
+    <div class="hlm-sheet hlm-diary-sheet">
+      <div class="hlm-sheet-head">
+        <span class="hlm-tab xm" data-tab="林小满日记" data-who="林小满">林小满的日记</span>
+        <span class="hlm-vline"></span>
+        <span class="hlm-tab sz" data-tab="宋昭日记" data-who="宋昭">宋昭的日记</span>
+        <button class="hlm-x" data-close="hlm-modal-diary">✕</button>
+      </div>
+      <div class="hlm-diary-list" id="hlm-diary-list"></div>
+    </div>
+  </div>
+  <div class="hlm-modal" id="hlm-modal-log">
+    <div class="hlm-sheet">
+      <div class="hlm-sheet-head"><span class="hlm-s-cn">对话记录</span><span class="hlm-s-en">BACKLOG</span><button class="hlm-x" data-close="hlm-modal-log">✕</button></div>
+      <div class="hlm-diary-list" id="hlm-log-list"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-400.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-700.css');
+#hlm-app{position:relative;height:720px;border-radius:14px;overflow:hidden;
+  font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:#3b414b;background:#9ec7e8;
+  display:flex;flex-direction:column;--xm:#e2647e;--sz:#5a8fc0;--rose:#d95f7f;
+  box-shadow:0 10px 40px rgba(30,50,70,.35)}
+#hlm-app.fs{height:100vh;border-radius:0}
+#hlm-app *,#hlm-app *::before,#hlm-app *::after{box-sizing:border-box}
+
+/* ── 背景:通栏无遮挡 ── */
+.hlm-bg{position:absolute;inset:0;background-size:cover;background-position:center;
+  background-image:linear-gradient(180deg,#6fb0e3 0%,#9cc9ea 42%,#cfe6f2 68%,#f3efe6 100%)}
+.hlm-bg.hasimg .hlm-cloud,.hlm-bg.hasimg .hlm-sun{display:none}
+.hlm-cloud{position:absolute;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0));
+  border-radius:50%;filter:blur(2px)}
+.hlm-cloud.c1{left:6%;top:10%;width:34%;height:16%}
+.hlm-cloud.c2{left:52%;top:22%;width:28%;height:12%;opacity:.85}
+.hlm-cloud.c3{left:26%;top:34%;width:22%;height:9%;opacity:.7}
+.hlm-sun{position:absolute;right:14%;top:6%;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,252,235,.9),rgba(255,250,220,0) 70%)}
+.hlm-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.hlm-fx .star{position:absolute;font-size:11px;color:rgba(255,255,255,.9);animation:twk 4s ease-in-out infinite;font-style:normal}
+.hlm-fx .mote{position:absolute;bottom:-14px;font-size:11px;opacity:0;animation:rise 12s linear infinite;font-style:normal}
+#hlm-app[data-weather="雨"] .hlm-fx .rain{position:absolute;inset:0;
+  background:repeating-linear-gradient(100deg,transparent 0 15px,rgba(120,150,200,.13) 15px 16px);
+  background-size:220px 260px;animation:rainfall 1s linear infinite}
+#hlm-app[data-weather="雨"] .hlm-bg{filter:saturate(.7) brightness(.75)}
+#hlm-app[data-weather="阴"] .hlm-bg{filter:saturate(.6) brightness(.88)}
+@keyframes twk{0%,100%{opacity:.1;transform:scale(.8)}50%{opacity:.9;transform:scale(1.25)}}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}15%{opacity:.55}80%{opacity:.2}100%{transform:translateY(-90vh) translateX(3vw);opacity:0}}
+@keyframes rainfall{to{background-position:-90px 260px}}
+
+/* ── 顶部一行极简信息 ── */
+.hlm-topinfo{position:absolute;z-index:6;top:12px;left:18px;right:18px;display:flex;justify-content:space-between;
+  align-items:center;font-size:12px;letter-spacing:1.5px;color:rgba(55,80,105,.85);
+  text-shadow:0 0 6px rgba(255,255,255,.95),0 0 14px rgba(255,255,255,.8);font-variant-numeric:tabular-nums}
+.hlm-world{display:flex;align-items:center;gap:8px}
+.hlm-world em{width:3px;height:3px;border-radius:50%;background:rgba(217,95,127,.55)}
+.hlm-favor{display:flex;align-items:center;gap:9px}
+.hlm-favor .xm{color:var(--xm)}.hlm-favor .sz{color:var(--sz)}
+.hlm-favor b{font-size:14px;font-weight:700}
+.hlm-minibar{position:relative;width:58px;height:3px;border-radius:2px;background:var(--sz);overflow:hidden;opacity:.75}
+.hlm-minibar-xm{position:absolute;left:0;top:0;height:100%;width:50%;background:var(--xm);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.pulse{animation:pls .9s ease}
+@keyframes pls{0%,100%{opacity:1}40%{opacity:.3}}
+
+/* ── 立绘:底边锚定在界面最底端(藏在文字横带后),放大只会向上生长,不会露出底边 ── */
+.hlm-stage{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hlm-sprite{position:absolute;bottom:0;height:100%;width:48%;max-width:640px;transform:translateX(-50%);opacity:0;
+  transition:left 1.1s cubic-bezier(.3,.8,.3,1),opacity 1s,filter 1s;
+  background-size:contain;background-repeat:no-repeat;background-position:bottom center}
+.hlm-sprite.xm{left:46%}.hlm-sprite.sz{left:58%}
+.hlm-sprite.npc{left:6%;opacity:0}
+.hlm-stand{position:absolute;left:50%;bottom:30%;transform:translateX(-50%);writing-mode:vertical-rl;
+  font-family:'Noto Serif SC','SimSun',serif;font-size:19px;letter-spacing:14px;color:rgba(60,85,110,.5);
+  border-left:1px solid rgba(60,85,110,.25);padding-left:12px;text-shadow:0 0 8px rgba(255,255,255,.8)}
+.hlm-sprite:not(.noimg) .hlm-stand{display:none}
+.hlm-sprite.gone{opacity:.04;filter:grayscale(1) blur(4px)}
+.hlm-gone-tag{position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  font-family:'Noto Serif SC','SimSun',serif;font-size:14px;letter-spacing:4px;color:var(--rose);
+  text-shadow:0 0 10px rgba(255,255,255,.95)}
+
+/* ── 快捷菜单:参考图式通栏彩色小图标 ── */
+.hlm-quicknav{position:relative;z-index:6;margin-top:auto;display:flex;justify-content:flex-end;gap:26px;padding:10px 3% 12px 0}
+.hlm-qitem{display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:4px 6px;
+  color:rgba(255,255,255,.92);font-family:inherit;transition:transform .15s,filter .15s;
+  text-shadow:0 1px 6px rgba(40,60,80,.7);filter:drop-shadow(0 1px 3px rgba(30,50,70,.45))}
+.hlm-qitem:hover{transform:translateY(-2px)}
+.hlm-qitem.on{filter:drop-shadow(0 0 6px rgba(217,95,127,.8))}
+.hlm-qitem.on .hlm-qico{color:var(--rose)}
+/* 每颗图标一个浅彩(参考图 DATA SAVE 粉 / DATA LOAD 蓝 / AUTO 黄 那种) */
+.hlm-qitem:nth-child(1) .hlm-qico{color:#f5a8c0}
+.hlm-qitem:nth-child(2) .hlm-qico{color:#ffd97a}
+.hlm-qitem:nth-child(3) .hlm-qico{color:#9fd8ff}
+.hlm-qitem:nth-child(4) .hlm-qico{color:#c9c9d6}
+.hlm-qitem:nth-child(5) .hlm-qico{color:#ffb3c8}
+.hlm-qitem:nth-child(6) .hlm-qico{color:#a8d8b0}
+.hlm-qitem:nth-child(7) .hlm-qico{color:#d8b8f0}
+.hlm-qico{font-size:18px;line-height:1;font-style:normal;text-shadow:0 1px 4px rgba(30,50,70,.5)}
+.hlm-qlabel{font-size:8.5px;letter-spacing:1.8px;text-align:left;line-height:1.5;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.95)}
+/* 隐藏界面:只剩背景与立绘,点击任意处恢复 */
+#hlm-app.hideui .hlm-band,#hlm-app.hideui .hlm-topinfo,#hlm-app.hideui .hlm-quicknav{display:none}
+
+/* ── 正文:通栏白色横带(参考图:半透明磨砂,景色透出) ── */
+.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.78));
+  backdrop-filter:blur(7px);border-top:1px solid rgba(255,255,255,.55);padding:2px 7% 22px;min-height:210px}
+.hlm-band-flower{position:absolute;right:4%;bottom:6px;font-size:44px;font-style:normal;color:var(--rose);opacity:.14;pointer-events:none}
+.hlm-speaker{display:flex;align-items:center;gap:14px;margin:6px 0 6px 1.5%}
+.hlm-speaker::before{content:'';width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--rose));opacity:.9}
+.hlm-speaker span{font-family:'Noto Serif SC','SimSun',serif;font-size:21px;letter-spacing:7px;color:var(--rose);font-weight:700;
+  text-shadow:0 1px 8px rgba(255,255,255,.85)}
+.hlm-story{max-height:230px;overflow-y:auto;font-family:'Noto Serif SC','Source Han Serif SC','SimSun',serif;
+  font-size:17.5px;line-height:2.15;letter-spacing:.6px;color:#333a45;scrollbar-width:thin;
+  text-shadow:0 0 8px rgba(255,255,255,.65),0 1px 2px rgba(255,255,255,.5)}
+#hlm-app ::-webkit-scrollbar{width:4px}
+#hlm-app ::-webkit-scrollbar-thumb{background:rgba(90,120,150,.3);border-radius:2px}
+.hlm-story p{margin:0;text-indent:2em}
+.hlm-story p + p{margin-top:.6em}
+.hlm-story b{color:var(--rose);font-weight:700}
+/* 发送栏 */
+.hlm-inputrow{display:flex;gap:10px;margin-top:14px}
+.hlm-inputrow input{flex:1;background:rgba(255,255,255,.55);border:none;border-bottom:1.5px solid rgba(217,95,127,.45);
+  border-radius:0;padding:8px 4px;font-family:'Noto Serif SC','SimSun',serif;font-size:14px;color:#333a45;outline:none;letter-spacing:.5px}
+.hlm-inputrow input::placeholder{color:rgba(59,65,75,.4)}
+.hlm-inputrow input:focus{border-bottom-color:var(--rose);background:rgba(255,255,255,.75)}
+.hlm-inputrow button{background:none;color:var(--rose);border:1px solid rgba(217,95,127,.55);border-radius:2px;padding:7px 22px;
+  font-size:13px;cursor:pointer;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:4px;font-weight:700;transition:all .15s}
+.hlm-inputrow button:hover{background:rgba(217,95,127,.12)}
+/* 对话行:台词顶格,说话人显示在左上角名牌 */
+.hlm-story .hlm-dlg{margin:0;text-indent:0}
+#hlm-speaker.xm{color:var(--xm)}
+#hlm-speaker.sz{color:var(--sz)}
+#hlm-speaker.u{color:var(--rose)}
+#hlm-speaker.n{color:rgba(59,65,75,.5)}
+/* 待续箭头 & 立绘弹出动画 */
+.hlm-next{position:absolute;right:16px;bottom:8px;font-style:normal;font-size:12px;color:var(--rose);
+  cursor:pointer;z-index:2;animation:hlm-blink 1.1s ease-in-out infinite}
+@keyframes hlm-blink{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(3px);opacity:1}}
+.hlm-sprite.pop{animation:hlm-pop .5s cubic-bezier(.25,.9,.3,1.25)}
+@keyframes hlm-pop{0%{transform:translateX(-50%) scale(1)}40%{transform:translateX(-50%) scale(1.055)}100%{transform:translateX(-50%) scale(1)}}
+
+/* ── 弹窗:白纸极简 ── */
+.hlm-modal{position:absolute;inset:0;z-index:10;background:rgba(255,255,255,.28);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end}
+.hlm-modal.open{display:flex}
+.hlm-sheet{width:100%;max-height:72%;overflow-y:auto;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+  border-top:1px solid rgba(217,95,127,.35);padding:18px 8% 22px;scrollbar-width:thin}
+.hlm-sheet-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:1px solid rgba(59,65,75,.12);padding-bottom:10px}
+.hlm-s-cn{font-family:'Noto Serif SC','SimSun',serif;font-size:17px;letter-spacing:6px;color:var(--rose);font-weight:700}
+.hlm-s-en{font-size:9px;letter-spacing:3px;color:rgba(59,65,75,.45)}
+.hlm-x{margin-left:auto;background:none;border:none;font-size:14px;color:rgba(59,65,75,.6);cursor:pointer;padding:4px 8px}
+.hlm-x:hover{color:var(--rose)}
+.hlm-kv{display:flex;justify-content:space-between;align-items:baseline;padding:9px 2px;border-bottom:1px solid rgba(59,65,75,.08);font-size:13px}
+.hlm-kv span{color:rgba(59,65,75,.55);letter-spacing:1px;font-size:11.5px}
+.hlm-kv b{font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.hlm-kv .xm, .hlm-kv b.xm{color:var(--xm)}
+.hlm-kv .sz, .hlm-kv b.sz{color:var(--sz)}
+.hlm-note{text-align:center;color:rgba(59,65,75,.4);font-size:11px;padding-top:14px;letter-spacing:2px}
+/* 日记 */
+.hlm-tab{cursor:pointer;font-family:'Noto Serif SC','SimSun',serif;font-size:15px;letter-spacing:3px;
+  color:rgba(59,65,75,.35);transition:color .2s;font-weight:700}
+.hlm-tab.active{color:var(--rose)}
+.hlm-tab.locked{opacity:.5}
+.hlm-vline{width:1px;height:14px;background:rgba(59,65,75,.2);align-self:center}
+.hlm-diary-list{display:flex;flex-direction:column;gap:14px}
+.hlm-diary-item{padding:12px 4px 14px;border-bottom:1px solid rgba(59,65,75,.08)}
+.hlm-diary-item .d-date{font-family:'Noto Serif SC','SimSun',serif;font-size:11.5px;letter-spacing:2px;
+  color:var(--rose);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.hlm-diary-item .d-date::before{content:'— ';opacity:.6}
+.hlm-diary-item .d-body{font-family:'Noto Serif SC','SimSun',serif;font-size:14px;line-height:2;color:#3b414b}
+.hlm-diary-lock{padding:34px 20px;text-align:center;color:rgba(59,65,75,.55);font-size:13px;letter-spacing:2px;line-height:2.2;
+  font-family:'Noto Serif SC','SimSun',serif;border:1px dashed rgba(217,95,127,.35);border-radius:2px}
+.hlm-diary-lock .lk{font-size:19px;display:block;margin-bottom:8px;filter:grayscale(.4)}
+.hlm-empty{padding:34px 0;text-align:center;color:rgba(59,65,75,.35);font-size:13px;letter-spacing:2px}
+/* 对话记录 backlog */
+.hlm-log-item{display:flex;gap:12px;padding:9px 6px;border-bottom:1px solid rgba(59,65,75,.08);font-size:13.5px;line-height:1.95}
+.hlm-log-item .l-name{flex:0 0 auto;min-width:56px;font-weight:700;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:2px}
+.hlm-log-item .l-name.xm{color:var(--xm)}
+.hlm-log-item .l-name.sz{color:var(--sz)}
+.hlm-log-item .l-name.u{color:var(--rose)}
+.hlm-log-item .l-name.n{color:rgba(59,65,75,.45)}
+.hlm-log-item .l-text{flex:1;color:#3b414b}
+.hlm-log-cur{background:rgba(217,95,127,.07);border-radius:4px}
+
+/* ── 手机横屏适配:小屏时铺满视口、压缩字号间距 ── */
+@media (max-height:600px){
+  #hlm-app{height:720px;border-radius:14px;box-shadow:0 10px 40px rgba(30,50,70,.35)}
+  .hlm-topinfo{top:6px;left:10px;right:10px;font-size:10px;letter-spacing:.5px;gap:6px}
+  .hlm-favor{gap:5px}
+  .hlm-favor b{font-size:12px}
+  .hlm-minibar{width:40px}
+  .hlm-quicknav{gap:14px;padding:5px 12px 5px 0}
+  .hlm-qico{font-size:15px}
+  .hlm-qlabel{font-size:8px}
+  .hlm-band{min-height:150px;padding:0 4% 12px}
+  .hlm-speaker{margin:6px 0 2px 1%;gap:8px}
+  .hlm-speaker span{font-size:14px;letter-spacing:3px}
+  .hlm-speaker::before{width:34px}
+  .hlm-story{max-height:120px;font-size:13.5px;line-height:1.8}
+  .hlm-next{right:10px;bottom:4px}
+  .hlm-band-flower{font-size:30px}
+  .hlm-sheet{padding:12px 5% 16px}
+  .hlm-kv{padding:6px 2px;font-size:12px}
+}
+</style>
+
+<script type="text/plain" id="hlm-story-raw"></script>
+
+<script>
+(function(){
+'use strict';
+
+/* ════════ 素材配置 ════════
+   本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
+   酒馆部署:把 BASE 填成素材仓库前缀,例如
+   const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
+const BASE = 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/';
+const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
+const HOME = { 晴:BASE+'background/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/user_home/livingroom/sunny_night.png', 阴:BASE+'background/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/user_home/livingroom/rainy_night.png' };
+const ASSETS = {
+  立绘: {
+    '林小满': { 普通:BASE+'Character Standee/Linxiaoman/lxm_default.png', 开心:BASE+'Character Standee/Linxiaoman/lxm_happy.png', 生气:BASE+'Character Standee/Linxiaoman/lxm_angry.png', 难过:BASE+'Character Standee/Linxiaoman/lxm_sad.png', 害羞:BASE+'Character Standee/Linxiaoman/lxm_shy.png', 惊讶:BASE+'Character Standee/Linxiaoman/lxm_shock.png' },
+    '宋昭':   { 普通:BASE+'Character Standee/Songshao/ss_default.png', 开心:BASE+'Character Standee/Songshao/ss_happy.png', 生气:BASE+'Character Standee/Songshao/ss_angry.png', 难过:BASE+'Character Standee/Songshao/ss_sad.png', 害羞:BASE+'Character Standee/Songshao/ss_shy.png', 惊讶:BASE+'Character Standee/Songshao/ss_shock.png' }
+  },
+  背景: {
+    /* ── 学校 ── */
+    '教室':   { 晴:BASE+'background/classroom/sunny_day.png', 默认:BASE+'background/classroom/sunny_day.png' },
+    '图书馆': { 晴:BASE+'background/library/sunny_day.png', 晴夜:BASE+'background/library/sunny_night.png', 阴:BASE+'background/library/cloudy_day.png', 阴夜:BASE+'background/library/cloudy_night.png', 雨:BASE+'background/library/rainy_day.png', 雨夜:BASE+'background/library/rainy_night.png' },
+    '食堂':   { 晴:BASE+'background/cafeteria/sunny_day.png', 默认:BASE+'background/cafeteria/sunny_day.png' },
+    /* ── 商业街:多数场景暂只有晴天图,补图后往对应键里加即可 ── */
+    '路上':   ROAD,
+    '便利店': { 晴:BASE+'background/General_Scenarios/konbini_sunnyday.png', 默认:BASE+'background/General_Scenarios/konbini_sunnyday.png' },
+    '商场':   { 晴:BASE+'background/mall/sunny_day.png', 默认:BASE+'background/mall/sunny_day.png' },
+    '早餐店': { 晴:BASE+'background/breakfast restaurant/sunny_day.png', 默认:BASE+'background/breakfast restaurant/sunny_day.png' },
+    '美术馆': { 晴:BASE+'background/art_museum/sunny_day.png', 默认:BASE+'background/art_museum/sunny_day.png' },
+    /* ── 住宅:客厅/卧室分立 ── */
+    '宿舍':     HOME,
+    '宿舍卧室': { 晴:BASE+'background/user_home/bedroom/sunny_day.png', 默认:BASE+'background/user_home/bedroom/sunny_day.png' },
+    '林小满家':     { 晴:BASE+'background/Linxiaoman_home/livingroom/sunny_day.png', 默认:BASE+'background/Linxiaoman_home/livingroom/sunny_day.png' },
+    '林小满家卧室': { 晴:BASE+'background/Linxiaoman_home/bedroom/sunny_day.png', 默认:BASE+'background/Linxiaoman_home/bedroom/sunny_day.png' },
+    '宋昭家':       { 晴:BASE+'background/Songzhao_home/livingroom/sunny_day.png', 默认:BASE+'background/Songzhao_home/livingroom/sunny_day.png' },
+    '宋昭家卧室':   { 晴:BASE+'background/Songzhao_home/bedroom/sunny_day.png', 默认:BASE+'background/Songzhao_home/bedroom/sunny_day.png' },
+    /* 第三层:兜底 */
+    '默认':   HOME
+  },
+  场景别名: { '汇金广场':'商场', '城西美术馆':'美术馆', '校园道路':'路上', '教学楼':'教室', '体育馆':'教室', '商业街':'路上', '主街':'路上', '公交站':'路上', '滨江公园':'路上', '长椅':'路上', '湖边步道':'路上', '栖梧小区':'宿舍', '临河小区':'宋昭家', '{{user}}家':'宿舍', '{{user}}家卧室':'宿舍卧室', '林小满的卧室':'林小满家卧室', '宋昭的卧室':'宋昭家卧室', '书房':'宿舍卧室', '后厨':'早餐店', '打饭窗口':'食堂', '早点铺':'早餐店' },
+  /* 关键词归类:场景名没命中上面时,按关键词落到通用层(顺序敏感,细的在粗的前面) */
+  场景关键词: [
+    ['超市|便利店|小卖部', '便利店'],
+    ['广场|商场|卖场|百货|书店|游戏厅|美食', '商场'],
+    ['早餐|早点|包子|豆浆|早点铺', '早餐店'],
+    ['美术|画廊|画展', '美术馆'],
+    ['图书馆|书库|自习', '图书馆'],
+    ['教室|课堂|黑板|教学', '教室'],
+    ['食堂|餐厅|就餐|打饭', '食堂'],
+    ['体育馆|篮球|游泳', '教室'],
+    ['公园|长椅|湖边|滨江', '路上'],
+    ['路|街|道|桥|站|巷', '路上'],
+    ['卧室|房间|床', '宿舍卧室'],
+    ['室|家|房|楼|所|厅|口', '宿舍']
+  ]
+};
+/* 缺图时自动回落:立绘→普通→竖排名字占位;背景→天空渐变。不影响使用 */
+/* 预览覆盖钩子:本地预览时可用 window.__HLM_ASSETS 临时替换素材;酒馆里无此变量,不生效 */
+(function(){ const ov = window.__HLM_ASSETS; if (!ov) return;
+  const deep = (t, s) => { for (const k in s){ if (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) { t[k] = t[k] || {}; deep(t[k], s[k]); } else t[k] = s[k]; } };
+  deep(ASSETS, ov);
+})();
+
+const $ = s => document.querySelector(s);
+const app = $('#hlm-app');
+let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按<date>小时推算(18-6点为夜)
+
+/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块);本地预览读 story-raw ---------- */
+let raw = ($('#hlm-story-raw') || {}).textContent || '';
+try {
+  if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
+    const msgs = getChatMessages(getCurrentMessageId());
+    const text = (msgs && msgs[0] && msgs[0].message) || '';
+    const blocks = text.match(/<story>[\s\S]*?<\/story>/g);
+    if (blocks && blocks.length) raw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
+  }
+} catch(e) {}
+let text = raw;
+const world = { 日期:'', 时间:'', 昼夜:'', 天气:'', 路径:[] };   /* 世界状态:随正文标签输出,每楼必达 */
+const grab = tag => {
+  const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
+  if (!m) return '';
+  text = text.replace(m[0], '');
+  return m[1].trim();
+};
+/* <date>:YYYY年MM月DD日 HH时MM分 星期X → 日期(含星期)/时间 */
+const dRaw = grab('date');
+const mDT = dRaw.match(/^(\d{4}年\d{1,2}月\d{1,2}日)\s*(?:(\d{1,2}[时点]\d{1,2}分?)\s*)?(.*)$/);
+world.日期 = mDT ? mDT[1] + (mDT[3] ? ' ' + mDT[3].trim() : '') : dRaw;
+world.时间 = mDT && mDT[2] ? mDT[2] : '';
+/* <scene>:大分类/地点/具体位置/昼夜/天气,尾部两段可缺省且顺序不限 */
+const isW = s => /^(晴|阴|雨)天?$/.test(s);
+const isD = s => /^(昼|夜|白昼|白天|夜晚|凌晨|清晨|早晨|早上|上午|中午|午后|下午|傍晚|黄昏|深夜)$/.test(s);
+const segs = grab('scene').split('/').map(s => s.trim()).filter(Boolean);
+for (let i = 0; i < 2 && segs.length; i++){
+  const s = segs[segs.length - 1];
+  if (!world.天气 && isW(s)){ world.天气 = s.replace(/天$/, ''); segs.pop(); }
+  else if (!world.昼夜 && isD(s)){ world.昼夜 = s; segs.pop(); }
+  else break;
+}
+world.路径 = segs;
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmt = s => esc(s).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+/* 行解析:结构化成行数组(对话行/旁白行),供逐行推进渲染 */
+const nameFix = { '宋邵':'宋昭', '小满':'林小满', '满':'林小满', '昭':'宋昭', '宋昭姐':'宋昭' };
+const stripQ = s => s.replace(/^["“]\s*/, '').replace(/\s*["”]$/, '');
+/* NPC 立绘:六种形象,[]里直写形象词,或按称呼关键词自动猜;猜不中就不显示立绘 */
+const NPC_IMG = {
+  '女年轻': BASE+'Character Standee/npc/npc_female_young.png',
+  '女中年': BASE+'Character Standee/npc/npc_female_middle_aged.png',
+  '女老年': BASE+'Character Standee/npc/npc_female_elderly.png',
+  '男年轻': BASE+'Character Standee/npc/npc_male_young.png',
+  '男中年': BASE+'Character Standee/npc/npc_male_middle_aged.png',
+  '男老年': BASE+'Character Standee/npc/npc_male_elderly.png'
+};
+const NPC_PAT = [
+  ['女年轻', /女年轻|女青年|少女|女孩|女生|店员|服务员|前台|小姐|妹子|学妹/],
+  ['女中年', /女中年|阿姨|大婶|老板娘|大妈|母亲|妈妈|婶|护士/],
+  ['女老年', /女老年|奶奶|外婆|老太/],
+  ['男年轻', /男年轻|男青年|少年|男孩|男生|小哥|学弟|快递/],
+  ['男中年', /男中年|大叔|叔叔|老板|师傅|父亲|爸爸|保安|老师/],
+  ['男老年', /男老年|爷爷|外公|老头/]
+];
+function npcArchetype(name, bracket){
+  /* 规范写法:[男青年]/[女老年] 等"性别+年龄"组合,括号里写了的维度一定生效;
+     缺性别时从称呼猜(如 阿姨→女),缺年龄时从称呼猜(如 大叔→中年),都没有按缺省补(男/中年) */
+  const GENDER_HINT = /少女|女孩|女生|小姐|妹子|阿姨|大妈|妈|奶|婆|姐|嫂|女|祖母|外婆/;
+  const b = (bracket || '').replace(/性/g, '');
+  const gender = /男/.test(b) ? '男' : /女/.test(b) ? '女' : '';
+  const age = /青年|年轻/.test(b) ? '年轻' : /中年/.test(b) ? '中年' : /老年/.test(b) ? '老年' : '';
+  const s = (name || '') + ' ' + (bracket || '');
+  for (const [k, re] of NPC_PAT){
+    if (gender && age) break;                                  /* 括号齐全,称呼表不再参与 */
+    if (re.test(s) && (!gender || k[0] === gender) && (!age || k.slice(1) === age)) return k;
+  }
+  if (gender && age) return gender + age;
+  if (gender){
+    const ageFromName = NPC_PAT.find(([k, re]) => re.test(s));  /* 缺年龄:称呼里的年龄段可借,性别以括号为准 */
+    return gender + (age || (ageFromName ? ageFromName[0].slice(1) : '中年'));
+  }
+  if (age) return (GENDER_HINT.test(s) ? '女' : '男') + age;
+  for (const [k, re] of NPC_PAT) if (re.test(s)) return k;
+  return '男中年';                                              /* 完全无线索时的兜底形象 */
+}
+const parseLine = l => {
+  const m = l.match(/^(.{1,12}?)\s*\[([^\]]*)\]\s*[:：]\s*([\s\S]*)$/);          /* 名字 [表情/形象]: "台词" */
+  if (m){
+    const who = nameFix[m[1].trim()] || m[1].trim();
+    const f = m[2].trim();
+    if (who === '林小满' || who === '宋昭'){
+      return { name:who, face:(!f || f === '默认') ? '普通' : f, text:stripQ(m[3].trim()) };
+    }
+    /* NPC带[]行:形象直写或按名字猜;括号里带"离场"=说完这句就退场 */
+    const ex = /离场/.test(f);
+    return { name:who, face:'', npc:npcArchetype(who, f.replace(/离场|·/g, '')), isNpc:true, exit:ex, text:stripQ(m[3].trim()) };
+  }
+  const mn = l.match(/^旁白\s*[:：]\s*([\s\S]*)$/);                               /* 旁白: */
+  if (mn) return { name:'', face:'', text:mn[1].trim() };
+  const mu = l.match(/^(.{1,20}?)\s*[:：]\s*["“]([\s\S]*)$/);                    /* 名字: "台词"({{user}}等,不带表情) */
+  if (mu){
+    const who = nameFix[mu[1].trim()] || mu[1].trim();
+    if (who === '林小满' || who === '宋昭') return { name:who, face:'普通', text:stripQ(mu[2].trim()) };
+    if (who.includes('{{user}}') || /{{user}}/.test(l.slice(0, mu.index + mu[1].length + 4))) return { name:who, face:'', isUser:true, text:stripQ(mu[2].trim()) };
+    const g = npcArchetype(who, '');
+    return { name:who, face:'', npc:g, isNpc:true, text:stripQ(mu[2].trim()) };
+  }
+  return { name:'', face:'', text:l };
+};
+const lines = text.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLine).filter(L => L.text);
+/* 逐行推进状态(在 layoutSprites/applyStat 之前声明,避免时序问题) */
+let shown = 0, curSpeaker = '', npcState = null;
+const curFace = { '林小满':'普通', '宋昭':'普通' };
+const entered = { '林小满':false, '宋昭':false };   /* 登场标记:首次开口才显示立绘 */
+
+/* ---------- 背景 / 立绘 / 天气粒子 ---------- */
+/* 背景三级解析:精确命中 → 别名 → 关键词归类到通用层 → 默认 */
+/* 场景解析(段与段有上下文关系):从最深层往外,每段依次
+   ①精确键(含"父段+当前段"组合) ②别名(叶子名优先,长键优先)
+   关键词只作记录、全程走完仍未命中才兜底——保证"宋昭的卧室"能赢过浅层的"宋昭家" */
+function resolveScene(path){
+  const segs = String(path || '').split('/').map(s => s.trim()).filter(Boolean);
+  const ks = Object.keys(ASSETS.场景别名).sort((a, b) => b.length - a.length);
+  let kwHit = '';
+  for (let i = segs.length - 1; i >= 0; i--){
+    const s = segs[i], combo = (i > 0 ? segs[i-1] : '') + s;
+    if (ASSETS.背景[s]) return s;
+    if (ASSETS.背景[combo]) return combo;
+    const a = ks.find(k => s.includes(k)) || ks.find(k => combo.includes(k));
+    if (a && ASSETS.背景[ASSETS.场景别名[a]]) return ASSETS.场景别名[a];
+    if (!kwHit){
+      for (const [p, c] of ASSETS.场景关键词){
+        if (new RegExp(p).test(s) && ASSETS.背景[c]){ kwHit = c; break; }
+      }
+    }
+  }
+  return ASSETS.背景[kwHit] ? kwHit : '默认';
+}
+function pickBgUrl(name){
+  const v = ASSETS.背景[resolveScene(name)] || ASSETS.背景['默认'];
+  if (!v) return '';
+  if (typeof v === 'string') return v;
+  /* 对象写法按 天气+昼夜 选图,键:晴/阴/雨/晴夜/阴夜/雨夜/默认 */
+  const w = app.dataset.weather || '晴';
+  return v[w + (nightOn ? '夜' : '')] || v[w] || v['默认'] || v['晴'] || '';
+}
+function setBg(name){
+  const url = pickBgUrl(name);
+  if (!url) return;
+  const img = new Image();
+  img.onload = () => { $('#hlm-bg').style.backgroundImage = 'url("'+url+'")'; $('#hlm-bg').classList.add('hasimg'); };
+  img.onerror = ()=>{};
+  img.src = url;
+}
+function setSprite(who, expr){
+  const el = $('#hlm-sprite-' + (who === '林小满' ? 'xm' : 'sz'));
+  const set = ASSETS.立绘[who] || {};
+  const url = set[expr] || set['普通'] || '';
+  if (!url){ el.classList.add('noimg'); el.style.backgroundImage = ''; return; }
+  const img = new Image();
+  img.onload = () => { el.style.backgroundImage = 'url("'+url+'")'; el.classList.remove('noimg'); };
+  img.onerror = () => el.classList.add('noimg');
+  img.src = url;
+}
+function buildFx(weather){
+  const fx = $('#hlm-fx');
+  fx.innerHTML = '';
+  if (weather === '雨'){ const r = document.createElement('div'); r.className = 'rain'; fx.appendChild(r); return; }
+  if (weather === '晴'){
+    for (let i = 0; i < 10; i++){
+      const s = document.createElement('i'); s.className = 'star'; s.textContent = '✦';
+      s.style.cssText = 'left:'+Math.random()*100+'%;top:'+Math.random()*40+'%;animation-delay:'+(Math.random()*4)+'s';
+      fx.appendChild(s);
+    }
+  }
+  for (let i = 0; i < 6; i++){
+    const m = document.createElement('i'); m.className = 'mote';
+    m.textContent = Math.random() < .5 ? '❀' : '✦';
+    m.style.cssText = 'left:'+Math.random()*100+'%;animation-delay:'+(Math.random()*12)+'s;animation-duration:'+(9+Math.random()*7)+'s;color:'+(Math.random()<.6?'rgba(226,100,126,.7)':'rgba(255,255,255,.9)');
+    fx.appendChild(m);
+  }
+}
+/* 立绘站位:只显示已登场且未消失的人格;主位(当前说话人)居中且置顶,其余往左;
+   NPC 占 girls 之后的槽位(换人即换图,没有可识别形象就不显示);无人在场时舞台清空 */
+function layoutSprites(){
+  const chars = ['林小满', '宋昭'];
+  const present = chars.filter(c => entered[c] && !isGone(c));
+  const primary = (curSpeaker && present.includes(curSpeaker)) ? curSpeaker : present[0];
+  const order = primary ? [primary].concat(present.filter(c => c !== primary)) : [];
+  const pos = ['50%', '22%', '6%'];
+  chars.forEach(c => {
+    const el = $('#hlm-sprite-' + (c === '林小满' ? 'xm' : 'sz'));
+    const idx = order.indexOf(c);
+    el.style.left = (idx >= 0 && idx < pos.length) ? pos[idx] : pos[pos.length - 1];
+    el.style.opacity = idx >= 0 ? '1' : '0';   /* CSS默认opacity:0,防加载闪烁,显示时显式置1 */
+    el.style.zIndex = idx >= 0 ? String(10 - idx) : '';
+  });
+  const npcEl = $('#hlm-sprite-npc');
+  if (npcEl){
+    const show = !!(npcState && npcState.arch && NPC_IMG[npcState.arch]);
+    const idx = show ? order.length : -1;
+    npcEl.style.left = (idx >= 0 && idx < pos.length) ? pos[idx] : pos[pos.length - 1];
+    npcEl.style.opacity = (show && idx < pos.length) ? '1' : '0';   /* CSS默认opacity:0,显示时必须显式置1 */
+    npcEl.style.zIndex = show ? String(10 - idx) : '';
+  }
+}
+/* ---------- 世界状态(日期/时间/天气/地点):正文标签优先,旧存档变量兑底 ---------- */
+function applyWorld(v, force){
+  const d = world.日期 || (v && v.日期) || '—';
+  const t = world.时间 || (v && v.时间) || '—';
+  const w = world.天气 || (v && v.天气) || '晴';
+  const loc = world.路径[world.路径.length - 1] || (v && v.地点) || '—';
+  $('#hlm-date').textContent = d;  $('#hlm-s-date').textContent = d;
+  $('#hlm-time').textContent = t;  $('#hlm-s-time').textContent = t;
+  $('#hlm-weather').textContent = w; $('#hlm-s-weather').textContent = w;
+  $('#hlm-loc').textContent = loc; $('#hlm-s-loc').textContent = loc;
+  const wasW = app.dataset.weather, wasNight = nightOn;
+  if (world.昼夜) nightOn = /(夜|晚)/.test(world.昼夜);
+  else { const mh = String(t).match(/(\d{1,2})\s*[时点]/); nightOn = mh ? (+mh[1] >= 18 || +mh[1] < 6) : false; }
+  app.dataset.weather = w;
+  if (force || wasW !== w || wasNight !== nightOn){ buildFx(w); setBg(world.路径.join('/')); }
+}
+applyWorld(null, true);
+setSprite('林小满', '普通');
+setSprite('宋昭', '普通');
+
+/* ---------- 读取变量（mvu 的 stat_data） ---------- */
+const DEF = {
+  好感度: { 林小满:50, 宋昭:50, 当天变化情况:{日期:'',已变化次数:0}, 上次变化日期:'' },
+  角色状态: { 林小满是否消失:false, 宋昭是否消失:false },
+  林小满日记: {}, 宋昭日记: {}
+};
+let statRef = null, prevXm = null, curTab = '林小满日记';
+function pulse(el){ el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); }
+function applyStat(d){
+  if (!d) return;
+  statRef = d;
+  /* 世界状态已随正文标签直达,这里只用旧存档变量兑底(正文没写标签时) */
+  applyWorld(d.世界, false);
+  const f = Object.assign({}, DEF.好感度, d.好感度 || {});
+  f.当天变化情况 = Object.assign({}, DEF.好感度.当天变化情况, (d.好感度||{}).当天变化情况 || {});
+  const st = Object.assign({}, DEF.角色状态, d.角色状态 || {});
+  const xm = Math.max(0, Math.min(100, f.林小满|0)), sz = 100 - xm;
+  if (prevXm !== null && prevXm !== xm){ pulse($('#hlm-xm-num')); pulse($('#hlm-sz-num')); }
+  prevXm = xm;
+  $('#hlm-xm-num').textContent = xm; $('#hlm-sz-num').textContent = sz;
+  $('#hlm-bar-xm').style.width = xm + '%';
+  $('#hlm-s-xm').textContent = xm; $('#hlm-s-sz').textContent = sz;
+  $('#hlm-s-last').textContent = f.上次变化日期 || '—';
+  $('#hlm-s-cnt').textContent = (f.当天变化情况 && f.当天变化情况.已变化次数) || 0;
+  const g1 = !!st.林小满是否消失, g2 = !!st.宋昭是否消失;
+  $('#hlm-sprite-xm').classList.toggle('gone', g1);
+  $('#hlm-sprite-sz').classList.toggle('gone', g2);
+  layoutSprites();
+  $('#hlm-s-xm-state').textContent = g1 ? '已消失' : '在场';
+  $('#hlm-s-sz-state').textContent = g2 ? '已消失' : '在场';
+  const goneTag = $('#hlm-gone-tag');
+  const goneName = g1 ? '林小满' : g2 ? '宋昭' : '';
+  goneTag.style.display = goneName ? '' : 'none';
+  if (goneName) goneTag.textContent = '「' + goneName + '」已从这条世界线上消失';
+  updateTabs();
+  renderDiary();
+}
+function isGone(who){ return !!(statRef && statRef.角色状态 && statRef.角色状态[who + '是否消失']); }
+function fetchStat(cb){
+  let tries = 0;
+  (function tick(){
+    try {
+      if (typeof getVariables === 'function'){
+        getVariables({ type: 'message' }).then(v => {
+          const sd = v && (v.stat_data || v);
+          if (sd && sd.好感度){ cb(sd); return; }
+          if (++tries < 12) setTimeout(tick, 600);
+        }).catch(() => { if (++tries < 12) setTimeout(tick, 600); });
+      } else if (++tries < 4) setTimeout(tick, 800);
+    } catch(e){}
+  })();
+}
+try {
+  if (typeof eventOn === 'function') eventOn('mag_variable_updated', () => fetchStat(d => applyStat(d)));
+} catch(e){}
+fetchStat(applyStat);
+applyStat(null);
+layoutSprites();
+
+/* ---------- 逐行推进(真·galgame):文本框只显示当前一行,已读行替换不堆叠;
+   名字/旁白在左上角名牌;首次开口立绘登场并弹出,非默认表情换图时弹一次;
+   支持:自动播放AUTO / 回退BACK / 隐藏界面HIDE / 对话记录LOG ---------- */
+const storyEl = $('#hlm-story'), spkEl = $('#hlm-speaker');
+const AUTO_BASE = 1400, AUTO_PER_CHAR = 75;   /* 自动播放节奏:基础延时+每字延时(可调) */
+let autoOn = false, autoTimer = null, hideOn = false;
+function popSprite(who){
+  const el = $('#hlm-sprite-' + (who === '林小满' ? 'xm' : who === '宋昭' ? 'sz' : 'npc'));
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+}
+/* NPC 换图:识别到新形象的 NPC 开口时更新第三立绘位 */
+function updateNpcSprite(){
+  const el = $('#hlm-sprite-npc'); if (!el) return;
+  const url = (npcState && npcState.arch && NPC_IMG[npcState.arch]) || '';
+  if (!url){ el.style.backgroundImage = ''; return; }
+  const img = new Image();
+  img.onload = () => { el.style.backgroundImage = 'url("'+url+'")'; };
+  img.onerror = () => { el.style.backgroundImage = ''; };
+  img.src = url;
+}
+/* 纯函数:重放前n行,得到第n行时刻的登场/表情/说话人状态 → 回退也能精确还原。
+   NPC只在她说台词的那一行显示(话轮一走自动淡出),无需离场标记 */
+function computeState(n){
+  const en = { '林小满':false, '宋昭':false }, fc = { '林小满':'普通', '宋昭':'普通' };
+  let sp = '', npc = null;
+  for (let i = 0; i < n; i++){
+    const L = lines[i];
+    if (L.name === '林小满' || L.name === '宋昭'){
+      sp = L.name;
+      if (!en[L.name]){ en[L.name] = true; fc[L.name] = L.face || '普通'; }
+      else if (L.face && L.face !== fc[L.name]) fc[L.name] = L.face;
+    }
+  }
+  const last = lines[n - 1];
+  if (last && last.isNpc && last.npc) npc = { name:last.name, arch:last.npc };
+  return { en:en, fc:fc, sp:sp, npc:npc };
+}
+function applyLine(n, pop){
+  shown = n;
+  const prevFace = { '林小满':curFace['林小满'], '宋昭':curFace['宋昭'] };
+  const wasEntered = { '林小满':entered['林小满'], '宋昭':entered['宋昭'] };
+  const prevNpc = npcState;
+  const st = computeState(n);
+  entered['林小满'] = st.en['林小满']; entered['宋昭'] = st.en['宋昭'];
+  curFace['林小满'] = st.fc['林小满']; curFace['宋昭'] = st.fc['宋昭'];
+  curSpeaker = st.sp;
+  npcState = st.npc;
+  ['林小满','宋昭'].forEach(w => { if (entered[w] && curFace[w] !== prevFace[w]) setSprite(w, curFace[w]); });
+  if (!prevNpc || !npcState || prevNpc.name !== npcState.name || prevNpc.arch !== npcState.arch) updateNpcSprite();
+  ['林小满','宋昭'].forEach(w => { if (entered[w] && curFace[w] !== prevFace[w]) setSprite(w, curFace[w]); });
+  const L = lines[n - 1];
+  storyEl.innerHTML = (L && L.text) ? (L.name
+    ? '<p class="hlm-dlg">' + fmt(L.text) + '</p>'
+    : '<p>' + fmt(L.text) + '</p>') : '';
+  $('#hlm-next').style.display = n < lines.length ? '' : 'none';
+  if (L){
+    if (L.name){
+      spkEl.textContent = L.name;
+      spkEl.className = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : 'u';
+    } else { spkEl.textContent = '旁白'; spkEl.className = 'n'; }
+    if (pop && (L.name === '林小满' || L.name === '宋昭')){
+      if (!wasEntered[L.name]) popSprite(L.name);                                            /* 首次登场弹 */
+      else if (L.face && L.face !== prevFace[L.name] && L.face !== '普通') popSprite(L.name); /* 换非默认表情弹 */
+    }
+    if (pop && L.isNpc && (!prevNpc || prevNpc.name !== L.name)) popSprite('npc');            /* NPC换人弹 */
+  }
+  layoutSprites();
+  renderLog();
+}
+function advance(pop){
+  if (shown >= lines.length) return;
+  applyLine(shown + 1, pop);
+  if (autoOn){ if (shown >= lines.length) stopAuto(); else queueAuto(); }   /* 手动推进也重置自动计时 */
+}
+function back(){ if (shown > 1){ stopAuto(); applyLine(shown - 1, false); } }
+/* 自动播放:按行长动态延时,读完最后一行自动停 */
+function stopAuto(){
+  autoOn = false; clearTimeout(autoTimer);
+  $('#hlm-btn-auto').classList.remove('on');
+  $('#hlm-btn-auto').querySelector('.hlm-qico').textContent = '▶';
+}
+function startAuto(){
+  if (shown >= lines.length) return;
+  autoOn = true;
+  $('#hlm-btn-auto').classList.add('on');
+  $('#hlm-btn-auto').querySelector('.hlm-qico').textContent = '❚❚';
+  queueAuto();
+}
+function queueAuto(){
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(() => { if (autoOn) advance(true); },
+    AUTO_BASE + Math.min(4600, ((lines[shown - 1] || {}).text || '').length * AUTO_PER_CHAR));
+}
+/* 隐藏界面:只剩背景与立绘,点一下恢复 */
+function setHide(v){ hideOn = v; app.classList.toggle('hideui', v); }
+/* 对话记录:只收录已读行,当前行高亮 */
+function renderLog(){
+  const list = $('#hlm-log-list'); if (!list) return;
+  list.innerHTML = lines.slice(0, shown).map((L, i) => {
+    const cls = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : L.name ? 'u' : 'n';
+    return '<div class="hlm-log-item' + (i === shown - 1 ? ' hlm-log-cur' : '') + '"><span class="l-name ' + cls + '">' + esc(L.name || '旁白') + '</span><span class="l-text">' + fmt(L.text) + '</span></div>';
+  }).join('') || '<div class="hlm-empty">还没有内容</div>';
+}
+function toggleLog(){
+  const m = $('#hlm-modal-log');
+  if (m.classList.contains('open')){ m.classList.remove('open'); return; }
+  renderLog(); m.classList.add('open');
+  requestAnimationFrame(() => { const s = m.querySelector('.hlm-sheet'); if (s) s.scrollTop = s.scrollHeight; });
+}
+/* 交互:点击推进(隐藏态先恢复);键盘:空格/回车推进 ←回退 →前进 A自动 H隐藏 L记录 */
+app.addEventListener('click', e => {
+  if (e.target.closest('.hlm-modal') || e.target.closest('button') || e.target.closest('input')) return;   /* 按钮/输入框自己的事,不推进也不恢复 */
+  if (hideOn){ setHide(false); return; }
+  advance(true);
+});
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea') return;
+  if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); if (hideOn) setHide(false); else advance(true); }
+  else if (e.key === 'ArrowLeft') back();
+  else if (e.key === 'ArrowRight') advance(true);
+  else if (e.key === 'a' || e.key === 'A') autoOn ? stopAuto() : startAuto();
+  else if (e.key === 'h' || e.key === 'H') setHide(!hideOn);
+  else if (e.key === 'l' || e.key === 'L') toggleLog();
+});
+$('#hlm-btn-back').addEventListener('click', back);
+$('#hlm-btn-auto').addEventListener('click', () => autoOn ? stopAuto() : startAuto());
+$('#hlm-btn-log').addEventListener('click', toggleLog);
+$('#hlm-btn-hide').addEventListener('click', () => setHide(true));
+$('#hlm-modal-log').addEventListener('click', e => { if (e.target.id === 'hlm-modal-log') e.target.classList.remove('open'); });
+if (lines.length){ applyLine(1, false); }
+
+/* ---------- 日记：只有消失的那个人格的日记才会显现 ---------- */
+function updateTabs(){
+  document.querySelectorAll('.hlm-tab').forEach(t => {
+    const gone = isGone(t.dataset.who);
+    t.classList.toggle('locked', !gone);
+    const base = t.dataset.who + '的日记';
+    t.textContent = (gone ? '' : '🔒 ') + base;
+  });
+  if (isGone('宋昭') && !isGone('林小满')) curTab = '宋昭日记';
+  else if (isGone('林小满')) curTab = '林小满日记';
+  document.querySelectorAll('.hlm-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === curTab));
+}
+function renderDiary(){
+  const list = $('#hlm-diary-list');
+  const who = curTab === '林小满日记' ? '林小满' : '宋昭';
+  if (!isGone(who)){
+    list.innerHTML = '<div class="hlm-diary-lock"><span class="lk">🔒</span>她还在这个世界上。<br>只有当这个人格消失之后，<br>她独自写下的日记才会显现。</div>';
+    return;
+  }
+  const src = (statRef && statRef[curTab]) || {};
+  const keys = Object.keys(src).sort();
+  list.innerHTML = keys.length ? keys.map((k, i) =>
+    '<div class="hlm-diary-item"><div class="d-date">No.' + String(i + 1).padStart(3, '0') + ' · ' + esc(src[k].日期 || k) + '</div><div class="d-body">' + esc(src[k].日记正文 || '') + '</div></div>'
+  ).join('') : '<div class="hlm-empty">日记里还没有字迹</div>';
+}
+document.querySelectorAll('.hlm-tab').forEach(t => t.addEventListener('click', () => {
+  curTab = t.dataset.tab;
+  document.querySelectorAll('.hlm-tab').forEach(x => x.classList.toggle('active', x === t));
+  renderDiary();
+}));
+
+/* ---------- 弹窗与全屏 ---------- */
+$('#hlm-btn-status').addEventListener('click', () => $('#hlm-modal-status').classList.add('open'));
+$('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.close).classList.remove('open')));
+
+/* ---------- 发送消息:走酒馆助手的斜杠命令;/send 入楼 + /trigger 生成;发送后退出全屏让新回复可见 ---------- */
+const inp = $('#hlm-input');
+function sendUser(){
+  const t = inp.value.trim();
+  if (!t || typeof triggerSlash !== 'function'){ if (inp) inp.placeholder = '酒馆助手未连接,无法发送'; return; }
+  const clean = t.replace(/[\r\n]+/g, ' ');
+  inp.value = '';
+  triggerSlash('/send ' + clean);
+  setTimeout(() => { try { triggerSlash('/trigger'); } catch(e){} }, 400);
+  if (fsOn) toggleFs();   // 全屏中发送:退出全屏,让新生成的回复显示出来
+}
+$('#hlm-btn-send').addEventListener('click', sendUser);
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); sendUser(); } });
+
+let fsOn = false, savedStyle = null;
+$('#hlm-btn-fs').addEventListener('click', toggleFs);
+function toggleFs(){
+  fsOn = !fsOn;
+  app.classList.toggle('fs', fsOn);
+  if (fsOn){
+    try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); } catch(e){}
+    try {
+      const f = window.frameElement;
+      if (f){
+        savedStyle = f.getAttribute('style') || '';
+        Object.assign(f.style, { position:'fixed', inset:'0', width:'100vw', height:'100vh', zIndex:99999, background:'#000' });
+      }
+    } catch(e){}
+  } else {
+    try { document.fullscreenElement && document.exitFullscreen(); } catch(e){}
+    try {
+      const f = window.frameElement;
+      if (f && savedStyle !== null) f.setAttribute('style', savedStyle);
+    } catch(e){}
+  }
+}
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && fsOn) toggleFs(); });
+
+/* 调试钩子:仅供本地预览控制台使用,酒馆内无人调用 */
+window.__hlm = { world: world, applyWorld: applyWorld, advance: () => advance(true), back: back };
+})();
+</script>
