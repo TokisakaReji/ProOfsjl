@@ -340,39 +340,46 @@ const app = $('#hlm-app');
 let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按<date>小时推算(18-6点为夜)
 
 /* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块);本地预览读 story-raw ---------- */
-let raw = ($('#hlm-story-raw') || {}).textContent || '';
+let storyRaw = ($('#hlm-story-raw') || {}).textContent || '';
 try {
   if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
     const msgs = getChatMessages(getCurrentMessageId());
     const text = (msgs && msgs[0] && msgs[0].message) || '';
     const blocks = text.match(/<story>[\s\S]*?<\/story>/g);
-    if (blocks && blocks.length) raw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
+    if (blocks && blocks.length) storyRaw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
   }
 } catch(e) {}
-let text = raw;
 const world = { 日期:'', 时间:'', 昼夜:'', 天气:'', 路径:[] };   /* 世界状态:随正文标签输出,每楼必达 */
-const grab = tag => {
-  const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
-  if (!m) return '';
-  text = text.replace(m[0], '');
-  return m[1].trim();
-};
-/* <date>:YYYY年MM月DD日 HH时MM分 星期X → 日期(含星期)/时间 */
-const dRaw = grab('date');
-const mDT = dRaw.match(/^(\d{4}年\d{1,2}月\d{1,2}日)\s*(?:(\d{1,2}[时点]\d{1,2}分?)\s*)?(.*)$/);
-world.日期 = mDT ? mDT[1] + (mDT[3] ? ' ' + mDT[3].trim() : '') : dRaw;
-world.时间 = mDT && mDT[2] ? mDT[2] : '';
-/* <scene>:大分类/地点/具体位置/昼夜/天气,尾部两段可缺省且顺序不限 */
-const isW = s => /^(晴|阴|雨)天?$/.test(s);
-const isD = s => /^(昼|夜|白昼|白天|夜晚|凌晨|清晨|早晨|早上|上午|中午|午后|下午|傍晚|黄昏|深夜)$/.test(s);
-const segs = grab('scene').split('/').map(s => s.trim()).filter(Boolean);
-for (let i = 0; i < 2 && segs.length; i++){
-  const s = segs[segs.length - 1];
-  if (!world.天气 && isW(s)){ world.天气 = s.replace(/天$/, ''); segs.pop(); }
-  else if (!world.昼夜 && isD(s)){ world.昼夜 = s; segs.pop(); }
-  else break;
+let lines = [];
+/* 装载一段正文:解析<date>/<scene>标签并结构化行。可重复调用(如全屏中收到新回复时刷新) */
+function loadStory(raw){
+  world.日期 = ''; world.时间 = ''; world.昼夜 = ''; world.天气 = ''; world.路径 = [];
+  shown = 0; curSpeaker = ''; npcState = null;
+  curFace['林小满'] = '普通'; curFace['宋昭'] = '普通';
+  entered['林小满'] = false; entered['宋昭'] = false;
+  let text = raw;
+  const grab = tag => {
+    const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
+    if (!m) return '';
+    text = text.replace(m[0], '');
+    return m[1].trim();
+  };
+  const dRaw = grab('date');
+  const mDT = dRaw.match(/^(\d{4}年\d{1,2}月\d{1,2}日)\s*(?:(\d{1,2}[时点]\d{1,2}分?)\s*)?(.*)$/);
+  world.日期 = mDT ? mDT[1] + (mDT[3] ? ' ' + mDT[3].trim() : '') : dRaw;
+  world.时间 = mDT && mDT[2] ? mDT[2] : '';
+  const isW = s => /^(晴|阴|雨)天?$/.test(s);
+  const isD = s => /^(昼|夜|白昼|白天|夜晚|凌晨|清晨|早晨|早上|上午|中午|午后|下午|傍晚|黄昏|深夜)$/.test(s);
+  const segs = grab('scene').split('/').map(s => s.trim()).filter(Boolean);
+  for (let i = 0; i < 2 && segs.length; i++){
+    const s = segs[segs.length - 1];
+    if (!world.天气 && isW(s)){ world.天气 = s.replace(/天$/, ''); segs.pop(); }
+    else if (!world.昼夜 && isD(s)){ world.昼夜 = s; segs.pop(); }
+    else break;
+  }
+  world.路径 = segs;
+  lines = text.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLine).filter(L => L.text);
 }
-world.路径 = segs;
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmt = s => esc(s).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
 /* 行解析:结构化成行数组(对话行/旁白行),供逐行推进渲染 */
@@ -440,11 +447,11 @@ const parseLine = l => {
   }
   return { name:'', face:'', text:l };
 };
-const lines = text.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLine).filter(L => L.text);
 /* 逐行推进状态(在 layoutSprites/applyStat 之前声明,避免时序问题) */
 let shown = 0, curSpeaker = '', npcState = null;
 const curFace = { '林小满':'普通', '宋昭':'普通' };
 const entered = { '林小满':false, '宋昭':false };   /* 登场标记:首次开口才显示立绘 */
+loadStory(storyRaw);
 
 /* ---------- 背景 / 立绘 / 天气粒子 ---------- */
 /* 背景三级解析:精确命中 → 别名 → 关键词归类到通用层 → 默认 */
@@ -771,16 +778,40 @@ $('#hlm-btn-status').addEventListener('click', () => $('#hlm-modal-status').clas
 $('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.close).classList.remove('open')));
 
-/* ---------- 发送消息:走酒馆助手的斜杠命令;/send 入楼 + /trigger 生成;发送后退出全屏让新回复可见 ---------- */
+/* ---------- 发送消息:走酒馆助手的斜杠命令;/send 入楼 + /trigger 生成。
+   全屏中发送不退出:轮询最新楼层,生成完成后把新回复原地装载进当前全屏界面 ---------- */
 const inp = $('#hlm-input');
+function watchGeneration(){
+  let tries = 0;
+  const timer = setInterval(() => {
+    tries++;
+    try {
+      if (typeof getChatMessages !== 'function'){ clearInterval(timer); return; }
+      const lastId = (typeof getLastMessageId === 'function') ? getLastMessageId() : '{{lastMessageId}}';
+      const msgs = getChatMessages(lastId);
+      const t = (msgs && msgs[0] && msgs[0].message) || '';
+      const blocks = t.match(/<story>[\s\S]*?<\/story>/g);
+      const block = blocks && blocks.length ? blocks[blocks.length - 1].replace(/<\/?story>/g, '') : '';
+      if (block && block !== watchGeneration.last){
+        clearInterval(timer);
+        watchGeneration.last = block;
+        loadStory(block);
+        applyLine(1, true);
+        applyWorld(null, true);
+      } else if (tries > 120) clearInterval(timer);
+    } catch(e){ if (tries > 120) clearInterval(timer); }
+  }, 2000);
+}
+watchGeneration.last = '';
 function sendUser(){
   const t = inp.value.trim();
   if (!t || typeof triggerSlash !== 'function'){ if (inp) inp.placeholder = '酒馆助手未连接,无法发送'; return; }
   const clean = t.replace(/[\r\n]+/g, ' ');
   inp.value = '';
+  watchGeneration.last = '';
   triggerSlash('/send ' + clean);
   setTimeout(() => { try { triggerSlash('/trigger'); } catch(e){} }, 400);
-  if (fsOn) toggleFs();   // 全屏中发送:退出全屏,让新生成的回复显示出来
+  if (fsOn) watchGeneration();   // 全屏中:留在全屏,生成完原地刷新
 }
 $('#hlm-btn-send').addEventListener('click', sendUser);
 inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.stopPropagation(); sendUser(); } });
