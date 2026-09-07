@@ -142,40 +142,52 @@
   font-family:'Noto Serif SC','SimSun',serif;font-size:14px;letter-spacing:4px;color:var(--rose);
   text-shadow:0 0 10px rgba(255,255,255,.95)}
 
-/* ── 快捷菜单:小图标+英文小字,靠右放大,无边框底色 ── */
-.hlm-quicknav{position:relative;z-index:6;margin-top:auto;display:flex;justify-content:flex-end;gap:26px;padding:10px 24px 10px 0}
+/* ── 快捷菜单:参考图式通栏彩色小图标 ── */
+.hlm-quicknav{position:relative;z-index:6;margin-top:auto;display:flex;justify-content:flex-end;gap:26px;padding:10px 3% 12px 0}
 .hlm-qitem{display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:4px 6px;
-  color:rgba(75,100,125,.78);font-family:inherit;transition:color .15s;
-  text-shadow:0 0 6px rgba(255,255,255,.95),0 0 14px rgba(255,255,255,.75)}
-.hlm-qitem:hover{color:var(--rose)}
-.hlm-qitem.on{color:var(--rose)}
+  color:rgba(255,255,255,.92);font-family:inherit;transition:transform .15s,filter .15s;
+  text-shadow:0 1px 6px rgba(40,60,80,.7);filter:drop-shadow(0 1px 3px rgba(30,50,70,.45))}
+.hlm-qitem:hover{transform:translateY(-2px)}
+.hlm-qitem.on{filter:drop-shadow(0 0 6px rgba(217,95,127,.8))}
+.hlm-qitem.on .hlm-qico{color:var(--rose)}
+/* 每颗图标一个浅彩(参考图 DATA SAVE 粉 / DATA LOAD 蓝 / AUTO 黄 那种) */
+.hlm-qitem:nth-child(1) .hlm-qico{color:#f5a8c0}
+.hlm-qitem:nth-child(2) .hlm-qico{color:#ffd97a}
+.hlm-qitem:nth-child(3) .hlm-qico{color:#9fd8ff}
+.hlm-qitem:nth-child(4) .hlm-qico{color:#c9c9d6}
+.hlm-qitem:nth-child(5) .hlm-qico{color:#ffb3c8}
+.hlm-qitem:nth-child(6) .hlm-qico{color:#a8d8b0}
+.hlm-qitem:nth-child(7) .hlm-qico{color:#d8b8f0}
+.hlm-qico{font-size:18px;line-height:1;font-style:normal;text-shadow:0 1px 4px rgba(30,50,70,.5)}
+.hlm-qlabel{font-size:8.5px;letter-spacing:1.8px;text-align:left;line-height:1.5;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.95)}
 /* 隐藏界面:只剩背景与立绘,点击任意处恢复 */
 #hlm-app.hideui .hlm-band,#hlm-app.hideui .hlm-topinfo,#hlm-app.hideui .hlm-quicknav{display:none}
-.hlm-qico{font-size:18px;line-height:1;font-style:normal}
-.hlm-qlabel{font-size:9px;letter-spacing:1.8px;text-align:left;line-height:1.5;text-transform:uppercase;font-weight:600}
 
-/* ── 正文:通栏白色横带 ── */
-.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.95));
-  backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.75);padding:2px 7% 20px;min-height:200px}
-.hlm-band-flower{position:absolute;right:4%;bottom:6px;font-size:44px;font-style:normal;color:var(--rose);opacity:.12;pointer-events:none}
-.hlm-speaker{display:flex;align-items:center;gap:12px;margin:10px 0 4px 2%}
-.hlm-speaker::before{content:'';width:52px;height:1px;background:var(--rose);opacity:.8}
-.hlm-speaker span{font-family:'Noto Serif SC','SimSun',serif;font-size:16px;letter-spacing:5px;color:var(--rose);font-weight:700}
+/* ── 正文:通栏白色横带(参考图:半透明磨砂,景色透出) ── */
+.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.78));
+  backdrop-filter:blur(7px);border-top:1px solid rgba(255,255,255,.55);padding:2px 7% 22px;min-height:210px}
+.hlm-band-flower{position:absolute;right:4%;bottom:6px;font-size:44px;font-style:normal;color:var(--rose);opacity:.14;pointer-events:none}
+.hlm-speaker{display:flex;align-items:center;gap:14px;margin:6px 0 6px 1.5%}
+.hlm-speaker::before{content:'';width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--rose));opacity:.9}
+.hlm-speaker span{font-family:'Noto Serif SC','SimSun',serif;font-size:21px;letter-spacing:7px;color:var(--rose);font-weight:700;
+  text-shadow:0 1px 8px rgba(255,255,255,.85)}
 .hlm-story{max-height:230px;overflow-y:auto;font-family:'Noto Serif SC','Source Han Serif SC','SimSun',serif;
-  font-size:16.5px;line-height:2.05;letter-spacing:.5px;color:#3b414b;scrollbar-width:thin}
+  font-size:17.5px;line-height:2.15;letter-spacing:.6px;color:#333a45;scrollbar-width:thin;
+  text-shadow:0 0 8px rgba(255,255,255,.65),0 1px 2px rgba(255,255,255,.5)}
 #hlm-app ::-webkit-scrollbar{width:4px}
 #hlm-app ::-webkit-scrollbar-thumb{background:rgba(90,120,150,.3);border-radius:2px}
 .hlm-story p{margin:0;text-indent:2em}
 .hlm-story p + p{margin-top:.6em}
 .hlm-story b{color:var(--rose);font-weight:700}
 /* 发送栏 */
-.hlm-inputrow{display:flex;gap:8px;margin-top:10px}
-.hlm-inputrow input{flex:1;background:rgba(255,255,255,.9);border:1px solid rgba(217,95,127,.35);border-radius:6px;
-  padding:9px 14px;font-family:inherit;font-size:13.5px;color:#3b414b;outline:none}
-.hlm-inputrow input:focus{border-color:var(--rose)}
-.hlm-inputrow button{background:var(--rose);color:#fff;border:none;border-radius:6px;padding:0 20px;
-  font-size:13px;cursor:pointer;font-family:inherit;letter-spacing:3px;font-weight:700;transition:background .15s}
-.hlm-inputrow button:hover{background:#c04e6d}
+.hlm-inputrow{display:flex;gap:10px;margin-top:14px}
+.hlm-inputrow input{flex:1;background:rgba(255,255,255,.55);border:none;border-bottom:1.5px solid rgba(217,95,127,.45);
+  border-radius:0;padding:8px 4px;font-family:'Noto Serif SC','SimSun',serif;font-size:14px;color:#333a45;outline:none;letter-spacing:.5px}
+.hlm-inputrow input::placeholder{color:rgba(59,65,75,.4)}
+.hlm-inputrow input:focus{border-bottom-color:var(--rose);background:rgba(255,255,255,.75)}
+.hlm-inputrow button{background:none;color:var(--rose);border:1px solid rgba(217,95,127,.55);border-radius:2px;padding:7px 22px;
+  font-size:13px;cursor:pointer;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:4px;font-weight:700;transition:all .15s}
+.hlm-inputrow button:hover{background:rgba(217,95,127,.12)}
 /* 对话行:台词顶格,说话人显示在左上角名牌 */
 .hlm-story .hlm-dlg{margin:0;text-indent:0}
 #hlm-speaker.xm{color:var(--xm)}
