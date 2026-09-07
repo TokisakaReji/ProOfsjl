@@ -309,8 +309,16 @@ const $ = s => document.querySelector(s);
 const app = $('#hlm-app');
 let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按<date>小时推算(18-6点为夜)
 
-/* ---------- 解析正文:酒馆内由加载器把捕获的<story>存进 window.__HLM_STORY;本地预览在 story-raw 里 ---------- */
-const raw = ($('#hlm-story-raw') || {}).textContent || window.__HLM_STORY || '';
+/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块);本地预览读 story-raw ---------- */
+let raw = ($('#hlm-story-raw') || {}).textContent || '';
+try {
+  if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
+    const msgs = getChatMessages(getCurrentMessageId());
+    const text = (msgs && msgs[0] && msgs[0].message) || '';
+    const blocks = text.match(/<story>[\s\S]*?<\/story>/g);
+    if (blocks && blocks.length) raw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
+  }
+} catch(e) {}
 let text = raw;
 const world = { 日期:'', 时间:'', 昼夜:'', 天气:'', 路径:[] };   /* 世界状态:随正文标签输出,每楼必达 */
 const grab = tag => {
