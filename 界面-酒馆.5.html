@@ -124,7 +124,7 @@
 
 /* ── 立绘:底边锚定在界面最底端(藏在文字横带后),放大只会向上生长,不会露出底边 ── */
 .hlm-stage{position:absolute;inset:0;z-index:2;pointer-events:none}
-.hlm-sprite{position:absolute;bottom:0;height:94%;width:40%;max-width:520px;transform:translateX(-50%);opacity:0;
+.hlm-sprite{position:absolute;bottom:0;height:100%;width:48%;max-width:640px;transform:translateX(-50%);opacity:0;
   transition:left 1.1s cubic-bezier(.3,.8,.3,1),opacity 1s,filter 1s;
   background-size:contain;background-repeat:no-repeat;background-position:bottom center}
 .hlm-sprite.xm{left:46%}.hlm-sprite.sz{left:58%}
@@ -605,8 +605,8 @@ function updateNpcSprite(){
   img.onerror = () => { el.style.backgroundImage = ''; };
   img.src = url;
 }
-/* 纯函数:重放前n行,得到第n行时刻的登场/表情/说话人/NPC状态 → 回退也能精确还原。
-   NPC离场语义:标了"离场"的那一句还显示她,下一句起消失 */
+/* 纯函数:重放前n行,得到第n行时刻的登场/表情/说话人状态 → 回退也能精确还原。
+   NPC只在她说台词的那一行显示(话轮一走自动淡出),无需离场标记 */
 function computeState(n){
   const en = { '林小满':false, '宋昭':false }, fc = { '林小满':'普通', '宋昭':'普通' };
   let sp = '', npc = null;
@@ -616,12 +616,10 @@ function computeState(n){
       sp = L.name;
       if (!en[L.name]){ en[L.name] = true; fc[L.name] = L.face || '普通'; }
       else if (L.face && L.face !== fc[L.name]) fc[L.name] = L.face;
-    } else if (L.isNpc){
-      npc = L.exit ? null : (L.npc ? { name:L.name, arch:L.npc } : null);
     }
   }
   const last = lines[n - 1];
-  if (last && last.isNpc && last.npc) npc = { name:last.name, arch:last.npc };   // 离场那句本身还要站台上
+  if (last && last.isNpc && last.npc) npc = { name:last.name, arch:last.npc };
   return { en:en, fc:fc, sp:sp, npc:npc };
 }
 function applyLine(n, pop){
