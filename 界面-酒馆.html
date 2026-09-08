@@ -759,11 +759,19 @@ function applyLine(n, pop){
   renderLog();
 }
 function advance(pop){
-  if (shown >= lines.length) return;
-  applyLine(shown + 1, pop);
+  /* 前进目标:下一行,若是标记行(纯指令)则继续跳到其后的行 */
+  let n = shown + 1;
+  while (n <= lines.length && lines[n - 1] && lines[n - 1].marker) n++;
+  if (n > lines.length) return;
+  applyLine(n, pop);
   if (autoOn){ if (shown >= lines.length) stopAuto(); else queueAuto(); }   /* 手动推进也重置自动计时 */
 }
-function back(){ if (shown > 1){ stopAuto(); applyLine(shown - 1, false); } }
+function back(){
+  /* 回退目标:从当前行往前找最近的非标记行(标记行是纯指令不占一格,跳过它) */
+  let n = shown - 1;
+  while (n > 1 && lines[n - 1] && lines[n - 1].marker) n--;
+  if (n >= 1 && n < shown){ stopAuto(); applyLine(n, false); }
+}
 /* 自动播放:按行长动态延时,读完最后一行自动停 */
 function stopAuto(){
   autoOn = false; clearTimeout(autoTimer);
