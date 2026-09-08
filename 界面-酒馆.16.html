@@ -458,11 +458,11 @@ const parseLine = l => {
   if (m){
     const who = nameFix[m[1].trim()] || m[1].trim();
     const f = m[2].trim();
-    if (who === '林小满' || who === '宋昭'){
-      return { name:who, face:(!f || f === '默认') ? '普通' : f, text:stripQ(m[3].trim()) };
-    }
-    /* NPC带[]行:形象直写或按名字猜;括号里带"离场"=说完这句就退场 */
     const ex = /离场/.test(f);
+    if (who === '林小满' || who === '宋昭'){
+      return { name:who, face:(!f || f === '默认') ? '普通' : f.replace(/离场|·/g, ''), exit:ex, text:stripQ(m[3].trim()) };
+    }
+    /* NPC带[]行:形象直写或按名字猜;NPC本就只在台词行显示,离场标记兼容忽略 */
     return { name:who, face:'', npc:npcArchetype(who, f.replace(/离场|·/g, '')), isNpc:true, exit:ex, text:stripQ(m[3].trim()) };
   }
   const mn = l.match(/^旁白\s*[:：]\s*([\s\S]*)$/);                               /* 旁白: */
@@ -681,8 +681,8 @@ function updateNpcSprite(){
   img.onerror = () => { el.style.backgroundImage = ''; };
   img.src = url;
 }
-/* 纯函数:重放前n行,得到第n行时刻的登场/表情/说话人状态 → 回退也能精确还原。
-   NPC只在她说台词的那一行显示(话轮一走自动淡出),无需离场标记 */
+/* 纯函数:重放前n行,得到第n行时刻的登场/表情/说话人/NPC状态 → 回退也能精确还原。
+   主角标"·离场"的台词行:该行仍显示她,下一行起消失(entered重置,再登场会重新弹出) */
 function computeState(n){
   const en = { '林小满':false, '宋昭':false }, fc = { '林小满':'普通', '宋昭':'普通' };
   let sp = '', npc = null;
@@ -692,6 +692,7 @@ function computeState(n){
       sp = L.name;
       if (!en[L.name]){ en[L.name] = true; fc[L.name] = L.face || '普通'; }
       else if (L.face && L.face !== fc[L.name]) fc[L.name] = L.face;
+      if (L.exit) en[L.name] = false;
     }
   }
   const last = lines[n - 1];
