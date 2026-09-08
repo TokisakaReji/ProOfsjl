@@ -45,6 +45,10 @@
     <button class="hlm-qitem" id="hlm-btn-diary" data-tip="日记"><span class="hlm-qico">❒</span></button>
     <button class="hlm-qitem" id="hlm-btn-fs" data-tip="全屏"><span class="hlm-qico">⛶</span></button>
   </nav>
+  <div class="hlm-inputbar" id="hlm-inputbar" style="display:none">
+    <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送,Esc 收起)">
+    <button id="hlm-btn-send2">发送 ➤</button>
+  </div>
 
   <div class="hlm-modal" id="hlm-modal-var">
     <div class="hlm-sheet">
@@ -166,24 +170,17 @@
 
 /* ── 快捷菜单:参考图式通栏彩色小图标 ── */
 .hlm-quicknav{position:relative;z-index:6;display:flex;justify-content:center;gap:14px;padding:8px 0 10px}
-.hlm-qitem{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:40px;
-  background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.6);border-radius:12px;cursor:pointer;
-  color:rgba(75,100,125,.85);font-family:inherit;transition:all .15s;backdrop-filter:blur(6px);
-  box-shadow:0 2px 8px rgba(60,90,110,.18)}
-.hlm-qitem:hover{transform:translateY(-3px);box-shadow:0 5px 14px rgba(60,90,110,.3)}
-.hlm-qitem.on{color:var(--rose);border-color:rgba(217,95,127,.55)}
+.hlm-qitem{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:44px;
+  background:linear-gradient(180deg,#f9a8c2,#ef8bab);border:none;border-radius:13px;cursor:pointer;
+  color:#fff;font-family:inherit;transition:transform .15s,filter .15s;
+  box-shadow:0 3px 10px rgba(220,120,160,.4)}
+.hlm-qitem:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.hlm-qitem.on{filter:brightness(1.15) drop-shadow(0 0 6px rgba(244,143,177,.8))}
 .hlm-qitem::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
   background:rgba(50,60,75,.92);color:#fff;font-size:11px;letter-spacing:1px;padding:4px 10px;border-radius:6px;
   white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
 .hlm-qitem:hover::after{opacity:1}
-.hlm-qitem:nth-child(1) .hlm-qico{color:#e2647e}
-.hlm-qitem:nth-child(2) .hlm-qico{color:#5a8fc0}
-.hlm-qitem:nth-child(3) .hlm-qico{color:#e8a23c}
-.hlm-qitem:nth-child(4) .hlm-qico{color:#7bb08a}
-.hlm-qitem:nth-child(5) .hlm-qico{color:#9a7bc9}
-.hlm-qitem:nth-child(6) .hlm-qico{color:#d477a5}
-.hlm-qitem:nth-child(7) .hlm-qico{color:#6fb3c9}
-.hlm-qico{font-size:19px;line-height:1;font-style:normal}
+.hlm-qico{font-size:20px;line-height:1;font-style:normal;color:#fff}
 .hlm-qitem.on .hlm-qico{color:var(--rose)}
 /* 每颗图标一个浅彩(参考图 DATA SAVE 粉 / DATA LOAD 蓝 / AUTO 黄 那种) */
 .hlm-qitem:nth-child(1) .hlm-qico{color:#f5a8c0}
