@@ -695,10 +695,11 @@ function updateNpcSprite(){
   img.src = url;
 }
 /* 纯函数:重放前n行,得到第n行时刻的登场/表情/说话人/NPC状态 → 回退也能精确还原。
-   登场判定:有<在场>标签时以标签为准(台词行只更新表情);无标签时回退"首次开口登场" */
+   语义:NPC出场后持续在台上,直到 [名字/npc 离场] 标记行才消失(与主角一致,统一由标记管理);
+   主角首次开口登场,标记行消失,再开口重新登场 */
 function computeState(n){
   const en = { '林小满':false, '宋昭':false }, fc = { '林小满':'普通', '宋昭':'普通' };
-  let sp = '', npc = null;
+  let sp = '', npc = null, npcGone = false;
   const byTag = Object.keys(world.在场 || {}).length > 0;
   if (byTag){ en['林小满'] = !!world.在场['林小满']; en['宋昭'] = !!world.在场['宋昭']; }
   for (let i = 0; i < n; i++){
@@ -706,7 +707,7 @@ function computeState(n){
     if (L.marker === 'exit'){
       for (const nm of L.names){
         if (nm === '林小满' || nm === '宋昭'){ en[nm] = false; }
-        else if (nm === 'npc'){ npc = null; }
+        else if (nm === 'npc' || (npc && nm === npc.name)){ npc = null; npcGone = true; }
       }
       continue;
     }
@@ -715,9 +716,8 @@ function computeState(n){
       if (!byTag && !en[L.name]){ en[L.name] = true; fc[L.name] = L.face || '普通'; }
       else if (L.face && L.face !== fc[L.name]) fc[L.name] = L.face;
     }
+    if (L.isNpc && L.npc && !npcGone){ npc = { name:L.name, arch:L.npc }; }
   }
-  const last = lines[n - 1];
-  if (last && last.isNpc && last.npc) npc = { name:last.name, arch:last.npc };
   return { en:en, fc:fc, sp:sp, npc:npc };
 }
 function applyLine(n, pop){
