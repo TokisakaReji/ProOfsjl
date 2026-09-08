@@ -15,6 +15,16 @@
     </span>
   </div>
 
+  <div class="hlm-topmenu">
+    <button class="hlm-tbtn" id="hlm-tb-back">↶ 回退</button>
+    <button class="hlm-tbtn" id="hlm-tb-auto">▶ 自动</button>
+    <button class="hlm-tbtn" id="hlm-tb-log">▤ 记录</button>
+    <button class="hlm-tbtn" id="hlm-tb-hide">◻ 隐藏</button>
+    <button class="hlm-tbtn" id="hlm-tb-status">☰ 状态</button>
+    <button class="hlm-tbtn" id="hlm-tb-diary">❒ 日记</button>
+    <button class="hlm-tbtn" id="hlm-tb-fs">⛶ 全屏</button>
+  </div>
+
   <div class="hlm-stage">
     <div class="hlm-sprite xm" id="hlm-sprite-xm"><div class="hlm-stand"><span>林小满</span></div></div>
     <div class="hlm-sprite sz" id="hlm-sprite-sz"><div class="hlm-stand"><span>宋昭</span></div></div>
@@ -118,6 +128,14 @@
 .hlm-topinfo{position:absolute;z-index:6;top:12px;left:18px;right:18px;display:flex;justify-content:space-between;
   align-items:center;font-size:12px;letter-spacing:1.5px;color:rgba(55,80,105,.85);
   text-shadow:0 0 6px rgba(255,255,255,.95),0 0 14px rgba(255,255,255,.8);font-variant-numeric:tabular-nums}
+/* 顶部菜单栏 */
+.hlm-topmenu{position:absolute;z-index:6;top:34px;left:18px;right:18px;display:flex;gap:6px;flex-wrap:wrap}
+.hlm-tbtn{background:rgba(255,255,255,.5);border:1px solid rgba(59,65,75,.14);border-radius:7px;
+  color:rgba(60,80,100,.85);font-family:inherit;font-size:11px;letter-spacing:1px;cursor:pointer;
+  padding:3px 10px;backdrop-filter:blur(6px);transition:all .15s;text-shadow:0 0 4px rgba(255,255,255,.6)}
+.hlm-tbtn:hover{color:var(--rose);border-color:rgba(217,95,127,.45);background:rgba(255,255,255,.75)}
+.hlm-tbtn.on{color:var(--rose);border-color:rgba(217,95,127,.55)}
+#hlm-app.hideui .hlm-topmenu{display:none}
 .hlm-world{display:flex;align-items:center;gap:8px}
 .hlm-world em{width:3px;height:3px;border-radius:50%;background:rgba(217,95,127,.55)}
 .hlm-favor{display:flex;align-items:center;gap:9px}
@@ -339,13 +357,14 @@ const $ = s => document.querySelector(s);
 const app = $('#hlm-app');
 let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按<date>小时推算(18-6点为夜)
 
-/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块);本地预览读 story-raw ---------- */
+/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块 + <UpdateVariable>变量);本地预览读 story-raw ---------- */
 let storyRaw = ($('#hlm-story-raw') || {}).textContent || '';
+let msgFull = storyRaw;
 try {
   if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
     const msgs = getChatMessages(getCurrentMessageId());
-    const text = (msgs && msgs[0] && msgs[0].message) || '';
-    const blocks = text.match(/<story>[\s\S]*?<\/story>/g);
+    msgFull = (msgs && msgs[0] && msgs[0].message) || storyRaw;
+    const blocks = msgFull.match(/<story>[\s\S]*?<\/story>/g);
     if (blocks && blocks.length) storyRaw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
   }
 } catch(e) {}
@@ -608,6 +627,32 @@ try {
 } catch(e){}
 fetchStat(applyStat);
 applyStat(null);
+
+/* ---------- 消息内 <UpdateVariable> JSONPatch:仅用于顶栏即时预显示,变量权威数据仍由mvu写入和刷新 ---------- */
+let uiStat = null;
+function applyVarPatch(text){
+  try {
+    const m = (text || '').match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
+    if (!m) return;
+    const jp = m[0].match(/<JSONPatch>([\s\S]*?)<\/JSONPatch>/);
+    if (!jp) return;
+    const ops = JSON.parse(jp[1].trim());
+    if (!uiStat) uiStat = JSON.parse(JSON.stringify(DEF));
+    for (const op of ops){
+      if (op.op === 'remove' || !op.path) continue;
+      const segs = op.path.split('/').filter(Boolean);
+      if (!segs.length) continue;
+      let node = uiStat;
+      for (let i = 0; i < segs.length - 1; i++){
+        if (typeof node[segs[i]] !== 'object' || node[segs[i]] === null) node[segs[i]] = {};
+        node = node[segs[i]];
+      }
+      node[segs[segs.length - 1]] = op.value;
+    }
+    applyStat(uiStat);
+  } catch(e) { console.warn('[幻想肥皂泡] 变量解析失败', e); }
+}
+applyVarPatch(msgFull);
 layoutSprites();
 
 /* ---------- 逐行推进(真·galgame):文本框只显示当前一行,已读行替换不堆叠;
@@ -742,6 +787,12 @@ $('#hlm-btn-hide').addEventListener('click', () => setHide(true));
 $('#hlm-modal-log').addEventListener('click', e => { if (e.target.id === 'hlm-modal-log') e.target.classList.remove('open'); });
 if (lines.length){ applyLine(1, false); }
 
+/* ---------- 顶部菜单栏:与底部快捷栏同功能 ---------- */
+$('#hlm-tb-back').addEventListener('click', back);
+$('#hlm-tb-auto').addEventListener('click', () => autoOn ? stopAuto() : startAuto());
+$('#hlm-tb-log').addEventListener('click', toggleLog);
+$('#hlm-tb-hide').addEventListener('click', () => setHide(true));
+
 /* ---------- 日记：只有消失的那个人格的日记才会显现 ---------- */
 function updateTabs(){
   document.querySelectorAll('.hlm-tab').forEach(t => {
@@ -776,6 +827,9 @@ document.querySelectorAll('.hlm-tab').forEach(t => t.addEventListener('click', (
 /* ---------- 弹窗与全屏 ---------- */
 $('#hlm-btn-status').addEventListener('click', () => $('#hlm-modal-status').classList.add('open'));
 $('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
+$('#hlm-tb-status').addEventListener('click', () => $('#hlm-modal-status').classList.add('open'));
+$('#hlm-tb-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
+$('#hlm-tb-fs').addEventListener('click', toggleFs);
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.close).classList.remove('open')));
 
 /* ---------- 发送消息:走酒馆助手的斜杠命令;/send 入楼 + /trigger 生成。
