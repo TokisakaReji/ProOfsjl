@@ -364,26 +364,33 @@ let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按
 
 /* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块 + <UpdateVariable>变量 + 思维链);本地预览读 story-raw ----------
    提取前先剥离思维链<konatan_planning~>…</konatan_planning~>:里面出现<story>等标签字样不会干扰正文/变量匹配 ---------- */
-let storyRaw = ($('#hlm-story-raw') || {}).textContent || '';
-let msgFull = storyRaw;
+/* 正文来源优先级:①酒馆正则注入的最后一个<story>块(window.__HLM_STORY,贪婪匹配天然避开思维链)
+   ②本地预览的 story-raw ③API 读取(兜底,极少走到) */
+let msgFull = '';
 const stripPlanning = t => String(t || '').replace(/<konatan_planning~>[\s\S]*?(<\/konatan_planning~>|$)/g, '');
 let planningText = '';   /* <konatan_planning~>思维链,顶栏"思路"查看 */
 let varPatchText = '';   /* <UpdateVariable>变量补丁,顶栏"状态"渲染 */
+let storyRaw = '';
 try {
   if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
     const msgs = getChatMessages(getCurrentMessageId());
-    msgFull = (msgs && msgs[0] && msgs[0].message) || storyRaw;
+    msgFull = (msgs && msgs[0] && msgs[0].message) || '';
     const mp = msgFull.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
     if (mp) planningText = mp[1].trim();
     const noPlan = stripPlanning(msgFull);
-    const blocks = noPlan.match(/<story>[\s\S]*?<\/story>/g);
-    /* 多个<story>块按出现顺序全部拼接渲染(切场景写成多块也不丢内容);
-       标签以最后一块为准(代表剧情结束时的状态) */
-    if (blocks && blocks.length) storyRaw = blocks.map(b => b.replace(/<\/?story>/g, '')).join('\n');
     const mv = noPlan.match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
     if (mv) varPatchText = mv[0];
   }
 } catch(e) {}
+if (typeof window.__HLM_STORY === 'string' && window.__HLM_STORY.trim()){
+  storyRaw = window.__HLM_STORY;                          /* ① 正则注入(首选) */
+} else if (($('#hlm-story-raw') || {}).textContent){
+  storyRaw = $('#hlm-story-raw').textContent;             /* ② 本地预览 */
+} else {
+  const noPlan = stripPlanning(msgFull);                   /* ③ API 兜底:取最后一个块 */
+  const mlast = noPlan.match(/<story>([\s\S]*?)<\/story>([\s\S]*)$/);
+  if (mlast) storyRaw = mlast[1];
+}
 const world = { 日期:'', 时间:'', 昼夜:'', 天气:'', 路径:[] };   /* 世界状态:随正文标签输出,每楼必达 */
 let lines = [];
 /* 装载一段正文:解析<date>/<scene>标签并结构化行。可重复调用(如全屏中收到新回复时刷新) */
