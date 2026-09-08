@@ -734,21 +734,27 @@ function applyLine(n, pop){
   if (!prevNpc || !npcState || prevNpc.name !== npcState.name || prevNpc.arch !== npcState.arch) updateNpcSprite();
   ['林小满','宋昭'].forEach(w => { if (entered[w] && curFace[w] !== prevFace[w]) setSprite(w, curFace[w]); });
   const L = lines[n - 1];
-  storyEl.innerHTML = (L && L.text) ? (L.name
-    ? '<p class="hlm-dlg">' + fmt(L.text) + '</p>'
-    : '<p>' + fmt(L.text) + '</p>') : '';
-  $('#hlm-next').style.display = n < lines.length ? '' : 'none';
-  if (L){
-    if (L.name){
-      spkEl.textContent = L.name;
-      spkEl.className = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : 'u';
-    } else { spkEl.textContent = '旁白'; spkEl.className = 'n'; }
-    if (pop && (L.name === '林小满' || L.name === '宋昭')){
-      if (!wasEntered[L.name]) popSprite(L.name);                                            /* 首次登场弹 */
-      else if (L.face && L.face !== prevFace[L.name] && L.face !== '普通') popSprite(L.name); /* 换非默认表情弹 */
+  if (L && L.marker){
+    /* 离场标记行:不显示正文,自动落到下一行;没有下一行则清空等待点击 */
+    if (n < lines.length){ applyLine(n + 1, false); return; }
+    storyEl.innerHTML = ''; spkEl.textContent = ''; spkEl.className = 'n';
+  } else {
+    storyEl.innerHTML = (L && L.text) ? (L.name
+      ? '<p class="hlm-dlg">' + fmt(L.text) + '</p>'
+      : '<p>' + fmt(L.text) + '</p>') : '';
+    if (L){
+      if (L.name){
+        spkEl.textContent = L.name;
+        spkEl.className = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : 'u';
+      } else { spkEl.textContent = '旁白'; spkEl.className = 'n'; }
+      if (pop && (L.name === '林小满' || L.name === '宋昭')){
+        if (!wasEntered[L.name]) popSprite(L.name);                                            /* 首次登场弹 */
+        else if (L.face && L.face !== prevFace[L.name] && L.face !== '普通') popSprite(L.name); /* 换非默认表情弹 */
+      }
+      if (pop && L.isNpc && (!prevNpc || prevNpc.name !== L.name)) popSprite('npc');            /* NPC换人弹 */
     }
-    if (pop && L.isNpc && (!prevNpc || prevNpc.name !== L.name)) popSprite('npc');            /* NPC换人弹 */
   }
+  $('#hlm-next').style.display = n < lines.length ? '' : 'none';
   layoutSprites();
   renderLog();
 }
@@ -781,9 +787,9 @@ function setHide(v){ hideOn = v; app.classList.toggle('hideui', v); }
 /* 对话记录:只收录已读行,当前行高亮 */
 function renderLog(){
   const list = $('#hlm-log-list'); if (!list) return;
-  list.innerHTML = lines.slice(0, shown).map((L, i) => {
+  list.innerHTML = lines.slice(0, shown).filter(L => !L.marker).map((L) => {
     const cls = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : L.name ? 'u' : 'n';
-    return '<div class="hlm-log-item' + (i === shown - 1 ? ' hlm-log-cur' : '') + '"><span class="l-name ' + cls + '">' + esc(L.name || '旁白') + '</span><span class="l-text">' + fmt(L.text) + '</span></div>';
+    return '<div class="hlm-log-item"><span class="l-name ' + cls + '">' + esc(L.name || '旁白') + '</span><span class="l-text">' + fmt(L.text) + '</span></div>';
   }).join('') || '<div class="hlm-empty">还没有内容</div>';
 }
 function toggleLog(){
