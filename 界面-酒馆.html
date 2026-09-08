@@ -798,9 +798,12 @@ function applyLine(n, pop){
   renderLog();
 }
 function advance(pop){
-  /* 前进目标:下一行,若是标记行(离场/中途scene/date,纯指令)则继续跳到其后的行 */
+  /* 前进:跳过标记行(离场/date,纯指令);中途<scene>标记行要先切背景再跳过 */
   let n = shown + 1;
-  while (n <= lines.length && lines[n - 1] && lines[n - 1].marker) n++;
+  while (n <= lines.length && lines[n - 1] && lines[n - 1].marker){
+    if (lines[n - 1].marker === 'scene') applySceneRaw(lines[n - 1].sceneRaw);
+    n++;
+  }
   if (n > lines.length) return;
   applyLine(n, pop);
   if (autoOn){ if (shown >= lines.length) stopAuto(); else queueAuto(); }   /* 手动推进也重置自动计时 */
