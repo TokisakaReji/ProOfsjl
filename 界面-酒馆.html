@@ -362,22 +362,25 @@ const $ = s => document.querySelector(s);
 const app = $('#hlm-app');
 let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按<date>小时推算(18-6点为夜)
 
-/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块 + <UpdateVariable>变量 + 思维链);本地预览读 story-raw ---------- */
+/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块 + <UpdateVariable>变量 + 思维链);本地预览读 story-raw ----------
+   提取前先剥离思维链<konatan_planning~>…</konatan_planning~>:里面出现<story>等标签字样不会干扰正文/变量匹配 ---------- */
 let storyRaw = ($('#hlm-story-raw') || {}).textContent || '';
 let msgFull = storyRaw;
+const stripPlanning = t => String(t || '').replace(/<konatan_planning~>[\s\S]*?(<\/konatan_planning~>|$)/g, '');
 let planningText = '';   /* <konatan_planning~>思维链,顶栏"思路"查看 */
 let varPatchText = '';   /* <UpdateVariable>变量补丁,顶栏"状态"渲染 */
 try {
   if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
     const msgs = getChatMessages(getCurrentMessageId());
     msgFull = (msgs && msgs[0] && msgs[0].message) || storyRaw;
-    const blocks = msgFull.match(/<story>[\s\S]*?<\/story>/g);
+    const mp = msgFull.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
+    if (mp) planningText = mp[1].trim();
+    const noPlan = stripPlanning(msgFull);
+    const blocks = noPlan.match(/<story>[\s\S]*?<\/story>/g);
     /* 多个<story>块按出现顺序全部拼接渲染(切场景写成多块也不丢内容);
        标签以最后一块为准(代表剧情结束时的状态) */
     if (blocks && blocks.length) storyRaw = blocks.map(b => b.replace(/<\/?story>/g, '')).join('\n');
-    const mp = msgFull.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
-    if (mp) planningText = mp[1].trim();
-    const mv = msgFull.match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
+    const mv = noPlan.match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
     if (mv) varPatchText = mv[0];
   }
 } catch(e) {}
@@ -959,7 +962,8 @@ function watchGeneration(){
       const lastId = (typeof getLastMessageId === 'function') ? getLastMessageId() : '{{lastMessageId}}';
       const msgs = getChatMessages(lastId);
       const t = (msgs && msgs[0] && msgs[0].message) || '';
-      const blocks = t.match(/<story>[\s\S]*?<\/story>/g);
+      const t2 = String(t).replace(/<konatan_planning~>[\s\S]*?(<\/konatan_planning~>|$)/g, '');
+      const blocks = t2.match(/<story>[\s\S]*?<\/story>/g);
       const block = blocks && blocks.length ? blocks.map(b => b.replace(/<\/?story>/g, '')).join('\n') : '';
       if (block && block !== watchGeneration.last){
         clearInterval(timer);
