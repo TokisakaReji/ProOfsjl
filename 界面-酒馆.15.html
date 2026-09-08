@@ -16,14 +16,8 @@
   </div>
 
   <div class="hlm-topmenu">
-    <button class="hlm-tbtn" id="hlm-tb-back">↶ 回退</button>
-    <button class="hlm-tbtn" id="hlm-tb-auto">▶ 自动</button>
-    <button class="hlm-tbtn" id="hlm-tb-log">▤ 记录</button>
-    <button class="hlm-tbtn" id="hlm-tb-hide">◻ 隐藏</button>
-    <button class="hlm-tbtn" id="hlm-tb-status">☰ 状态</button>
-    <button class="hlm-tbtn" id="hlm-tb-diary">❒ 日记</button>
     <button class="hlm-tbtn" id="hlm-tb-plan">✎ 思路</button>
-    <button class="hlm-tbtn" id="hlm-tb-fs">⛶ 全屏</button>
+    <button class="hlm-tbtn" id="hlm-tb-var">☰ 变量</button>
   </div>
 
   <div class="hlm-stage">
@@ -38,7 +32,6 @@
     <button class="hlm-qitem" id="hlm-btn-auto"><span class="hlm-qico">▶</span><span class="hlm-qlabel">AUTO</span></button>
     <button class="hlm-qitem" id="hlm-btn-log"><span class="hlm-qico">▤</span><span class="hlm-qlabel">LOG</span></button>
     <button class="hlm-qitem" id="hlm-btn-hide"><span class="hlm-qico">◻</span><span class="hlm-qlabel">HIDE</span></button>
-    <button class="hlm-qitem" id="hlm-btn-status"><span class="hlm-qico">☰</span><span class="hlm-qlabel">DATA<br>STATUS</span></button>
     <button class="hlm-qitem" id="hlm-btn-diary"><span class="hlm-qico">❒</span><span class="hlm-qlabel">SECRET<br>DIARY</span></button>
     <button class="hlm-qitem" id="hlm-btn-fs"><span class="hlm-qico">⛶</span><span class="hlm-qlabel">FULL<br>SCREEN</span></button>
   </div>
@@ -56,24 +49,13 @@
     <i class="hlm-band-flower">❀</i>
   </div>
 
-  <div class="hlm-modal" id="hlm-modal-status">
+  <div class="hlm-modal" id="hlm-modal-var">
     <div class="hlm-sheet">
-      <div class="hlm-sheet-head"><span class="hlm-s-cn">状态</span><span class="hlm-s-en">DATA STATUS</span><button class="hlm-x" data-close="hlm-modal-status">✕</button></div>
-      <div class="hlm-kv"><span>日期 DATE</span><b id="hlm-s-date">—</b></div>
-      <div class="hlm-kv"><span>时间 TIME</span><b id="hlm-s-time">—</b></div>
-      <div class="hlm-kv"><span>天气 WEATHER</span><b id="hlm-s-weather">—</b></div>
-      <div class="hlm-kv"><span>地点 LOCATION</span><b id="hlm-s-loc">—</b></div>
-      <div class="hlm-kv"><span class="xm">林小满 · 好感 SYNC</span><b class="xm" id="hlm-s-xm">50</b></div>
-      <div class="hlm-kv"><span class="sz">宋昭 · 好感 SYNC</span><b class="sz" id="hlm-s-sz">50</b></div>
-      <div class="hlm-kv"><span>上次变化 LAST</span><b id="hlm-s-last">—</b></div>
-      <div class="hlm-kv"><span>今日变化次数 CHANGES</span><b id="hlm-s-cnt">0</b></div>
-      <div class="hlm-kv"><span class="xm">林小满 STATE</span><b class="xm" id="hlm-s-xm-state">在场</b></div>
-      <div class="hlm-kv"><span class="sz">宋昭 STATE</span><b class="sz" id="hlm-s-sz-state">在场</b></div>
-      <div class="hlm-var-block" id="hlm-var-block" style="display:none">
+      <div class="hlm-sheet-head"><span class="hlm-s-cn">变量</span><span class="hlm-s-en">VARIABLES</span><button class="hlm-x" data-close="hlm-modal-var">✕</button></div>
+      <div class="hlm-var-block" id="hlm-var-block">
         <div class="hlm-var-title">── 本轮变量变更 ──</div>
         <div id="hlm-var-list"></div>
       </div>
-      <div class="hlm-note">两个人格的好感之和，恒为 100。</div>
     </div>
   </div>
 
@@ -585,10 +567,10 @@ function applyWorld(v, force){
   const t = world.时间 || (v && v.时间) || '—';
   const w = world.天气 || (v && v.天气) || '晴';
   const loc = world.路径[world.路径.length - 1] || (v && v.地点) || '—';
-  $('#hlm-date').textContent = d;  $('#hlm-s-date').textContent = d;
-  $('#hlm-time').textContent = t;  $('#hlm-s-time').textContent = t;
-  $('#hlm-weather').textContent = w; $('#hlm-s-weather').textContent = w;
-  $('#hlm-loc').textContent = loc; $('#hlm-s-loc').textContent = loc;
+  $('#hlm-date').textContent = d;
+  $('#hlm-time').textContent = t;
+  $('#hlm-weather').textContent = w;
+  $('#hlm-loc').textContent = loc;
   const wasW = app.dataset.weather, wasNight = nightOn;
   if (world.昼夜) nightOn = /(夜|晚)/.test(world.昼夜);
   else { const mh = String(t).match(/(\d{1,2})\s*[时点]/); nightOn = mh ? (+mh[1] >= 18 || +mh[1] < 6) : false; }
@@ -620,15 +602,10 @@ function applyStat(d){
   prevXm = xm;
   $('#hlm-xm-num').textContent = xm; $('#hlm-sz-num').textContent = sz;
   $('#hlm-bar-xm').style.width = xm + '%';
-  $('#hlm-s-xm').textContent = xm; $('#hlm-s-sz').textContent = sz;
-  $('#hlm-s-last').textContent = f.上次变化日期 || '—';
-  $('#hlm-s-cnt').textContent = (f.当天变化情况 && f.当天变化情况.已变化次数) || 0;
   const g1 = !!st.林小满是否消失, g2 = !!st.宋昭是否消失;
   $('#hlm-sprite-xm').classList.toggle('gone', g1);
   $('#hlm-sprite-sz').classList.toggle('gone', g2);
   layoutSprites();
-  $('#hlm-s-xm-state').textContent = g1 ? '已消失' : '在场';
-  $('#hlm-s-sz-state').textContent = g2 ? '已消失' : '在场';
   const goneTag = $('#hlm-gone-tag');
   const goneName = g1 ? '林小满' : g2 ? '宋昭' : '';
   goneTag.style.display = goneName ? '' : 'none';
@@ -854,12 +831,8 @@ document.querySelectorAll('.hlm-tab').forEach(t => t.addEventListener('click', (
 }));
 
 /* ---------- 弹窗与全屏 ---------- */
-$('#hlm-btn-status').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-status').classList.add('open'); });
 $('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
-$('#hlm-tb-status').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-status').classList.add('open'); });
-$('#hlm-tb-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
-$('#hlm-tb-fs').addEventListener('click', toggleFs);
-/* 顶栏"思路":显示 <konatan_planning~> 思维链 */
+$('#hlm-tb-var').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-var').classList.add('open'); });
 $('#hlm-tb-plan').addEventListener('click', () => {
   const el = $('#hlm-plan-text');
   el.textContent = planningText || '这条消息没有思维链。';
