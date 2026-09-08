@@ -91,7 +91,7 @@
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-700.css');
 #hlm-app{position:relative;height:720px;border-radius:14px;overflow:hidden;
   font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:#3b414b;background:#9ec7e8;
-  display:flex;flex-direction:column;--xm:#e2647e;--sz:#5a8fc0;--rose:#d95f7f;
+  display:flex;flex-direction:column;justify-content:flex-end;--xm:#e2647e;--sz:#5a8fc0;--rose:#d95f7f;
   box-shadow:0 10px 40px rgba(30,50,70,.35)}
 #hlm-app.fs{height:100vh;border-radius:0}
 #hlm-app *,#hlm-app *::before,#hlm-app *::after{box-sizing:border-box}
@@ -194,7 +194,7 @@
 #hlm-app.hideui .hlm-band,#hlm-app.hideui .hlm-topinfo,#hlm-app.hideui .hlm-quicknav{display:none}
 
 /* ── 正文:通栏白色横带(参考图:半透明磨砂,景色透出) ── */
-.hlm-band{position:relative;z-index:5;margin-top:auto;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.58) 45%,rgba(255,255,255,.70));
+.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.58) 45%,rgba(255,255,255,.70));
   backdrop-filter:blur(5px);padding:0 7% 16px;min-height:200px;overflow:hidden}
 .hlm-band::before{content:'';position:absolute;left:0;right:0;top:-90px;height:90px;
   background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.42));pointer-events:none}
