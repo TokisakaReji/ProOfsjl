@@ -372,7 +372,9 @@ try {
     const msgs = getChatMessages(getCurrentMessageId());
     msgFull = (msgs && msgs[0] && msgs[0].message) || storyRaw;
     const blocks = msgFull.match(/<story>[\s\S]*?<\/story>/g);
-    if (blocks && blocks.length) storyRaw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
+    /* 多个<story>块按出现顺序全部拼接渲染(切场景写成多块也不丢内容);
+       标签以最后一块为准(代表剧情结束时的状态) */
+    if (blocks && blocks.length) storyRaw = blocks.map(b => b.replace(/<\/?story>/g, '')).join('\n');
     const mp = msgFull.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
     if (mp) planningText = mp[1].trim();
     const mv = msgFull.match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
@@ -416,7 +418,18 @@ function loadStory(raw){
     else break;
   }
   world.路径 = segs;
-  lines = text.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLine).filter(L => L.text || L.marker);
+  /* 中途标签:<scene>…</scene> / <date>…</date> 可出现在正文行之间,推进到它时切换背景/时间(不占阅读格) */
+  lines = [];
+  for (const seg of text.split(/\n+/)){
+    const s = seg.trim();
+    if (!s) continue;
+    const mSc = s.match(/^<scene>([\s\S]*?)<\/scene>$/);
+    if (mSc){ lines.push({ marker:'scene', sceneRaw:mSc[1].trim(), text:'' }); continue; }
+    const mDt = s.match(/^<date>([\s\S]*?)<\/date>$/);
+    if (mDt){ lines.push({ marker:'date', dateRaw:mDt[1].trim(), text:'' }); continue; }
+    const L = parseLine(s);
+    if (L.text || L.marker) lines.push(L);
+  }
 }
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmt = s => esc(s).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
@@ -574,6 +587,21 @@ function layoutSprites(){
     npcEl.style.zIndex = show ? String(10 - idx) : '';
   }
 }
+/* ---------- 中途<scene>标签:解析路径并即时切换背景/天气/昼夜 ---------- */
+function applySceneRaw(raw){
+  const segs = String(raw || '').split('/').map(s => s.trim()).filter(Boolean);
+  const isW = s => /^(晴|阴|雨)天?$/.test(s);
+  const isD = s => /^(昼|夜|白昼|白天|夜晚|凌晨|清晨|早晨|早上|上午|中午|午后|下午|傍晚|黄昏|深夜)$/.test(s);
+  for (let i = 0; i < 2 && segs.length; i++){
+    const s = segs[segs.length - 1];
+    if (!world.天气 || isW(s)){ if (isW(s)) world.天气 = s.replace(/天$/, ''); segs.pop(); }
+    else if (!world.昼夜 || isD(s)){ if (isD(s)) world.昼夜 = s; segs.pop(); }
+    else break;
+  }
+  if (segs.length) world.路径 = segs;
+  applyWorld(null, true);
+}
+
 /* ---------- 世界状态(日期/时间/天气/地点):正文标签优先,旧存档变量兑底 ---------- */
 function applyWorld(v, force){
   const d = world.日期 || (v && v.日期) || '—';
@@ -734,7 +762,15 @@ function applyLine(n, pop){
   if (!prevNpc || !npcState || prevNpc.name !== npcState.name || prevNpc.arch !== npcState.arch) updateNpcSprite();
   ['林小满','宋昭'].forEach(w => { if (entered[w] && curFace[w] !== prevFace[w]) setSprite(w, curFace[w]); });
   const L = lines[n - 1];
-  if (L && L.marker){
+  if (L && L.marker === 'scene'){
+    /* 中途场景标签:切换背景后自动落到下一行 */
+    applySceneRaw(L.sceneRaw);
+    if (n < lines.length){ applyLine(n + 1, false); return; }
+    storyEl.innerHTML = ''; spkEl.textContent = ''; spkEl.className = 'n';
+  } else if (L && L.marker === 'date'){
+    if (n < lines.length){ applyLine(n + 1, false); return; }
+    storyEl.innerHTML = ''; spkEl.textContent = ''; spkEl.className = 'n';
+  } else if (L && L.marker === 'exit'){
     /* 离场标记行:不显示正文,自动落到下一行;没有下一行则清空等待点击 */
     if (n < lines.length){ applyLine(n + 1, false); return; }
     storyEl.innerHTML = ''; spkEl.textContent = ''; spkEl.className = 'n';
@@ -759,7 +795,7 @@ function applyLine(n, pop){
   renderLog();
 }
 function advance(pop){
-  /* 前进目标:下一行,若是标记行(纯指令)则继续跳到其后的行 */
+  /* 前进目标:下一行,若是标记行(离场/中途scene/date,纯指令)则继续跳到其后的行 */
   let n = shown + 1;
   while (n <= lines.length && lines[n - 1] && lines[n - 1].marker) n++;
   if (n > lines.length) return;
@@ -767,9 +803,18 @@ function advance(pop){
   if (autoOn){ if (shown >= lines.length) stopAuto(); else queueAuto(); }   /* 手动推进也重置自动计时 */
 }
 function back(){
-  /* 回退目标:从当前行往前找最近的非标记行(标记行是纯指令不占一格,跳过它) */
+  /* 回退目标:从当前行往前找最近的非标记行(标记行是纯指令不占一格,跳过它);
+     回退穿过中途<scene>标签时恢复上一场景的背景 */
   let n = shown - 1;
-  while (n > 1 && lines[n - 1] && lines[n - 1].marker) n--;
+  while (n > 1 && lines[n - 1] && lines[n - 1].marker){
+    if (lines[n - 1].marker === 'scene'){
+      /* 往前找上一个场景标签或块首的scene,恢复它 */
+      let k = n - 2;
+      while (k >= 1 && !(lines[k - 1] && lines[k - 1].marker === 'scene')) k--;
+      if (k >= 1) applySceneRaw(lines[k - 1].sceneRaw);
+    }
+    n--;
+  }
   if (n >= 1 && n < shown){ stopAuto(); applyLine(n, false); }
 }
 /* 自动播放:按行长动态延时,读完最后一行自动停 */
@@ -795,8 +840,7 @@ function setHide(v){ hideOn = v; app.classList.toggle('hideui', v); }
 /* 对话记录:只收录已读行,当前行高亮 */
 function renderLog(){
   const list = $('#hlm-log-list'); if (!list) return;
-  list.innerHTML = lines.slice(0, shown).filter(L => !L.marker).map((L) => {
-    const cls = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : L.name ? 'u' : 'n';
+  list.innerHTML = lines.slice(0, shown).filter(L => !L.marker).map((L) => {    const cls = L.name === '林小满' ? 'xm' : L.name === '宋昭' ? 'sz' : L.name ? 'u' : 'n';
     return '<div class="hlm-log-item"><span class="l-name ' + cls + '">' + esc(L.name || '旁白') + '</span><span class="l-text">' + fmt(L.text) + '</span></div>';
   }).join('') || '<div class="hlm-empty">还没有内容</div>';
 }
@@ -916,7 +960,7 @@ function watchGeneration(){
       const msgs = getChatMessages(lastId);
       const t = (msgs && msgs[0] && msgs[0].message) || '';
       const blocks = t.match(/<story>[\s\S]*?<\/story>/g);
-      const block = blocks && blocks.length ? blocks[blocks.length - 1].replace(/<\/?story>/g, '') : '';
+      const block = blocks && blocks.length ? blocks.map(b => b.replace(/<\/?story>/g, '')).join('\n') : '';
       if (block && block !== watchGeneration.last){
         clearInterval(timer);
         watchGeneration.last = block;
