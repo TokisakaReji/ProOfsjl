@@ -18,11 +18,6 @@
   <div class="hlm-topmenu">
     <button class="hlm-tbtn" id="hlm-tb-plan">✎ 思路</button>
     <button class="hlm-tbtn" id="hlm-tb-var">☰ 变量</button>
-    <button class="hlm-tbtn" id="hlm-tb-send">✉ 发送</button>
-  </div>
-  <div class="hlm-inputbar" id="hlm-inputbar" style="display:none">
-    <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送,Esc 收起)">
-    <button id="hlm-btn-send2">发送 ➤</button>
   </div>
 
   <div class="hlm-stage">
@@ -30,15 +25,6 @@
     <div class="hlm-sprite sz" id="hlm-sprite-sz"><div class="hlm-stand"><span>宋昭</span></div></div>
     <div class="hlm-sprite npc" id="hlm-sprite-npc"></div>
     <div class="hlm-gone-tag" id="hlm-gone-tag" style="display:none"></div>
-  </div>
-
-  <div class="hlm-quicknav">
-    <button class="hlm-qitem" id="hlm-btn-back"><span class="hlm-qico">↶</span><span class="hlm-qlabel">BACK</span></button>
-    <button class="hlm-qitem" id="hlm-btn-auto"><span class="hlm-qico">▶</span><span class="hlm-qlabel">AUTO</span></button>
-    <button class="hlm-qitem" id="hlm-btn-log"><span class="hlm-qico">▤</span><span class="hlm-qlabel">LOG</span></button>
-    <button class="hlm-qitem" id="hlm-btn-hide"><span class="hlm-qico">◻</span><span class="hlm-qlabel">HIDE</span></button>
-    <button class="hlm-qitem" id="hlm-btn-diary"><span class="hlm-qico">❒</span><span class="hlm-qlabel">SECRET<br>DIARY</span></button>
-    <button class="hlm-qitem" id="hlm-btn-fs"><span class="hlm-qico">⛶</span><span class="hlm-qlabel">FULL<br>SCREEN</span></button>
   </div>
 
   <div class="hlm-band">
@@ -49,6 +35,16 @@
     <i class="hlm-next" id="hlm-next" style="display:none">▼</i>
     <i class="hlm-band-flower">❀</i>
   </div>
+
+  <nav class="hlm-quicknav">
+    <button class="hlm-qitem" id="hlm-btn-send" data-tip="输入回复"><span class="hlm-qico">✉</span></button>
+    <button class="hlm-qitem" id="hlm-btn-back" data-tip="回上一行"><span class="hlm-qico">↶</span></button>
+    <button class="hlm-qitem" id="hlm-btn-auto" data-tip="自动播放"><span class="hlm-qico">▶</span></button>
+    <button class="hlm-qitem" id="hlm-btn-log" data-tip="对话记录"><span class="hlm-qico">▤</span></button>
+    <button class="hlm-qitem" id="hlm-btn-hide" data-tip="隐藏界面"><span class="hlm-qico">◻</span></button>
+    <button class="hlm-qitem" id="hlm-btn-diary" data-tip="日记"><span class="hlm-qico">❒</span></button>
+    <button class="hlm-qitem" id="hlm-btn-fs" data-tip="全屏"><span class="hlm-qico">⛶</span></button>
+  </nav>
 
   <div class="hlm-modal" id="hlm-modal-var">
     <div class="hlm-sheet">
@@ -132,7 +128,7 @@
 .hlm-tbtn.on{color:var(--rose);border-color:rgba(217,95,127,.55)}
 #hlm-app.hideui .hlm-topmenu{display:none}
 /* 发送输入条(点"发送"按钮弹出,悬于对话框上方) */
-.hlm-inputbar{position:absolute;z-index:8;left:8%;right:8%;bottom:316px;display:flex;gap:10px;
+.hlm-inputbar{position:absolute;z-index:8;left:8%;right:8%;bottom:70px;display:flex;gap:10px;
   background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border:1px solid rgba(217,95,127,.3);
   border-radius:8px;padding:10px 14px;box-shadow:0 6px 24px rgba(40,60,80,.28)}
 .hlm-inputbar input{flex:1;background:none;border:none;outline:none;font-family:'Noto Serif SC','SimSun',serif;
@@ -169,12 +165,25 @@
   text-shadow:0 0 10px rgba(255,255,255,.95)}
 
 /* ── 快捷菜单:参考图式通栏彩色小图标 ── */
-.hlm-quicknav{position:relative;z-index:6;margin-top:auto;display:flex;justify-content:flex-end;gap:26px;padding:10px 3% 12px 0}
-.hlm-qitem{display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:4px 6px;
-  color:rgba(255,255,255,.92);font-family:inherit;transition:transform .15s,filter .15s;
-  text-shadow:0 1px 6px rgba(40,60,80,.7);filter:drop-shadow(0 1px 3px rgba(30,50,70,.45))}
-.hlm-qitem:hover{transform:translateY(-2px)}
-.hlm-qitem.on{filter:drop-shadow(0 0 6px rgba(217,95,127,.8))}
+.hlm-quicknav{position:relative;z-index:6;display:flex;justify-content:center;gap:14px;padding:8px 0 10px}
+.hlm-qitem{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:40px;
+  background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.6);border-radius:12px;cursor:pointer;
+  color:rgba(75,100,125,.85);font-family:inherit;transition:all .15s;backdrop-filter:blur(6px);
+  box-shadow:0 2px 8px rgba(60,90,110,.18)}
+.hlm-qitem:hover{transform:translateY(-3px);box-shadow:0 5px 14px rgba(60,90,110,.3)}
+.hlm-qitem.on{color:var(--rose);border-color:rgba(217,95,127,.55)}
+.hlm-qitem::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:rgba(50,60,75,.92);color:#fff;font-size:11px;letter-spacing:1px;padding:4px 10px;border-radius:6px;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
+.hlm-qitem:hover::after{opacity:1}
+.hlm-qitem:nth-child(1) .hlm-qico{color:#e2647e}
+.hlm-qitem:nth-child(2) .hlm-qico{color:#5a8fc0}
+.hlm-qitem:nth-child(3) .hlm-qico{color:#e8a23c}
+.hlm-qitem:nth-child(4) .hlm-qico{color:#7bb08a}
+.hlm-qitem:nth-child(5) .hlm-qico{color:#9a7bc9}
+.hlm-qitem:nth-child(6) .hlm-qico{color:#d477a5}
+.hlm-qitem:nth-child(7) .hlm-qico{color:#6fb3c9}
+.hlm-qico{font-size:19px;line-height:1;font-style:normal}
 .hlm-qitem.on .hlm-qico{color:var(--rose)}
 /* 每颗图标一个浅彩(参考图 DATA SAVE 粉 / DATA LOAD 蓝 / AUTO 黄 那种) */
 .hlm-qitem:nth-child(1) .hlm-qico{color:#f5a8c0}
@@ -184,19 +193,21 @@
 .hlm-qitem:nth-child(5) .hlm-qico{color:#ffb3c8}
 .hlm-qitem:nth-child(6) .hlm-qico{color:#a8d8b0}
 .hlm-qitem:nth-child(7) .hlm-qico{color:#d8b8f0}
-.hlm-qico{font-size:18px;line-height:1;font-style:normal;text-shadow:0 1px 4px rgba(30,50,70,.5)}
-.hlm-qlabel{font-size:8.5px;letter-spacing:1.8px;text-align:left;line-height:1.5;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.95)}
 /* 隐藏界面:只剩背景与立绘,点击任意处恢复 */
 #hlm-app.hideui .hlm-band,#hlm-app.hideui .hlm-topinfo,#hlm-app.hideui .hlm-quicknav{display:none}
 
 /* ── 正文:通栏白色横带(参考图:半透明磨砂,景色透出) ── */
-.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.78));
-  backdrop-filter:blur(7px);border-top:1px solid rgba(255,255,255,.55);padding:2px 7% 22px;min-height:210px}
+.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.58) 45%,rgba(255,255,255,.70));
+  backdrop-filter:blur(5px);padding:0 7% 16px;min-height:200px;overflow:hidden}
+.hlm-band::before{content:'';position:absolute;left:0;right:0;top:-90px;height:90px;
+  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.42));pointer-events:none}
 .hlm-band-flower{position:absolute;right:4%;bottom:6px;font-size:40px;font-style:normal;color:var(--rose);opacity:.14;pointer-events:none}
 /* 花纹:用粒子里同款 ❀ 花,大朵在右、小朵偏中,极低透明度 */
-.hlm-band-orn{position:absolute;pointer-events:none;font-style:normal;color:var(--rose);line-height:1}
-.hlm-band-orn.big{right:4%;top:46%;font-size:130px;opacity:.13;transform:rotate(-12deg)}
-.hlm-band-orn.small{right:15%;bottom:-24px;font-size:64px;opacity:.10;transform:rotate(16deg)}
+.hlm-band-orn{position:absolute;pointer-events:none;font-style:normal;line-height:1}
+.hlm-band-orn.big{right:5%;top:30%;font-size:110px;color:#f5b8cd;opacity:.28;transform:rotate(-14deg)}
+.hlm-band-orn.big::after{content:'❀';position:absolute;left:-96px;top:52px;font-size:46px;color:#a8cdec;opacity:.8;transform:rotate(26deg)}
+.hlm-band-orn.small{right:15%;bottom:-22px;font-size:56px;color:#a8cdec;opacity:.26;transform:rotate(18deg)}
+.hlm-band-orn.small::after{content:'❀';position:absolute;left:86px;top:-14px;font-size:34px;color:#f5b8cd;opacity:.7;transform:rotate(-32deg)}
 .hlm-speaker{display:flex;align-items:center;gap:14px;margin:6px 0 6px 1.5%}
 .hlm-speaker::before{content:'';width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--rose));opacity:.9}
 .hlm-speaker span{font-family:'Noto Serif SC','SimSun',serif;font-size:21px;letter-spacing:7px;color:var(--rose);font-weight:700;
@@ -306,6 +317,7 @@
   .hlm-kv{padding:6px 2px;font-size:12px}
 }
 </style>
+
 
 <script type="text/plain" id="hlm-story-raw"></script>
 
@@ -1008,16 +1020,16 @@ function sendUser(){
   setTimeout(() => { try { triggerSlash('/trigger'); } catch(e){} }, 400);
   if (fsOn) watchGeneration();   // 全屏中:留在全屏,生成完原地刷新
 }
-$('#hlm-btn-send2').addEventListener('click', sendUser);
-inp.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.stopPropagation(); sendUser(); }
-  if (e.key === 'Escape') { e.stopPropagation(); $('#hlm-inputbar').style.display = 'none'; }
-});
-$('#hlm-tb-send').addEventListener('click', () => {
+$('#hlm-btn-send').addEventListener('click', () => {
   const bar = $('#hlm-inputbar');
   const open = bar.style.display !== 'none';
   bar.style.display = open ? 'none' : 'flex';
   if (!open) inp.focus();
+});
+$('#hlm-btn-send2').addEventListener('click', sendUser);
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.stopPropagation(); sendUser(); }
+  if (e.key === 'Escape') { e.stopPropagation(); $('#hlm-inputbar').style.display = 'none'; }
 });
 
 let fsOn = false, savedStyle = null;
