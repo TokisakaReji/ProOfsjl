@@ -22,6 +22,7 @@
     <button class="hlm-tbtn" id="hlm-tb-hide">◻ 隐藏</button>
     <button class="hlm-tbtn" id="hlm-tb-status">☰ 状态</button>
     <button class="hlm-tbtn" id="hlm-tb-diary">❒ 日记</button>
+    <button class="hlm-tbtn" id="hlm-tb-plan">✎ 思路</button>
     <button class="hlm-tbtn" id="hlm-tb-fs">⛶ 全屏</button>
   </div>
 
@@ -68,7 +69,18 @@
       <div class="hlm-kv"><span>今日变化次数 CHANGES</span><b id="hlm-s-cnt">0</b></div>
       <div class="hlm-kv"><span class="xm">林小满 STATE</span><b class="xm" id="hlm-s-xm-state">在场</b></div>
       <div class="hlm-kv"><span class="sz">宋昭 STATE</span><b class="sz" id="hlm-s-sz-state">在场</b></div>
+      <div class="hlm-var-block" id="hlm-var-block" style="display:none">
+        <div class="hlm-var-title">── 本轮变量变更 ──</div>
+        <div id="hlm-var-list"></div>
+      </div>
       <div class="hlm-note">两个人格的好感之和，恒为 100。</div>
+    </div>
+  </div>
+
+  <div class="hlm-modal" id="hlm-modal-plan">
+    <div class="hlm-sheet">
+      <div class="hlm-sheet-head"><span class="hlm-s-cn">思路</span><span class="hlm-s-en">PLANNING</span><button class="hlm-x" data-close="hlm-modal-plan">✕</button></div>
+      <pre class="hlm-plan-text" id="hlm-plan-text"></pre>
     </div>
   </div>
 
@@ -258,6 +270,14 @@
   font-family:'Noto Serif SC','SimSun',serif;border:1px dashed rgba(217,95,127,.35);border-radius:2px}
 .hlm-diary-lock .lk{font-size:19px;display:block;margin-bottom:8px;filter:grayscale(.4)}
 .hlm-empty{padding:34px 0;text-align:center;color:rgba(59,65,75,.35);font-size:13px;letter-spacing:2px}
+/* 状态面板:本轮变量变更 */
+.hlm-var-block{margin-top:12px;padding-top:10px;border-top:1px solid rgba(59,65,75,.12)}
+.hlm-var-title{text-align:center;color:rgba(217,95,127,.75);font-size:11px;letter-spacing:3px;margin-bottom:8px;
+  font-family:'Noto Serif SC','SimSun',serif}
+.hlm-var-item{display:flex;justify-content:space-between;padding:6px 2px;font-size:12.5px;border-bottom:1px solid rgba(59,65,75,.06)}
+.hlm-var-item .vp{color:rgba(59,65,75,.5);font-family:'Noto Serif SC',serif}
+.hlm-var-item .vv{font-weight:700;font-variant-numeric:tabular-nums}
+.hlm-var-item .vv.xm{color:var(--xm)}.hlm-var-item .vv.sz{color:var(--sz)}
 /* 对话记录 backlog */
 .hlm-log-item{display:flex;gap:12px;padding:9px 6px;border-bottom:1px solid rgba(59,65,75,.08);font-size:13.5px;line-height:1.95}
 .hlm-log-item .l-name{flex:0 0 auto;min-width:56px;font-weight:700;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:2px}
@@ -267,6 +287,9 @@
 .hlm-log-item .l-name.n{color:rgba(59,65,75,.45)}
 .hlm-log-item .l-text{flex:1;color:#3b414b}
 .hlm-log-cur{background:rgba(217,95,127,.07);border-radius:4px}
+/* 思维链 */
+.hlm-plan-text{margin:0;white-space:pre-wrap;font-family:'Noto Serif SC','SimSun',serif;font-size:13px;
+  line-height:2;color:#3b414b;letter-spacing:.5px}
 
 /* ── 手机横屏适配:小屏时铺满视口、压缩字号间距 ── */
 @media (max-height:600px){
@@ -357,15 +380,21 @@ const $ = s => document.querySelector(s);
 const app = $('#hlm-app');
 let nightOn = false;   // 昼夜标记,由<scene>的昼夜段判定,缺省时按<date>小时推算(18-6点为夜)
 
-/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块 + <UpdateVariable>变量);本地预览读 story-raw ---------- */
+/* ---------- 解析正文:优先从酒馆API读当前消息(找最后一个<story>块 + <UpdateVariable>变量 + 思维链);本地预览读 story-raw ---------- */
 let storyRaw = ($('#hlm-story-raw') || {}).textContent || '';
 let msgFull = storyRaw;
+let planningText = '';   /* <konatan_planning~>思维链,顶栏"思路"查看 */
+let varPatchText = '';   /* <UpdateVariable>变量补丁,顶栏"状态"渲染 */
 try {
   if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
     const msgs = getChatMessages(getCurrentMessageId());
     msgFull = (msgs && msgs[0] && msgs[0].message) || storyRaw;
     const blocks = msgFull.match(/<story>[\s\S]*?<\/story>/g);
     if (blocks && blocks.length) storyRaw = blocks[blocks.length - 1].replace(/<\/?story>/g, '');
+    const mp = msgFull.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
+    if (mp) planningText = mp[1].trim();
+    const mv = msgFull.match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
+    if (mv) varPatchText = mv[0];
   }
 } catch(e) {}
 const world = { 日期:'', 时间:'', 昼夜:'', 天气:'', 路径:[] };   /* 世界状态:随正文标签输出,每楼必达 */
@@ -825,11 +854,47 @@ document.querySelectorAll('.hlm-tab').forEach(t => t.addEventListener('click', (
 }));
 
 /* ---------- 弹窗与全屏 ---------- */
-$('#hlm-btn-status').addEventListener('click', () => $('#hlm-modal-status').classList.add('open'));
+$('#hlm-btn-status').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-status').classList.add('open'); });
 $('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
-$('#hlm-tb-status').addEventListener('click', () => $('#hlm-modal-status').classList.add('open'));
+$('#hlm-tb-status').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-status').classList.add('open'); });
 $('#hlm-tb-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
 $('#hlm-tb-fs').addEventListener('click', toggleFs);
+/* 顶栏"思路":显示 <konatan_planning~> 思维链 */
+$('#hlm-tb-plan').addEventListener('click', () => {
+  const el = $('#hlm-plan-text');
+  el.textContent = planningText || '这条消息没有思维链。';
+  $('#hlm-modal-plan').classList.add('open');
+});
+/* 状态面板:渲染 <UpdateVariable> 里的变更项 */
+function renderVarChanges(){
+  const block = $('#hlm-var-block'), list = $('#hlm-var-list');
+  if (!block || !list) return;
+  try {
+    const jp = varPatchText.match(/<JSONPatch>([\s\S]*?)<\/JSONPatch>/);
+    if (!jp){ block.style.display = 'none'; return; }
+    const ops = JSON.parse(jp[1].trim());
+    const items = [];
+    for (const op of ops){
+      if (op.op === 'remove' || !op.path) continue;
+      const segs = op.path.split('/').filter(Boolean);
+      const val = op.value;
+      if (typeof val === 'object' && val !== null){
+        for (const k in val){
+          if (typeof val[k] === 'object') continue;
+          items.push([segs[0] + ' · ' + k, String(val[k]), segs[0]]);
+        }
+      } else {
+        items.push([segs.join(' / '), String(val), segs[0] || '']);
+      }
+    }
+    if (!items.length){ block.style.display = 'none'; return; }
+    block.style.display = '';
+    list.innerHTML = items.slice(0, 20).map(([p, v, who]) => {
+      const cls = who === '林小满' || /林小满/.test(p) ? 'xm' : who === '宋昭' || /宋昭/.test(p) ? 'sz' : '';
+      return '<div class="hlm-var-item"><span class="vp">' + esc(p) + '</span><span class="vv ' + cls + '">' + esc(v) + '</span></div>';
+    }).join('');
+  } catch(e){ block.style.display = 'none'; }
+}
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.close).classList.remove('open')));
 
 /* ---------- 发送消息:走酒馆助手的斜杠命令;/send 入楼 + /trigger 生成。
