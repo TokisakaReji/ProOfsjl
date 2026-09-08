@@ -932,20 +932,24 @@ $('#hlm-btn-fs').addEventListener('click', toggleFs);
 function toggleFs(){
   fsOn = !fsOn;
   app.classList.toggle('fs', fsOn);
-  /* 伪全屏:把酒馆里本界面的iframe撑满视口。不调requestFullscreen——
-     酒馆助手的iframe未开allowfullscreen,原生全屏会被浏览器静默拒绝 */
-  try {
-    const f = window.frameElement;
-    if (f){
-      if (fsOn){
+  if (fsOn){
+    try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); } catch(e){}
+    try {
+      const f = window.frameElement;
+      if (f){
         savedStyle = f.getAttribute('style') || '';
         Object.assign(f.style, { position:'fixed', inset:'0', width:'100vw', height:'100vh', zIndex:99999, background:'#000' });
-      } else if (savedStyle !== null) {
-        f.setAttribute('style', savedStyle);
       }
-    }
-  } catch(e){}
+    } catch(e){}
+  } else {
+    try { document.fullscreenElement && document.exitFullscreen(); } catch(e){}
+    try {
+      const f = window.frameElement;
+      if (f && savedStyle !== null) f.setAttribute('style', savedStyle);
+    } catch(e){}
+  }
 }
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && fsOn) toggleFs(); });
 
 /* 调试钩子:仅供本地预览控制台使用,酒馆内无人调用 */
 window.__hlm = { world: world, applyWorld: applyWorld, advance: () => advance(true), back: back };
