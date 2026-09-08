@@ -416,7 +416,7 @@ function loadStory(raw){
     else break;
   }
   world.路径 = segs;
-  lines = text.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLine).filter(L => L.text);
+  lines = text.split(/\n+/).map(s => s.trim()).filter(Boolean).map(parseLine).filter(L => L.text || L.marker);
 }
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmt = s => esc(s).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
@@ -462,6 +462,12 @@ function npcArchetype(name, bracket){
   return '男中年';                                              /* 完全无线索时的兜底形象 */
 }
 const parseLine = l => {
+  /* 独立离场标记行:[宋昭 离场] / [林小满/npc 离场] —— 名单里谁离场谁消失,npc指当前配角 */
+  const mk = l.match(/^\[\s*([^\]]*离场[^\]]*)\s*\]$/);
+  if (mk){
+    const names = mk[1].replace(/离场/g, '').split(/[\/、,，|｜\s]+/).map(s => nameFix[s.trim()] || s.trim()).filter(Boolean);
+    return { marker:'exit', names:names, text:'' };
+  }
   const m = l.match(/^(.{1,12}?)\s*\[([^\]]*)\]\s*[:：]\s*([\s\S]*)$/);          /* 名字 [表情/形象]: "台词" */
   if (m){
     const who = nameFix[m[1].trim()] || m[1].trim();
@@ -697,6 +703,13 @@ function computeState(n){
   if (byTag){ en['林小满'] = !!world.在场['林小满']; en['宋昭'] = !!world.在场['宋昭']; }
   for (let i = 0; i < n; i++){
     const L = lines[i];
+    if (L.marker === 'exit'){
+      for (const nm of L.names){
+        if (nm === '林小满' || nm === '宋昭'){ en[nm] = false; }
+        else if (nm === 'npc'){ npc = null; }
+      }
+      continue;
+    }
     if (L.name === '林小满' || L.name === '宋昭'){
       sp = L.name;
       if (!byTag && !en[L.name]){ en[L.name] = true; fc[L.name] = L.face || '普通'; }
