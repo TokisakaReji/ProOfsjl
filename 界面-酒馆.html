@@ -792,7 +792,8 @@ applyStat(null);
   $('#card-img-sz').src = ASSETS.立绘['宋昭'].普通;
   const front = document.getElementById('frontSide'), back = document.getElementById('backSide');
   let isFront = true, switching = false;
-  function switchCard(){
+  function switchCard(e){
+    if (e){ e.stopPropagation(); }   /* 点卡片只翻面,不许冒泡到 app 的"点击推进正文" */
     if (switching) return; switching = true;
     const cur = isFront ? front : back, nxt = isFront ? back : front;
     cur.classList.remove('active'); cur.classList.add('inactive');
