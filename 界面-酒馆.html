@@ -27,7 +27,16 @@
     <div class="hlm-gone-tag" id="hlm-gone-tag" style="display:none"></div>
   </div>
 
-  <div class="hlm-band">
+      <div class="hlm-band">
+  <nav class="hlm-quicknav">
+    <button class="hlm-qitem" id="hlm-btn-send" data-tip="输入回复" data-en="MESSAGE"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9 7 9-7"/><path d="M3.5 6h17a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg></span></button>
+    <button class="hlm-qitem" id="hlm-btn-back" data-tip="回上一行" data-en="BACK"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v0a6 6 0 0 1-6 6h-3"/></svg></span></button>
+    <button class="hlm-qitem" id="hlm-btn-auto" data-tip="自动播放" data-en="AUTO"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5.5v13l11-6.5z"/></svg></span></button>
+    <button class="hlm-qitem" id="hlm-btn-log" data-tip="对话记录" data-en="LOG"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg></span></button>
+    <button class="hlm-qitem" id="hlm-btn-hide" data-tip="隐藏界面" data-en="HIDE"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg></span></button>
+    <button class="hlm-qitem" id="hlm-btn-diary" data-tip="日记" data-en="DIARY"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span></button>
+    <button class="hlm-qitem" id="hlm-btn-fs" data-tip="全屏" data-en="FULL"><span class="hlm-qico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H4a1 1 0 0 0-1 1v4M16 3h4a1 1 0 0 1 1 1v4M8 21H4a1 1 0 0 1-1-1v-4M16 21h4a1 1 0 0 0 1-1v-4"/></svg></span></button>
+  </nav>
     <div class="hlm-speaker"><span id="hlm-speaker">幻想肥皂泡</span></div>
     <main class="hlm-story" id="hlm-story"></main>
     <i class="hlm-band-orn big">❀</i>
@@ -36,16 +45,7 @@
     <i class="hlm-band-flower">❀</i>
   </div>
 
-  <nav class="hlm-quicknav">
-    <button class="hlm-qitem" id="hlm-btn-send" data-tip="输入回复"><span class="hlm-qico">✉</span></button>
-    <button class="hlm-qitem" id="hlm-btn-back" data-tip="回上一行"><span class="hlm-qico">↶</span></button>
-    <button class="hlm-qitem" id="hlm-btn-auto" data-tip="自动播放"><span class="hlm-qico">▶</span></button>
-    <button class="hlm-qitem" id="hlm-btn-log" data-tip="对话记录"><span class="hlm-qico">▤</span></button>
-    <button class="hlm-qitem" id="hlm-btn-hide" data-tip="隐藏界面"><span class="hlm-qico">◻</span></button>
-    <button class="hlm-qitem" id="hlm-btn-diary" data-tip="日记"><span class="hlm-qico">❒</span></button>
-    <button class="hlm-qitem" id="hlm-btn-fs" data-tip="全屏"><span class="hlm-qico">⛶</span></button>
-  </nav>
-  <div class="hlm-inputbar" id="hlm-inputbar" style="display:none">
+    <div class="hlm-inputbar" id="hlm-inputbar" style="display:none">
     <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送,Esc 收起)">
     <button id="hlm-btn-send2">发送 ➤</button>
   </div>
@@ -88,6 +88,7 @@
 
 <style>
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-400.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/great-vibes@5.2.5/index.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-700.css');
 #hlm-app{position:relative;height:720px;border-radius:14px;overflow:hidden;
   font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:#3b414b;background:#9ec7e8;
@@ -169,42 +170,46 @@
   text-shadow:0 0 10px rgba(255,255,255,.95)}
 
 /* ── 快捷菜单:参考图式通栏彩色小图标 ── */
-.hlm-quicknav{position:relative;z-index:6;display:flex;justify-content:center;gap:14px;padding:8px 0 10px}
-.hlm-qitem{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:44px;
-  background:linear-gradient(180deg,#f9a8c2,#ef8bab);border:none;border-radius:13px;cursor:pointer;
-  color:#fff;font-family:inherit;transition:transform .15s,filter .15s;
-  box-shadow:0 3px 10px rgba(220,120,160,.4)}
-.hlm-qitem:hover{transform:translateY(-3px);filter:brightness(1.08)}
-.hlm-qitem.on{filter:brightness(1.15) drop-shadow(0 0 6px rgba(244,143,177,.8))}
+.hlm-quicknav{position:absolute;z-index:7;right:2.5%;top:34%;display:flex;align-items:center;gap:20px;pointer-events:none}
+.hlm-qitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  height:44px;background:none;border:none;
+  cursor:pointer;color:rgba(255,255,255,.92);font-family:inherit;transition:color .18s,transform .18s;pointer-events:auto}
+.hlm-qitem:nth-child(1){color:#ffd1a3}
+.hlm-qitem:nth-child(2){color:#a8d8ff}
+.hlm-qitem:nth-child(3){color:#ffe08a}
+.hlm-qitem:nth-child(4){color:#b4ecc4}
+.hlm-qitem:nth-child(5){color:#d9c8ff}
+.hlm-qitem:nth-child(6){color:#ffc4dd}
+.hlm-qitem:nth-child(7){color:#a3e8e0}
+.hlm-qitem:hover{transform:translateY(-3px);filter:brightness(1.2) drop-shadow(0 0 8px currentColor)}
+.hlm-qitem.on{filter:brightness(1.15) drop-shadow(0 0 6px currentColor)}
+.hlm-qico{line-height:0;color:inherit;transition:transform .18s;filter:drop-shadow(0 1px 4px rgba(40,60,80,.7))}
+.hlm-qico svg{width:21px;height:21px;display:block}
+.hlm-qitem:hover .hlm-qico{transform:scale(1.15)}
+.hlm-qitem::before{content:attr(data-en);font-family:'Great Vibes',cursive;font-size:12px;letter-spacing:1px;
+  text-transform:none;font-weight:400;opacity:.95;line-height:1.15;height:14px;display:flex;align-items:flex-end;
+  color:rgba(255,255,255,.9);text-shadow:0 1px 5px rgba(40,60,80,.75)}
 .hlm-qitem::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
-  background:rgba(50,60,75,.92);color:#fff;font-size:11px;letter-spacing:1px;padding:4px 10px;border-radius:6px;
+  background:rgba(50,60,75,.92);color:#fff;font-size:11px;letter-spacing:1px;padding:4px 11px;border-radius:6px;
   white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
 .hlm-qitem:hover::after{opacity:1}
-.hlm-qico{font-size:20px;line-height:1;font-style:normal;color:#fff}
-.hlm-qitem.on .hlm-qico{color:var(--rose)}
-/* 每颗图标一个浅彩(参考图 DATA SAVE 粉 / DATA LOAD 蓝 / AUTO 黄 那种) */
-.hlm-qitem:nth-child(1) .hlm-qico{color:#f5a8c0}
-.hlm-qitem:nth-child(2) .hlm-qico{color:#ffd97a}
-.hlm-qitem:nth-child(3) .hlm-qico{color:#9fd8ff}
-.hlm-qitem:nth-child(4) .hlm-qico{color:#c9c9d6}
-.hlm-qitem:nth-child(5) .hlm-qico{color:#ffb3c8}
-.hlm-qitem:nth-child(6) .hlm-qico{color:#a8d8b0}
-.hlm-qitem:nth-child(7) .hlm-qico{color:#d8b8f0}
-/* 隐藏界面:只剩背景与立绘,点击任意处恢复 */
 #hlm-app.hideui .hlm-band,#hlm-app.hideui .hlm-topinfo,#hlm-app.hideui .hlm-quicknav{display:none}
 
 /* ── 正文:通栏白色横带(参考图:半透明磨砂,景色透出) ── */
-.hlm-band{position:relative;z-index:5;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.58) 45%,rgba(255,255,255,.70));
-  backdrop-filter:blur(5px);padding:0 7% 16px;min-height:200px;overflow:hidden}
-.hlm-band::before{content:'';position:absolute;left:0;right:0;top:-90px;height:90px;
-  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.42));pointer-events:none}
+/* 半透明白雾+弧形羽化上缘(mask双层:垂直溶解+中央凸椭圆,雾缘中间高两边低) */
+.hlm-band{position:relative;z-index:5;
+  background:linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.38) 30%,rgba(255,255,255,.62) 58%,rgba(255,255,255,.78) 100%);
+  backdrop-filter:blur(2px);padding:120px 7% 56px;min-height:300px;overflow:visible;
+  -webkit-mask-image:radial-gradient(120% 62% at 50% 108%,#000 55%,transparent 98%),
+    linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.5) 26%,#000 42%);
+  -webkit-mask-composite:source-over;
+  mask-image:radial-gradient(120% 62% at 50% 108%,#000 55%,transparent 98%),
+    linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.5) 26%,#000 42%)}
 .hlm-band-flower{position:absolute;right:4%;bottom:6px;font-size:40px;font-style:normal;color:var(--rose);opacity:.14;pointer-events:none}
 /* 花纹:用粒子里同款 ❀ 花,大朵在右、小朵偏中,极低透明度 */
-.hlm-band-orn{position:absolute;pointer-events:none;font-style:normal;line-height:1}
-.hlm-band-orn.big{right:5%;top:30%;font-size:110px;color:#f5b8cd;opacity:.28;transform:rotate(-14deg)}
-.hlm-band-orn.big::after{content:'❀';position:absolute;left:-96px;top:52px;font-size:46px;color:#a8cdec;opacity:.8;transform:rotate(26deg)}
-.hlm-band-orn.small{right:15%;bottom:-22px;font-size:56px;color:#a8cdec;opacity:.26;transform:rotate(18deg)}
-.hlm-band-orn.small::after{content:'❀';position:absolute;left:86px;top:-14px;font-size:34px;color:#f5b8cd;opacity:.7;transform:rotate(-32deg)}
+.hlm-band-orn{position:absolute;pointer-events:none;font-style:normal;line-height:1;color:#c9d6e8}
+.hlm-band-orn.big{right:4%;bottom:8px;font-size:150px;opacity:.34;transform:rotate(-10deg)}
+.hlm-band-orn.small{right:17%;bottom:-8px;font-size:66px;opacity:.22;transform:rotate(18deg);color:#e6c3d4}
 .hlm-speaker{display:flex;align-items:center;gap:14px;margin:6px 0 6px 1.5%}
 .hlm-speaker::before{content:'';width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--rose));opacity:.9}
 .hlm-speaker span{font-family:'Noto Serif SC','SimSun',serif;font-size:21px;letter-spacing:7px;color:var(--rose);font-weight:700;
