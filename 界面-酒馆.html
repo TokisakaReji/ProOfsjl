@@ -8,11 +8,30 @@
 
   <div class="hlm-topinfo">
     <span class="hlm-world"><i id="hlm-date">—</i><em></em><i id="hlm-time">—</i><em></em><i id="hlm-weather">—</i><em></em><i id="hlm-loc">—</i></span>
-    <span class="hlm-favor">
-      <span class="xm">林小满 <b id="hlm-xm-num">50</b></span>
-      <span class="hlm-minibar"><span class="hlm-minibar-xm" id="hlm-bar-xm"></span></span>
-      <span class="sz"><b id="hlm-sz-num">50</b> 宋昭</span>
-    </span>
+  </div>
+
+  <!-- 好感度立绘卡片(替换原 hlm-favor 文字显示):正面=林小满,背面=宋昭;悬停出姓名+好感度,点击翻面 -->
+  <div class="favor-card" id="cardContainer">
+    <div class="card-side active" id="frontSide">
+      <div class="layer layer-2"></div>
+      <div class="layer layer-1">
+        <div class="imgbox"><img class="img" id="card-img-xm" alt="林小满"></div>
+        <div class="details">
+          <span class="title">林小满</span>
+          <span class="caption" id="fav-xm">好感度 50</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-side inactive" id="backSide">
+      <div class="layer layer-2"></div>
+      <div class="layer layer-1">
+        <div class="imgbox"><img class="img" id="card-img-sz" alt="宋昭"></div>
+        <div class="details">
+          <span class="title">宋昭</span>
+          <span class="caption" id="fav-sz">好感度 50</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="hlm-topmenu">
@@ -156,11 +175,37 @@
 #hlm-app.hideui .hlm-inputbar{display:none !important}
 .hlm-world{display:flex;align-items:center;gap:8px}
 .hlm-world em{width:3px;height:3px;border-radius:50%;background:rgba(40,44,53,.55)}
-.hlm-favor{display:flex;align-items:center;gap:9px}
-.hlm-favor .xm{color:var(--xm)}.hlm-favor .sz{color:var(--sz)}
-.hlm-favor b{font-size:14px;font-weight:700}
-.hlm-minibar{position:relative;width:58px;height:3px;border-radius:2px;background:var(--sz);overflow:hidden;opacity:.75}
-.hlm-minibar-xm{position:absolute;left:0;top:0;height:100%;width:50%;background:var(--xm);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+/* ═══ 好感度立绘卡片(双面立绘,悬停出详情,点击翻面) ═══ */
+.favor-card{width:190px;height:254px;position:absolute;top:12px;right:18px;z-index:6;
+  cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;perspective:600px}
+.favor-card .card-side{position:absolute;inset:0;width:100%;height:100%;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s ease,transform .4s ease;
+  transform:scaleX(0);transform-origin:center}
+.favor-card .card-side.active{opacity:1;pointer-events:auto;z-index:2;transform:scaleX(1)}
+.favor-card .card-side.inactive{opacity:0;pointer-events:none;z-index:1;transform:scaleX(0)}
+.favor-card .layer{position:absolute;inset:0;width:100%;height:100%;border-radius:4px;background:#fff;
+  border:2px solid #323232;transition:transform .5s ease,box-shadow .5s ease}
+.favor-card .layer-2{z-index:1;box-shadow:2px 2px #323232}
+.favor-card .layer-1{z-index:2;box-shadow:4px 4px #323232}
+.favor-card .card-side:hover .layer-1{transform:rotate(0deg);box-shadow:6px 6px #323232}
+.favor-card .card-side:hover .layer-2{transform:rotate(10deg);box-shadow:8px 8px #323232}
+.favor-card .imgbox{position:absolute;top:10px;left:10px;right:10px;bottom:10px;background:#222;
+  border:2px solid #323232;border-radius:4px;overflow:hidden;transition:bottom .5s ease;z-index:2}
+.favor-card .img{width:100%;height:100%;border-radius:2px;object-fit:cover;object-position:top center;
+  transition:transform .5s ease;display:block}
+.favor-card .card-side:hover .imgbox{bottom:80px}
+.favor-card .card-side:hover .img{transform:scale(1.04)}
+.favor-card .details{position:absolute;left:10px;right:10px;bottom:8px;height:60px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;text-align:center;
+  z-index:3;pointer-events:none;opacity:0;transform:translateY(8px);
+  background:rgba(255,255,255,0);border:2px solid transparent;border-radius:4px;
+  transition:background .4s,opacity .4s,transform .4s}
+.favor-card .card-side:hover .details{opacity:1;transform:translateY(0);
+  background:rgba(255,255,255,.92);border:2px solid #323232;box-shadow:2px 2px #323232}
+.favor-card .title{font-weight:600;font-size:18px;color:#323232;letter-spacing:.5px}
+.favor-card .caption{font-weight:500;font-size:14px;color:#4f545c;display:block}
+#hlm-app.hideui .favor-card{display:none}
 .pulse{animation:pls .9s ease}
 @keyframes pls{0%,100%{opacity:1}40%{opacity:.3}}
 
@@ -331,9 +376,9 @@
 @media (max-height:600px){
   #hlm-app{height:720px;border-radius:14px;box-shadow:0 10px 40px rgba(30,50,70,.35)}
   .hlm-topinfo{top:6px;left:10px;right:10px;font-size:10px;letter-spacing:.5px;gap:6px}
-  .hlm-favor{gap:5px}
-  .hlm-favor b{font-size:12px}
-  .hlm-minibar{width:40px}
+  .favor-card{width:160px;height:214px;top:6px;right:10px}
+  .favor-card .title{font-size:15px}
+  .favor-card .caption{font-size:12px}
   .hlm-band{margin:0 8%;min-height:110px;padding:8px 88px 14px}
   .hlm-imgnav{gap:5px;margin:-10px 8% 0 0;padding:0 0 8px}
   .hlm-inputbar{left:8%;right:8%}
@@ -704,10 +749,10 @@ function applyStat(d){
   f.当天变化情况 = Object.assign({}, DEF.好感度.当天变化情况, (d.好感度||{}).当天变化情况 || {});
   const st = Object.assign({}, DEF.角色状态, d.角色状态 || {});
   const xm = Math.max(0, Math.min(100, f.林小满|0)), sz = 100 - xm;
-  if (prevXm !== null && prevXm !== xm){ pulse($('#hlm-xm-num')); pulse($('#hlm-sz-num')); }
+  if (prevXm !== null && prevXm !== xm){ pulse($('#fav-xm')); pulse($('#fav-sz')); }
   prevXm = xm;
-  $('#hlm-xm-num').textContent = xm; $('#hlm-sz-num').textContent = sz;
-  $('#hlm-bar-xm').style.width = xm + '%';
+  $('#fav-xm').textContent = '好感度 ' + xm;
+  $('#fav-sz').textContent = '好感度 ' + sz;
   const g1 = !!st.林小满是否消失, g2 = !!st.宋昭是否消失;
   $('#hlm-sprite-xm').classList.toggle('gone', g1);
   $('#hlm-sprite-sz').classList.toggle('gone', g2);
@@ -739,6 +784,30 @@ try {
 } catch(e){}
 fetchStat(applyStat);
 applyStat(null);
+
+/* ---------- 好感度立绘卡片:立绘接 ASSETS(BASE 前缀),点击/回车/空格翻面 ---------- */
+(function(){
+  const el = document.getElementById('cardContainer'); if (!el) return;
+  $('#card-img-xm').src = ASSETS.立绘['林小满'].普通;
+  $('#card-img-sz').src = ASSETS.立绘['宋昭'].普通;
+  const front = document.getElementById('frontSide'), back = document.getElementById('backSide');
+  let isFront = true, switching = false;
+  function switchCard(){
+    if (switching) return; switching = true;
+    const cur = isFront ? front : back, nxt = isFront ? back : front;
+    cur.classList.remove('active'); cur.classList.add('inactive');
+    nxt.classList.remove('inactive'); nxt.classList.add('active');
+    isFront = !isFront;
+    setTimeout(function(){ switching = false; }, 450);
+  }
+  el.addEventListener('click', switchCard);
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'button');
+  el.setAttribute('aria-label', '切换好感度卡片');
+  el.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.stopPropagation(); switchCard(); }
+  });
+})();
 
 /* ---------- 消息内 <UpdateVariable> JSONPatch:仅用于顶栏即时预显示,变量权威数据仍由mvu写入和刷新 ---------- */
 let uiStat = null;
