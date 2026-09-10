@@ -232,14 +232,8 @@
 .hlm-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .hlm-fx .star{position:absolute;font-size:11px;color:rgba(255,255,255,.9);animation:twk 4s ease-in-out infinite;font-style:normal}
 .hlm-fx .mote{position:absolute;bottom:-14px;font-size:11px;opacity:0;animation:rise 12s linear infinite;font-style:normal}
-#hlm-app[data-weather="雨"] .hlm-fx .rain{position:absolute;inset:0;
-  background:repeating-linear-gradient(100deg,transparent 0 15px,rgba(120,150,200,.13) 15px 16px);
-  background-size:220px 260px;animation:rainfall 1s linear infinite}
-#hlm-app[data-weather="雨"] .hlm-bg{filter:saturate(.7) brightness(.75)}
-#hlm-app[data-weather="阴"] .hlm-bg{filter:saturate(.6) brightness(.88)}
 @keyframes twk{0%,100%{opacity:.1;transform:scale(.8)}50%{opacity:.9;transform:scale(1.25)}}
 @keyframes rise{0%{transform:translate(0,0);opacity:0}15%{opacity:.55}80%{opacity:.2}100%{transform:translateY(-90vh) translateX(3vw);opacity:0}}
-@keyframes rainfall{to{background-position:-90px 260px}}
 
 /* ── 左上角天气卡(日期/时间/地点+天气动画,数据来自正文标签) ── */
 .wx-card{position:absolute;z-index:6;top:12px;left:18px;width:176px;
@@ -796,7 +790,6 @@ function setSprite(who, expr){
 function buildFx(weather){
   const fx = $('#hlm-fx');
   fx.innerHTML = '';
-  if (weather === '雨'){ const r = document.createElement('div'); r.className = 'rain'; fx.appendChild(r); }
 }
 /* 立绘站位:只显示已登场且未消失的人格;主位(当前说话人)居中且置顶,其余往左;
    NPC 占 girls 之后的槽位(换人即换图,没有可识别形象就不显示);无人在场时舞台清空 */
