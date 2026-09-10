@@ -232,6 +232,8 @@
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-400.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/great-vibes@5.2.5/index.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.2.5/chinese-simplified-700.css');
+/* 接管 body 后必须清掉页面默认外边距,否则顶栏按钮和屏幕顶边之间会露出一条底色缝 */
+html,body{margin:0!important;padding:0!important}
 #hlm-app{position:relative;height:720px;border-radius:14px;overflow:hidden;
   font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:#3c4047;background:#aeb3ba;
   display:flex;flex-direction:column;justify-content:flex-end;--xm:#4f545c;--sz:#90959c;--rose:#282c35;
