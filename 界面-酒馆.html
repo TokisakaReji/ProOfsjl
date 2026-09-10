@@ -6,8 +6,99 @@
   </div>
   <div class="hlm-fx" id="hlm-fx"></div>
 
-  <div class="hlm-topinfo">
-    <span class="hlm-world"><i id="hlm-date">—</i><em></em><i id="hlm-time">—</i><em></em><i id="hlm-weather">—</i><em></em><i id="hlm-loc">—</i></span>
+  <!-- 左上角天气卡:日期/时间/地点 + 天气动画;数据匹配正文 <date>/<scene> 标签,随天气自动切换 -->
+  <div class="wx-card" id="wxCard">
+    <span class="wx-date" id="hlm-date">—</span>
+    <span class="wx-time" id="hlm-time">—</span>
+    <span class="wx-loc" id="hlm-loc">—</span>
+    <div class="wx-anim">
+      <!-- 多云 -->
+      <div class="loader cloudy" id="anim-cloudy">
+        <svg id="cloudy-cloud" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <defs>
+            <filter id="roundness-cloudy">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1.5"></feGaussianBlur>
+              <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -10"></feColorMatrix>
+            </filter>
+            <mask id="cloudy-shapes">
+              <g fill="white">
+                <polygon points="50 37.5 80 75 20 75 50 37.5"></polygon>
+                <circle cx="20" cy="60" r="15"></circle>
+                <circle cx="80" cy="60" r="15"></circle>
+                <g>
+                  <circle cx="20" cy="60" r="15"></circle>
+                  <circle cx="20" cy="60" r="15"></circle>
+                  <circle cx="20" cy="60" r="15"></circle>
+                </g>
+              </g>
+            </mask>
+            <mask id="cloudy-clipping" clipPathUnits="userSpaceOnUse">
+              <g id="cloudy-lines" filter="url(#roundness-cloudy)">
+                <g mask="url(#cloudy-shapes)" stroke="white">
+                  <line x1="-50" y1="-40" x2="150" y2="-40"></line><line x1="-50" y1="-31" x2="150" y2="-31"></line><line x1="-50" y1="-22" x2="150" y2="-22"></line><line x1="-50" y1="-13" x2="150" y2="-13"></line><line x1="-50" y1="-4" x2="150" y2="-4"></line><line x1="-50" y1="5" x2="150" y2="5"></line><line x1="-50" y1="14" x2="150" y2="14"></line><line x1="-50" y1="23" x2="150" y2="23"></line><line x1="-50" y1="32" x2="150" y2="32"></line><line x1="-50" y1="41" x2="150" y2="41"></line><line x1="-50" y1="50" x2="150" y2="50"></line><line x1="-50" y1="59" x2="150" y2="59"></line><line x1="-50" y1="68" x2="150" y2="68"></line><line x1="-50" y1="77" x2="150" y2="77"></line><line x1="-50" y1="86" x2="150" y2="86"></line><line x1="-50" y1="95" x2="150" y2="95"></line><line x1="-50" y1="104" x2="150" y2="104"></line><line x1="-50" y1="113" x2="150" y2="113"></line><line x1="-50" y1="122" x2="150" y2="122"></line><line x1="-50" y1="131" x2="150" y2="131"></line><line x1="-50" y1="140" x2="150" y2="140"></line>
+                </g>
+              </g>
+            </mask>
+          </defs>
+          <rect x="0" y="0" width="100" height="100" rx="0" ry="0" mask="url(#cloudy-clipping)"></rect>
+        </svg>
+      </div>
+      <!-- 晴 -->
+      <div class="loader sunny hidden" id="anim-sunny">
+        <svg id="sunny-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <defs>
+            <mask id="sunny-shapes">
+              <circle cx="50" cy="50" r="16" fill="white"></circle>
+            </mask>
+          </defs>
+          <rect x="0" y="0" width="100" height="100" rx="0" ry="0" fill="var(--sun-color)" mask="url(#sunny-shapes)"></rect>
+          <g>
+            <line x1="50" y1="28" x2="50" y2="18" />
+            <line x1="50" y1="72" x2="50" y2="82" />
+            <line x1="28" y1="50" x2="18" y2="50" />
+            <line x1="72" y1="50" x2="82" y2="50" />
+            <line x1="35" y1="35" x2="26" y2="26" />
+            <line x1="65" y1="35" x2="74" y2="26" />
+            <line x1="35" y1="65" x2="26" y2="74" />
+            <line x1="65" y1="65" x2="74" y2="74" />
+          </g>
+        </svg>
+      </div>
+      <!-- 雨 -->
+      <div class="loader rainy hidden" id="anim-rainy">
+        <svg id="rainy-rain" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <defs>
+            <filter id="roundness-rainy">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1.5"></feGaussianBlur>
+              <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -10"></feColorMatrix>
+            </filter>
+            <mask id="rainy-shapes">
+              <g fill="white">
+                <polygon points="50 37.5 80 75 20 75 50 37.5"></polygon>
+                <circle cx="20" cy="60" r="15"></circle>
+                <circle cx="80" cy="60" r="15"></circle>
+                <line x1="30" y1="72" x2="24" y2="86" stroke="white" stroke-width="4"></line>
+                <line x1="50" y1="72" x2="44" y2="86" stroke="white" stroke-width="4"></line>
+                <line x1="70" y1="72" x2="64" y2="86" stroke="white" stroke-width="4"></line>
+                <g>
+                  <circle cx="20" cy="60" r="15"></circle>
+                  <circle cx="20" cy="60" r="15"></circle>
+                  <circle cx="20" cy="60" r="15"></circle>
+                </g>
+              </g>
+            </mask>
+            <mask id="rainy-clipping" clipPathUnits="userSpaceOnUse">
+              <g id="rainy-lines" filter="url(#roundness-rainy)">
+                <g mask="url(#rainy-shapes)" stroke="white">
+                  <line x1="-50" y1="-40" x2="150" y2="-40"></line><line x1="-50" y1="-31" x2="150" y2="-31"></line><line x1="-50" y1="-22" x2="150" y2="-22"></line><line x1="-50" y1="-13" x2="150" y2="-13"></line><line x1="-50" y1="-4" x2="150" y2="-4"></line><line x1="-50" y1="5" x2="150" y2="5"></line><line x1="-50" y1="14" x2="150" y2="14"></line><line x1="-50" y1="23" x2="150" y2="23"></line><line x1="-50" y1="32" x2="150" y2="32"></line><line x1="-50" y1="41" x2="150" y2="41"></line><line x1="-50" y1="50" x2="150" y2="50"></line><line x1="-50" y1="59" x2="150" y2="59"></line><line x1="-50" y1="68" x2="150" y2="68"></line><line x1="-50" y1="77" x2="150" y2="77"></line><line x1="-50" y1="86" x2="150" y2="86"></line><line x1="-50" y1="95" x2="150" y2="95"></line><line x1="-50" y1="104" x2="150" y2="104"></line><line x1="-50" y1="113" x2="150" y2="113"></line><line x1="-50" y1="122" x2="150" y2="122"></line><line x1="-50" y1="131" x2="150" y2="131"></line><line x1="-50" y1="140" x2="150" y2="140"></line>
+                </g>
+              </g>
+            </mask>
+          </defs>
+          <rect x="0" y="0" width="100" height="100" rx="0" ry="0" mask="url(#rainy-clipping)"></rect>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <!-- 好感度立绘卡片(替换原 hlm-favor 文字显示):正面=林小满,背面=宋昭;悬停出姓名+好感度,点击翻面 -->
@@ -150,12 +241,50 @@
 @keyframes rise{0%{transform:translate(0,0);opacity:0}15%{opacity:.55}80%{opacity:.2}100%{transform:translateY(-90vh) translateX(3vw);opacity:0}}
 @keyframes rainfall{to{background-position:-90px 260px}}
 
-/* ── 顶部一行极简信息 ── */
-.hlm-topinfo{position:absolute;z-index:6;top:12px;left:18px;right:18px;display:flex;justify-content:space-between;
-  align-items:center;font-size:12px;letter-spacing:1.5px;color:rgba(55,80,105,.85);
-  text-shadow:0 0 6px rgba(255,255,255,.95),0 0 14px rgba(255,255,255,.8);font-variant-numeric:tabular-nums}
-/* 顶栏菜单栏(加大) */
-.hlm-topmenu{position:absolute;z-index:7;top:34px;left:18px;right:18px;display:flex;gap:9px;flex-wrap:wrap}
+/* ── 左上角天气卡(日期/时间/地点+天气动画,数据来自正文标签) ── */
+.wx-card{position:absolute;z-index:6;top:12px;left:18px;width:176px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:rgba(255,255,255,.8);border:1px solid rgba(40,44,53,.28);padding:10px 8px 8px;
+  font-variant-numeric:tabular-nums;text-shadow:0 1px 6px rgba(255,255,255,.9)}
+.wx-date{font-size:12px;letter-spacing:1.5px;color:rgba(59,63,70,.75)}
+.wx-time{font-family:'Noto Serif SC','SimSun',serif;font-size:38px;line-height:1.15;font-weight:700;color:var(--rose);letter-spacing:2px}
+.wx-loc{font-size:11px;letter-spacing:1px;color:rgba(59,63,70,.75);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wx-anim{position:relative;width:100%;height:56px;display:flex;align-items:center;justify-content:center}
+.wx-card .hidden{display:none}
+/* ── 天气 loader(用户提供,配色原样;多云/晴/雨随正文切换) ── */
+.loader{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.5);transform-origin:center}
+.loader.cloudy{--cloud-color:#4387f4;--arrows-color:#80b1ff;--time-animation:1s}
+.loader.cloudy #cloudy-cloud{width:100px;height:100px}
+.loader.cloudy #cloudy-cloud rect{fill:var(--cloud-color)}
+.loader.cloudy #cloudy-cloud g:nth-child(3){transform-origin:50% 72.8938%;fill:var(--arrows-color);
+  filter:drop-shadow(0 0 8px black);animation:wx-rotation var(--time-animation) linear infinite}
+.loader.cloudy #cloudy-shapes g g circle{animation:wx-cloud calc(var(--time-animation) * 2) linear infinite}
+.loader.cloudy #cloudy-shapes g g circle:nth-child(2){animation-delay:calc((var(--time-animation) * 2) / -3)}
+.loader.cloudy #cloudy-shapes g g circle:nth-child(3){animation-delay:calc((var(--time-animation) * 2) / -1.5)}
+.loader.cloudy svg #cloudy-lines g line{stroke-width:5;transform-origin:50% 50%;rotate:-65deg;
+  animation:wx-lines calc(var(--time-animation) / 1.33) linear infinite}
+.loader.sunny{--sun-color:#fbbf24;--ray-color:#fcd34d;--time-animation:1.2s}
+.loader.sunny #sunny-sun{width:100px;height:100px}
+.loader.sunny #sunny-sun rect{fill:var(--sun-color)}
+.loader.sunny #sunny-sun g:nth-child(3){transform-origin:50% 50%;animation:wx-rotation calc(var(--time-animation) * 1.5) linear infinite}
+.loader.sunny #sunny-sun g:nth-child(3) line{stroke:var(--ray-color);stroke-width:3;stroke-linecap:round;
+  filter:drop-shadow(0 0 3px rgba(252,211,77,.7))}
+.loader.rainy{--rain-cloud:#4b5563;--rain-line:#9ca3af;--time-animation:1s}
+.loader.rainy #rainy-rain{width:100px;height:100px}
+.loader.rainy #rainy-rain rect{fill:var(--rain-cloud)}
+.loader.rainy #rainy-rain g:nth-child(3){transform-origin:50% 72.8938%;fill:var(--rain-line);
+  filter:drop-shadow(0 0 8px black);animation:wx-rotation var(--time-animation) linear infinite}
+.loader.rainy #rainy-shapes g g circle{animation:wx-cloud calc(var(--time-animation) * 2) linear infinite}
+.loader.rainy #rainy-shapes g g circle:nth-child(2){animation-delay:calc((var(--time-animation) * 2) / -3)}
+.loader.rainy #rainy-shapes g g circle:nth-child(3){animation-delay:calc((var(--time-animation) * 2) / -1.5)}
+.loader.rainy svg #rainy-lines g line{stroke-width:4;transform-origin:50% 50%;rotate:15deg;
+  animation:wx-rain-fall calc(var(--time-animation) / 1.33) linear infinite}
+@keyframes wx-rotation{0%{transform:rotate(0deg)}50%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
+@keyframes wx-lines{0%{transform:translateY(-10px)}100%{transform:translateY(8px)}}
+@keyframes wx-cloud{0%{cx:20;cy:60;r:15}50%{cx:50;cy:45;r:20}100%{cx:80;cy:60;r:15}}
+@keyframes wx-rain-fall{0%{transform:translateY(-10px)}100%{transform:translateY(8px)}}
+/* 顶栏菜单栏(加大;挪到天气卡下方) */
+.hlm-topmenu{position:absolute;z-index:7;top:176px;left:18px;right:18px;display:flex;gap:9px;flex-wrap:wrap}
 .hlm-tbtn{background:rgba(255,255,255,.5);border:1px solid rgba(59,63,70,.14);border-radius:8px;
   color:rgba(60,80,100,.85);font-family:inherit;font-size:13px;letter-spacing:1.5px;cursor:pointer;
   padding:6px 16px;backdrop-filter:blur(6px);transition:all .15s;text-shadow:0 0 4px rgba(255,255,255,.6)}
@@ -173,8 +302,6 @@
   padding:6px 20px;font-size:13px;cursor:pointer;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:4px;font-weight:700;transition:all .15s}
 .hlm-inputbar button:hover{background:rgba(40,44,53,.12)}
 #hlm-app.hideui .hlm-inputbar{display:none !important}
-.hlm-world{display:flex;align-items:center;gap:8px}
-.hlm-world em{width:3px;height:3px;border-radius:50%;background:rgba(40,44,53,.55)}
 /* ═══ 好感度立绘卡片(双面立绘,悬停出详情,点击翻面) ═══ */
 .favor-card{width:190px;height:254px;position:absolute;top:12px;right:18px;z-index:6;
   cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;perspective:600px}
@@ -225,10 +352,10 @@
   font-family:'Noto Serif SC','SimSun',serif;font-size:14px;letter-spacing:4px;color:var(--rose);
   text-shadow:0 0 10px rgba(255,255,255,.95)}
 
-#hlm-app.hideui .hlm-band,#hlm-app.hideui .hlm-topinfo,#hlm-app.hideui .hlm-imgnav{display:none}
+#hlm-app.hideui .hlm-band,#hlm-app.hideui .wx-card,#hlm-app.hideui .hlm-imgnav{display:none}
 
 .hlm-imgnav{position:relative;z-index:5;display:flex;justify-content:flex-end;align-items:center;
-  gap:10px;margin:-14px 20% 0 0;padding:0 0 12px;flex-wrap:wrap}
+  gap:10px;margin:0 20% 0 0;padding:0;flex-wrap:wrap}
 .hlm-ibtn{position:relative;width:96px;height:48px;border:none;cursor:pointer;
   background:transparent;padding:0;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
@@ -265,7 +392,7 @@
 /* ── 正文:平坦半透明白条(参考 textbox.png:均匀 80% 白、直边) ──
    宽度砍 1/3(margin 5%→20%);高度加倍(min-height 190px) */
 .hlm-band{position:relative;z-index:5;margin:0 20%;
-  background:rgba(255,255,255,.8);
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.8),rgba(255,255,255,.8) 5px,rgba(216,220,225,.8) 5px,rgba(216,220,225,.8) 10px);
   min-height:190px;padding:34px 14% 44px;overflow:visible}
 /* 右上角小黑块(参考 textbox.png:21×21 纯黑 80%) */
 .hlm-corner-mark{position:absolute;top:0;right:0;width:21px;height:21px;background:rgba(0,0,0,.8);z-index:3;pointer-events:none}
@@ -278,9 +405,10 @@
   animation:hlm-breathe var(--t,3.8s) ease-in-out infinite;animation-delay:var(--d,0s)}
 @keyframes hlm-breathe{0%,100%{background-color:transparent}45%{background-color:var(--c,#83888f)}}
 /* 名牌:移到对话框上方(贴在白条顶部,飘在场景背景上),保留左侧渐变短横 */
-.hlm-speaker{position:relative;z-index:6;display:flex;align-items:center;gap:14px;margin:0 0 6px 20%}
-.hlm-speaker::before{content:'';width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--rose));opacity:.9}
+/* 名牌:对话框同色底板,直角边框(去掉旧"———姓名"横线格式);所有名字统一颜色 */
+.hlm-speaker{position:relative;z-index:6;display:flex;margin:0 0 6px 20%}
 .hlm-speaker span{font-family:'Noto Serif SC','SimSun',serif;font-size:21px;letter-spacing:7px;color:var(--rose);font-weight:700;
+  background:rgba(255,255,255,.8);border:1px solid rgba(40,44,53,.28);padding:7px 18px 7px 24px;
   text-shadow:0 1px 8px rgba(255,255,255,.9),0 0 14px rgba(255,255,255,.7),0 1px 3px rgba(40,44,53,.5)}
 .hlm-story{position:relative;z-index:1;max-height:230px;overflow-y:auto;font-family:'Noto Serif SC','Source Han Serif SC','SimSun',serif;
   font-size:17.5px;line-height:2.15;letter-spacing:.6px;color:#33373d;scrollbar-width:thin;
@@ -299,12 +427,8 @@
 .hlm-inputrow button{background:none;color:var(--rose);border:1px solid rgba(40,44,53,.55);border-radius:2px;padding:7px 22px;
   font-size:13px;cursor:pointer;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:4px;font-weight:700;transition:all .15s}
 .hlm-inputrow button:hover{background:rgba(40,44,53,.12)}
-/* 对话行:台词顶格,说话人显示在左上角名牌 */
+/* 对话行:台词顶格,说话人显示在左上角名牌(统一颜色,不再按角色区分) */
 .hlm-story .hlm-dlg{margin:0;text-indent:0}
-#hlm-speaker.xm{color:var(--xm)}
-#hlm-speaker.sz{color:var(--sz)}
-#hlm-speaker.u{color:var(--rose)}
-#hlm-speaker.n{color:rgba(59,63,70,.5)}
 /* 待续指示:三弧旋转(用户提供 loader 代码,去掉 LOADING 文字)— 缩到和原立方体同尺寸 19px,颜色三种灰 */
 .hlm-next{position:absolute;right:20px;bottom:12px;cursor:pointer;z-index:2;
   display:flex;align-items:center;justify-content:center;width:19px;height:19px;perspective:148px}
@@ -375,17 +499,18 @@
 /* ── 手机横屏适配:小屏时铺满视口、压缩字号间距 ── */
 @media (max-height:600px){
   #hlm-app{height:720px;border-radius:14px;box-shadow:0 10px 40px rgba(30,50,70,.35)}
-  .hlm-topinfo{top:6px;left:10px;right:10px;font-size:10px;letter-spacing:.5px;gap:6px}
+  .wx-card{top:6px;left:10px;width:140px;padding:8px 6px 6px}
+  .wx-time{font-size:26px}
+  .hlm-topmenu{top:146px}
   .favor-card{width:160px;height:214px;top:6px;right:10px}
   .favor-card .title{font-size:15px}
   .favor-card .caption{font-size:12px}
   .hlm-band{margin:0 8%;min-height:110px;padding:8px 88px 14px}
-  .hlm-imgnav{gap:5px;margin:-10px 8% 0 0;padding:0 0 8px}
+  .hlm-imgnav{gap:5px;margin:0 8% 0 0;padding:0}
   .hlm-inputbar{left:8%;right:8%}
   .hlm-ibtn{width:72px;height:36px}
-  .hlm-speaker{margin:0 0 4px 8%;gap:8px}
-  .hlm-speaker span{font-size:14px;letter-spacing:3px}
-  .hlm-speaker::before{width:34px}
+  .hlm-speaker{margin:0 0 4px 8%}
+  .hlm-speaker span{font-size:14px;letter-spacing:3px;padding:4px 10px 4px 13px}
   .hlm-story{max-height:120px;font-size:13.5px;line-height:1.8}
   .hlm-next{right:14px;bottom:10px;width:16px;height:16px;perspective:125px}
   .hlm-corner{--cell-size:12px}
@@ -719,9 +844,12 @@ function applyWorld(v, force){
   const w = world.天气 || (v && v.天气) || '晴';
   const loc = world.路径[world.路径.length - 1] || (v && v.地点) || '—';
   $('#hlm-date').textContent = d;
-  $('#hlm-time').textContent = t;
-  $('#hlm-weather').textContent = w;
+  const tm = String(t).match(/(\d{1,2})\s*[时点:：]\s*(\d{1,2})?/);
+  $('#hlm-time').textContent = tm ? (tm[1] + ':' + String(tm[2] || '0').padStart(2, '0')) : t;
   $('#hlm-loc').textContent = world.路径.join(' · ');
+  /* 天气卡动画:雨→rainy,阴/云→cloudy,其余(晴)→sunny;夜间同款 */
+  const wxAnim = /雨/.test(w) ? 'rainy' : /阴|云/.test(w) ? 'cloudy' : 'sunny';
+  ['cloudy','sunny','rainy'].forEach(k => { const el = $('#anim-' + k); if (el) el.classList.toggle('hidden', k !== wxAnim); });
   const wasW = app.dataset.weather, wasNight = nightOn;
   if (world.昼夜) nightOn = /(夜|晚)/.test(world.昼夜);
   else { const mh = String(t).match(/(\d{1,2})\s*[时点]/); nightOn = mh ? (+mh[1] >= 18 || +mh[1] < 6) : false; }
