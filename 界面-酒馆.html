@@ -6,12 +6,13 @@
   </div>
   <div class="hlm-fx" id="hlm-fx"></div>
 
-  <!-- 左上角天气卡:日期/时间/地点 + 天气动画;数据匹配正文 <date>/<scene> 标签,随天气自动切换 -->
+  <!-- 左上角天气卡(参考汉堡斜角卡:橙色影层+白卡体,hover 摆正):日期/时间/地点 + 天气动画;数据匹配正文 <date>/<scene> 标签 -->
   <div class="wx-card" id="wxCard">
-    <span class="wx-date" id="hlm-date">—</span>
-    <span class="wx-time" id="hlm-time">—</span>
-    <span class="wx-loc" id="hlm-loc">—</span>
-    <div class="wx-anim">
+    <div class="wx-content">
+      <span class="wx-date" id="hlm-date">—</span>
+      <span class="wx-time" id="hlm-time">—</span>
+      <span class="wx-loc" id="hlm-loc">—</span>
+      <div class="wx-anim">
       <!-- 多云 -->
       <div class="loader cloudy" id="anim-cloudy">
         <svg id="cloudy-cloud" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -100,6 +101,7 @@
       </div>
     </div>
   </div>
+  </div>
 
   <!-- 好感度立绘卡片(替换原 hlm-favor 文字显示):正面=林小满,背面=宋昭;悬停出姓名+好感度,点击翻面 -->
   <div class="favor-card" id="cardContainer">
@@ -123,11 +125,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="hlm-topmenu">
-    <button class="hlm-tbtn" id="hlm-tb-plan">✎ 思路</button>
-    <button class="hlm-tbtn" id="hlm-tb-var">☰ 变量</button>
   </div>
 
   <div class="hlm-stage">
@@ -155,8 +152,15 @@
     <div class="hlm-next" id="hlm-next" style="display:none"><div class="load-inner load-one"></div><div class="load-inner load-two"></div><div class="load-inner load-three"></div></div>
   </div>
 
-  <!-- 贴图按钮(功能栏:承接原 quicknav 的全部功能) -->
-  <nav class="hlm-imgnav">
+  <!-- 贴图按钮:同一行(左=思路/变量/地图/日历 对齐对话框左缘,右=功能菜单) -->
+  <div class="hlm-navrow">
+    <nav class="hlm-leftnav">
+      <button class="hlm-ibtn" id="hlm-btn-plan" data-tip="思路" data-name="plan"><i class="idle"></i><i class="hov"></i></button>
+      <button class="hlm-ibtn" id="hlm-btn-vars" data-tip="变量" data-name="vars"><i class="idle"></i><i class="hov"></i></button>
+      <button class="hlm-ibtn" id="hlm-btn-map"  data-tip="地图" data-name="map"><i class="idle"></i><i class="hov"></i></button>
+      <button class="hlm-ibtn" id="hlm-btn-cal"  data-tip="日历" data-name="calendar"><i class="idle"></i><i class="hov"></i></button>
+    </nav>
+    <nav class="hlm-imgnav">
     <button class="hlm-ibtn" id="hlm-btn-send"  data-tip="输入回复"   data-name="message"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-back"  data-tip="回上一行"   data-name="back"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-auto"  data-tip="自动播放"   data-name="auto"><i class="idle"></i><i class="hov"></i></button>
@@ -164,7 +168,8 @@
     <button class="hlm-ibtn" id="hlm-btn-hide"  data-tip="隐藏界面"   data-name="hide"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-diary" data-tip="日记"       data-name="diary"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-fs"    data-tip="全屏"       data-name="full"><i class="idle"></i><i class="hov"></i></button>
-  </nav>
+    </nav>
+  </div>
 
     <div class="hlm-inputbar" id="hlm-inputbar" style="display:none">
     <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送,Esc 收起)">
@@ -205,6 +210,20 @@
       <div class="hlm-diary-list" id="hlm-log-list"></div>
     </div>
   </div>
+  <div class="hlm-modal" id="hlm-modal-map">
+    <div class="hlm-sheet">
+      <div class="hlm-sheet-head"><span class="hlm-s-cn">地图</span><span class="hlm-s-en">MAP</span><button class="hlm-x" data-close="hlm-modal-map">✕</button></div>
+      <div id="hlm-map-body"></div>
+      <div class="hlm-note">位置随正文场景标签更新</div>
+    </div>
+  </div>
+  <div class="hlm-modal" id="hlm-modal-cal">
+    <div class="hlm-sheet">
+      <div class="hlm-sheet-head"><span class="hlm-s-cn">日历</span><span class="hlm-s-en">CALENDAR</span><button class="hlm-x" data-close="hlm-modal-cal">✕</button></div>
+      <div id="hlm-cal-body"></div>
+      <div class="hlm-note">日期时间随正文标签更新</div>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -235,19 +254,29 @@
 @keyframes twk{0%,100%{opacity:.1;transform:scale(.8)}50%{opacity:.9;transform:scale(1.25)}}
 @keyframes rise{0%{transform:translate(0,0);opacity:0}15%{opacity:.55}80%{opacity:.2}100%{transform:translateY(-90vh) translateX(3vw);opacity:0}}
 
-/* ── 左上角天气卡(日期/时间/地点+天气动画,数据来自正文标签) ── */
-.wx-card{position:absolute;z-index:6;top:12px;left:18px;width:176px;
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  background:rgba(255,255,255,.8);border:1px solid rgba(40,44,53,.28);padding:10px 8px 8px;
-  font-variant-numeric:tabular-nums;text-shadow:0 1px 6px rgba(255,255,255,.9)}
-.wx-date{font-size:12px;letter-spacing:1.5px;color:rgba(59,63,70,.75)}
-.wx-time{font-family:'Noto Serif SC','SimSun',serif;font-size:38px;line-height:1.15;font-weight:700;color:var(--rose);letter-spacing:2px}
-.wx-loc{font-size:11px;letter-spacing:1px;color:rgba(59,63,70,.75);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* ── 左上角天气卡(参考汉堡斜角卡:#ee9933 橙影层 rotateZ(5deg)+白卡体 rotateZ(-5deg),hover 摆正;数据来自正文标签) ── */
+.wx-card{position:absolute;z-index:6;top:12px;left:18px;width:176px;height:176px;
+  font-variant-numeric:tabular-nums;overflow:visible}
+.wx-card::before,.wx-card .wx-content{border-radius:5px;
+  box-shadow:0 0 5px 1px #00000022;transition:transform 300ms,box-shadow 200ms}
+.wx-card::before{position:absolute;content:' ';display:block;width:100%;height:100%;
+  background-color:#ee9933;transform:rotateZ(5deg)}
+.wx-card .wx-content{position:absolute;width:100%;height:100%;background-color:#fff;
+  display:flex;flex-direction:column;justify-content:space-around;align-items:center;
+  transform:rotateZ(-5deg);overflow:hidden}
+.wx-card:hover::before,.wx-card:hover .wx-content{transform:rotateZ(0)}
+.wx-card:active::before,.wx-card:active .wx-content{box-shadow:none}
+.wx-date{font-size:14px;letter-spacing:.025em;color:#00000066}
+.wx-time{font-size:60px;line-height:1;color:#222;letter-spacing:0;
+  display:flex;align-items:center;justify-content:center}
+.wx-time .wx-colon{font-size:20px;font-weight:700;color:#ee9933;margin:0 1px}
+.wx-loc{font-size:11px;letter-spacing:.025em;color:#00000066;max-width:100%;padding:0 8px;box-sizing:border-box;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .wx-anim{position:relative;width:100%;height:56px;display:flex;align-items:center;justify-content:center}
 .wx-card .hidden{display:none}
 /* ── 天气 loader(用户提供,配色原样;多云/晴/雨随正文切换) ── */
 .loader{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.5);transform-origin:center}
-.loader.cloudy{--cloud-color:#4387f4;--arrows-color:#80b1ff;--time-animation:1s}
+.loader.cloudy{--cloud-color:#4F545C;--arrows-color:#90959C;--time-animation:1s}
 .loader.cloudy #cloudy-cloud{width:100px;height:100px}
 .loader.cloudy #cloudy-cloud rect{fill:var(--cloud-color)}
 .loader.cloudy #cloudy-cloud g:nth-child(3){transform-origin:50% 72.8938%;fill:var(--arrows-color);
@@ -257,13 +286,13 @@
 .loader.cloudy #cloudy-shapes g g circle:nth-child(3){animation-delay:calc((var(--time-animation) * 2) / -1.5)}
 .loader.cloudy svg #cloudy-lines g line{stroke-width:5;transform-origin:50% 50%;rotate:-65deg;
   animation:wx-lines calc(var(--time-animation) / 1.33) linear infinite}
-.loader.sunny{--sun-color:#fbbf24;--ray-color:#fcd34d;--time-animation:1.2s}
+.loader.sunny{--sun-color:#ee9933;--ray-color:#f5b453;--time-animation:1.2s}
 .loader.sunny #sunny-sun{width:100px;height:100px}
 .loader.sunny #sunny-sun rect{fill:var(--sun-color)}
 .loader.sunny #sunny-sun g:nth-child(3){transform-origin:50% 50%;animation:wx-rotation calc(var(--time-animation) * 1.5) linear infinite}
 .loader.sunny #sunny-sun g:nth-child(3) line{stroke:var(--ray-color);stroke-width:3;stroke-linecap:round;
-  filter:drop-shadow(0 0 3px rgba(252,211,77,.7))}
-.loader.rainy{--rain-cloud:#4b5563;--rain-line:#9ca3af;--time-animation:1s}
+  filter:drop-shadow(0 0 3px rgba(255,255,255,.35))}
+.loader.rainy{--rain-cloud:#4F545C;--rain-line:#90959C;--time-animation:1s}
 .loader.rainy #rainy-rain{width:100px;height:100px}
 .loader.rainy #rainy-rain rect{fill:var(--rain-cloud)}
 .loader.rainy #rainy-rain g:nth-child(3){transform-origin:50% 72.8938%;fill:var(--rain-line);
@@ -277,14 +306,12 @@
 @keyframes wx-lines{0%{transform:translateY(-10px)}100%{transform:translateY(8px)}}
 @keyframes wx-cloud{0%{cx:20;cy:60;r:15}50%{cx:50;cy:45;r:20}100%{cx:80;cy:60;r:15}}
 @keyframes wx-rain-fall{0%{transform:translateY(-10px)}100%{transform:translateY(8px)}}
-/* 顶栏菜单栏(加大;挪到天气卡下方) */
-.hlm-topmenu{position:absolute;z-index:7;top:176px;left:18px;right:18px;display:flex;gap:9px;flex-wrap:wrap}
-.hlm-tbtn{background:rgba(255,255,255,.5);border:1px solid rgba(59,63,70,.14);border-radius:8px;
-  color:rgba(60,80,100,.85);font-family:inherit;font-size:13px;letter-spacing:1.5px;cursor:pointer;
-  padding:6px 16px;backdrop-filter:blur(6px);transition:all .15s;text-shadow:0 0 4px rgba(255,255,255,.6)}
-.hlm-tbtn:hover{color:var(--rose);border-color:rgba(40,44,53,.45);background:rgba(255,255,255,.75)}
-.hlm-tbtn.on{color:var(--rose);border-color:rgba(40,44,53,.55)}
-#hlm-app.hideui .hlm-topmenu{display:none}
+/* 同一行按钮容器:左信息组+右功能组,左右边距对齐对话框(20%);按钮缩至 72px 保证 11 个同行不折行 */
+.hlm-navrow{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin:0 20%;flex-wrap:wrap}
+.hlm-navrow .hlm-ibtn{width:72px;height:36px}
+.hlm-leftnav{display:flex;justify-content:flex-start;align-items:center;gap:8px;flex-wrap:wrap}
+#hlm-app.hideui .hlm-navrow{display:none}
 /* 发送输入条(点"发送"按钮弹出,悬于对话框上方) */
 .hlm-inputbar{position:absolute;z-index:8;left:20%;right:20%;bottom:70px;display:flex;gap:10px;
   background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border:1px solid rgba(40,44,53,.3);
@@ -346,10 +373,10 @@
   font-family:'Noto Serif SC','SimSun',serif;font-size:14px;letter-spacing:4px;color:var(--rose);
   text-shadow:0 0 10px rgba(255,255,255,.95)}
 
-#hlm-app.hideui .hlm-band,#hlm-app.hideui .wx-card,#hlm-app.hideui .hlm-imgnav{display:none}
+#hlm-app.hideui .hlm-band,#hlm-app.hideui .wx-card{display:none}
 
-.hlm-imgnav{position:relative;z-index:5;display:flex;justify-content:flex-end;align-items:center;
-  gap:10px;margin:0 20% 0 0;padding:0;flex-wrap:wrap}
+.hlm-imgnav{display:flex;justify-content:flex-end;align-items:center;
+  gap:8px;padding:0;flex-wrap:wrap}
 .hlm-ibtn{position:relative;width:96px;height:48px;border:none;cursor:pointer;
   background:transparent;padding:0;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
@@ -374,6 +401,14 @@
 .hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_diary.png')}
 .hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_full.png')}
 .hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_calendar.png')}
 /* AUTO 激活:强制显示 hover 图(粉色底) */
 .hlm-ibtn.on .hov{opacity:1}
 .hlm-ibtn.on .idle{opacity:0}
@@ -436,12 +471,12 @@
 .hlm-sprite.pop{animation:hlm-pop .5s cubic-bezier(.25,.9,.3,1.25)}
 @keyframes hlm-pop{0%{transform:translateX(-50%) scale(1)}40%{transform:translateX(-50%) scale(1.055)}100%{transform:translateX(-50%) scale(1)}}
 
-/* ── 弹窗:白纸极简 ── */
+/* ── 弹窗:白纸极简,屏幕居中 ── */
 .hlm-modal{position:absolute;inset:0;z-index:10;background:rgba(255,255,255,.28);backdrop-filter:blur(4px);
-  display:none;align-items:flex-end}
+  display:none;align-items:center;justify-content:center}
 .hlm-modal.open{display:flex}
-.hlm-sheet{width:100%;max-height:72%;overflow-y:auto;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
-  border-top:1px solid rgba(40,44,53,.35);padding:18px 8% 22px;scrollbar-width:thin}
+.hlm-sheet{width:60%;margin:0 auto;max-height:72%;overflow-y:auto;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+  border:1px solid rgba(40,44,53,.35);padding:18px 6% 22px;scrollbar-width:thin}
 .hlm-sheet-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:1px solid rgba(59,63,70,.12);padding-bottom:10px}
 .hlm-s-cn{font-family:'Noto Serif SC','SimSun',serif;font-size:17px;letter-spacing:6px;color:var(--rose);font-weight:700}
 .hlm-s-en{font-size:9px;letter-spacing:3px;color:rgba(59,63,70,.45)}
@@ -493,14 +528,16 @@
 /* ── 手机横屏适配:小屏时铺满视口、压缩字号间距 ── */
 @media (max-height:600px){
   #hlm-app{height:720px;border-radius:14px;box-shadow:0 10px 40px rgba(30,50,70,.35)}
-  .wx-card{top:6px;left:10px;width:140px;padding:8px 6px 6px}
-  .wx-time{font-size:26px}
-  .hlm-topmenu{top:146px}
+  .wx-card{top:6px;left:10px;width:140px;height:140px}
+  .wx-time{font-size:34px}
+  .wx-time .wx-colon{font-size:12px}
+  .hlm-navrow{margin:0 8%;gap:5px}
+  .hlm-leftnav{gap:5px}
   .favor-card{width:160px;height:214px;top:6px;right:10px}
   .favor-card .title{font-size:15px}
   .favor-card .caption{font-size:12px}
   .hlm-band{margin:0 8%;min-height:110px;padding:8px 88px 14px}
-  .hlm-imgnav{gap:5px;margin:0 8% 0 0;padding:0}
+  .hlm-imgnav{gap:5px;padding:0}
   .hlm-inputbar{left:8%;right:8%}
   .hlm-ibtn{width:72px;height:36px}
   .hlm-speaker{margin:0 0 4px 8%}
@@ -508,7 +545,7 @@
   .hlm-story{max-height:120px;font-size:13.5px;line-height:1.8}
   .hlm-next{right:14px;bottom:10px;width:16px;height:16px;perspective:125px}
   .hlm-corner{--cell-size:12px}
-  .hlm-sheet{padding:12px 5% 16px}
+  .hlm-sheet{width:84%;padding:12px 5% 16px}
   .hlm-kv{padding:6px 2px;font-size:12px}
 }
 </style>
@@ -838,7 +875,7 @@ function applyWorld(v, force){
   const loc = world.路径[world.路径.length - 1] || (v && v.地点) || '—';
   $('#hlm-date').textContent = d;
   const tm = String(t).match(/(\d{1,2})\s*[时点:：]\s*(\d{1,2})?/);
-  $('#hlm-time').textContent = tm ? (tm[1] + ':' + String(tm[2] || '0').padStart(2, '0')) : t;
+  $('#hlm-time').innerHTML = tm ? (tm[1] + '<span class="wx-colon">:</span>' + String(tm[2] || '0').padStart(2, '0')) : t;
   $('#hlm-loc').textContent = world.路径.join(' · ');
   /* 天气卡动画:雨→rainy,阴/云→cloudy,其余(晴)→sunny;夜间同款 */
   const wxAnim = /雨/.test(w) ? 'rainy' : /阴|云/.test(w) ? 'cloudy' : 'sunny';
@@ -1166,12 +1203,33 @@ document.querySelectorAll('.hlm-tab').forEach(t => t.addEventListener('click', (
 
 /* ---------- 弹窗与全屏 ---------- */
 $('#hlm-btn-diary').addEventListener('click', () => $('#hlm-modal-diary').classList.add('open'));
-$('#hlm-tb-var').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-var').classList.add('open'); });
-$('#hlm-tb-plan').addEventListener('click', () => {
+$('#hlm-btn-vars').addEventListener('click', () => { renderVarChanges(); $('#hlm-modal-var').classList.add('open'); });
+$('#hlm-btn-plan').addEventListener('click', () => {
   const el = $('#hlm-plan-text');
   el.textContent = planningText || '这条消息没有思维链。';
   $('#hlm-modal-plan').classList.add('open');
 });
+/* 地图面板:当前路径(地区 → 地点逐级列出) */
+function renderMap(){
+  const body = $('#hlm-map-body'); if (!body) return;
+  const path = world.路径 || [];
+  const cur = path[path.length - 1] || '—';
+  let html = '<div class="hlm-kv"><span>当前所在</span><b>' + cur + '</b></div>';
+  if (path.length > 1) html += '<div class="hlm-kv"><span>完整路径</span><b>' + path.join(' · ') + '</b></div>';
+  html += '<div class="hlm-kv"><span>天气</span><b>' + (world.天气 || '—') + (world.昼夜 ? ' · ' + world.昼夜 : '') + '</b></div>';
+  body.innerHTML = html;
+}
+$('#hlm-btn-map').addEventListener('click', () => { renderMap(); $('#hlm-modal-map').classList.add('open'); });
+/* 日历面板:当前日期/时间 */
+function renderCal(){
+  const body = $('#hlm-cal-body'); if (!body) return;
+  body.innerHTML =
+    '<div class="hlm-kv"><span>日期</span><b>' + (world.日期 || '—') + '</b></div>' +
+    '<div class="hlm-kv"><span>时间</span><b>' + (world.时间 || '—') + '</b></div>' +
+    '<div class="hlm-kv"><span>天气</span><b>' + (world.天气 || '—') + (world.昼夜 ? ' · ' + world.昼夜 : '') + '</b></div>' +
+    '<div class="hlm-kv"><span>地点</span><b>' + ((world.路径 || []).join(' · ') || '—') + '</b></div>';
+}
+$('#hlm-btn-cal').addEventListener('click', () => { renderCal(); $('#hlm-modal-cal').classList.add('open'); });
 /* 状态面板:渲染 <UpdateVariable> 里的变更项 */
 function renderVarChanges(){
   const block = $('#hlm-var-block'), list = $('#hlm-var-list');
