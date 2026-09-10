@@ -127,14 +127,6 @@
     </div>
   </div>
 
-  <!-- 顶栏贴图按钮:思路/变量/地图/日历 悬挂屏幕顶缘、水平居中(idle 白板在上半) -->
-  <nav class="hlm-topnav">
-    <button class="hlm-ibtn" id="hlm-btn-plan" data-tip="思路" data-name="plan"><i class="idle"></i><i class="hov"></i></button>
-    <button class="hlm-ibtn" id="hlm-btn-vars" data-tip="变量" data-name="vars"><i class="idle"></i><i class="hov"></i></button>
-    <button class="hlm-ibtn" id="hlm-btn-map"  data-tip="地图" data-name="map"><i class="idle"></i><i class="hov"></i></button>
-    <button class="hlm-ibtn" id="hlm-btn-cal"  data-tip="日历" data-name="calendar"><i class="idle"></i><i class="hov"></i></button>
-  </nav>
-
   <div class="hlm-stage">
     <div class="hlm-sprite xm" id="hlm-sprite-xm"><div class="hlm-stand"><span>林小满</span></div></div>
     <div class="hlm-sprite sz" id="hlm-sprite-sz"><div class="hlm-stand"><span>宋昭</span></div></div>
@@ -160,8 +152,14 @@
     <div class="hlm-next" id="hlm-next" style="display:none"><div class="load-inner load-one"></div><div class="load-inner load-two"></div><div class="load-inner load-three"></div></div>
   </div>
 
-  <!-- 贴图按钮:底栏只剩功能菜单,右对齐对话框右缘 -->
+  <!-- 贴图按钮:同一行(左=思路/变量/地图/日历 对齐对话框左缘,右=功能菜单) -->
   <div class="hlm-navrow">
+    <nav class="hlm-leftnav">
+      <button class="hlm-ibtn" id="hlm-btn-plan" data-tip="思路" data-name="plan"><i class="idle"></i><i class="hov"></i></button>
+      <button class="hlm-ibtn" id="hlm-btn-vars" data-tip="变量" data-name="vars"><i class="idle"></i><i class="hov"></i></button>
+      <button class="hlm-ibtn" id="hlm-btn-map"  data-tip="地图" data-name="map"><i class="idle"></i><i class="hov"></i></button>
+      <button class="hlm-ibtn" id="hlm-btn-cal"  data-tip="日历" data-name="calendar"><i class="idle"></i><i class="hov"></i></button>
+    </nav>
     <nav class="hlm-imgnav">
     <button class="hlm-ibtn" id="hlm-btn-send"  data-tip="输入回复"   data-name="message"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-back"  data-tip="回上一行"   data-name="back"><i class="idle"></i><i class="hov"></i></button>
@@ -308,18 +306,12 @@
 @keyframes wx-lines{0%{transform:translateY(-10px)}100%{transform:translateY(8px)}}
 @keyframes wx-cloud{0%{cx:20;cy:60;r:15}50%{cx:50;cy:45;r:20}100%{cx:80;cy:60;r:15}}
 @keyframes wx-rain-fall{0%{transform:translateY(-10px)}100%{transform:translateY(8px)}}
-/* 底栏按钮容器:只剩功能菜单,右对齐对话框右缘(20%);按钮 72px 同行不折行 */
-.hlm-navrow{position:relative;z-index:5;display:flex;justify-content:flex-end;align-items:center;
+/* 同一行按钮容器:左信息组+右功能组,左右边距对齐对话框(20%);按钮缩至 72px 保证 11 个同行不折行 */
+.hlm-navrow{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;
   gap:8px;margin:0 20%;flex-wrap:wrap}
 .hlm-navrow .hlm-ibtn{width:72px;height:36px}
+.hlm-leftnav{display:flex;justify-content:flex-start;align-items:center;gap:8px;flex-wrap:wrap}
 #hlm-app.hideui .hlm-navrow{display:none}
-/* 顶栏按钮:悬挂屏幕顶缘、水平居中,避开左天气卡/右好感卡;比底栏大一号
-   (idle 白板在上半,紧贴顶缘像一排吊牌);提示气泡翻到按钮下方 */
-.hlm-topnav{position:absolute;z-index:7;top:0;left:50%;transform:translateX(-50%);
-  display:flex;justify-content:center;align-items:flex-start;gap:10px}
-.hlm-topnav .hlm-ibtn{width:112px;height:56px}
-.hlm-topnav .hlm-ibtn::after{bottom:auto;top:calc(100% + 6px)}
-#hlm-app.hideui .hlm-topnav{display:none}
 /* 发送输入条(点"发送"按钮弹出,悬于对话框上方) */
 .hlm-inputbar{position:absolute;z-index:8;left:20%;right:20%;bottom:70px;display:flex;gap:10px;
   background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border:1px solid rgba(40,44,53,.3);
@@ -377,7 +369,7 @@
   border-left:1px solid rgba(79,84,92,.25);padding-left:12px;text-shadow:0 0 8px rgba(255,255,255,.8)}
 .hlm-sprite:not(.noimg) .hlm-stand{display:none}
 .hlm-sprite.gone{opacity:.04;filter:grayscale(1) blur(4px)}
-.hlm-gone-tag{position:absolute;top:66px;left:50%;transform:translateX(-50%);
+.hlm-gone-tag{position:absolute;top:14px;left:50%;transform:translateX(-50%);
   font-family:'Noto Serif SC','SimSun',serif;font-size:14px;letter-spacing:4px;color:var(--rose);
   text-shadow:0 0 10px rgba(255,255,255,.95)}
 
@@ -395,28 +387,28 @@
 .hlm-ibtn:hover .idle{opacity:0}
 .hlm-ibtn:hover .hov{opacity:1}
 .hlm-ibtn:active{transform:scale(.98);transition-duration:.08s}
-.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_message.png')}
-.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_message.png')}
-.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_back.png')}
-.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_back.png')}
-.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_auto.png')}
-.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_auto.png')}
-.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_log.png')}
-.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_log.png')}
-.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_hide.png')}
-.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_hide.png')}
-.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_diary.png')}
-.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_diary.png')}
-.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_full.png')}
-.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_full.png')}
-.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_plan.png')}
-.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_plan.png')}
-.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_vars.png')}
-.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_vars.png')}
-.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_map.png')}
-.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_map.png')}
-.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_idle_calendar.png')}
-.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/ui/button_hover_calendar.png')}
+.hlm-ibtn[data-name=message] .idle{background-image:url('ui/button_idle_message.png')}
+.hlm-ibtn[data-name=message] .hov{background-image:url('ui/button_hover_message.png')}
+.hlm-ibtn[data-name=back] .idle{background-image:url('ui/button_idle_back.png')}
+.hlm-ibtn[data-name=back] .hov{background-image:url('ui/button_hover_back.png')}
+.hlm-ibtn[data-name=auto] .idle{background-image:url('ui/button_idle_auto.png')}
+.hlm-ibtn[data-name=auto] .hov{background-image:url('ui/button_hover_auto.png')}
+.hlm-ibtn[data-name=log] .idle{background-image:url('ui/button_idle_log.png')}
+.hlm-ibtn[data-name=log] .hov{background-image:url('ui/button_hover_log.png')}
+.hlm-ibtn[data-name=hide] .idle{background-image:url('ui/button_idle_hide.png')}
+.hlm-ibtn[data-name=hide] .hov{background-image:url('ui/button_hover_hide.png')}
+.hlm-ibtn[data-name=diary] .idle{background-image:url('ui/button_idle_diary.png')}
+.hlm-ibtn[data-name=diary] .hov{background-image:url('ui/button_hover_diary.png')}
+.hlm-ibtn[data-name=full] .idle{background-image:url('ui/button_idle_full.png')}
+.hlm-ibtn[data-name=full] .hov{background-image:url('ui/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('ui/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('ui/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('ui/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('ui/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('ui/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('ui/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('ui/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('ui/button_hover_calendar.png')}
 /* AUTO 激活:强制显示 hover 图(粉色底) */
 .hlm-ibtn.on .hov{opacity:1}
 .hlm-ibtn.on .idle{opacity:0}
@@ -540,9 +532,7 @@
   .wx-time{font-size:34px}
   .wx-time .wx-colon{font-size:12px}
   .hlm-navrow{margin:0 8%;gap:5px}
-  .hlm-topnav{gap:6px}
-  .hlm-topnav .hlm-ibtn{width:84px;height:42px}
-  .hlm-gone-tag{top:50px}
+  .hlm-leftnav{gap:5px}
   .favor-card{width:160px;height:214px;top:6px;right:10px}
   .favor-card .title{font-size:15px}
   .favor-card .caption{font-size:12px}
@@ -560,8 +550,42 @@
 }
 </style>
 
+<style>html,body{margin:0;background:#050409}</style><script>
+window.__mock = {
+  好感度: { 林小满: 62, 宋昭: 38, 当天变化情况: { 日期: '2024年3月15日', 已变化次数: 2 }, 上次变化日期: '2024年3月15日' },
+  角色状态: { 林小满是否消失: false, 宋昭是否消失: false },
+  林小满日记: {
+    diary_001: { 日期: '2024年3月10日', 日记正文: '今天在三楼又看见他趴着睡。阳光挪了半张桌子,我又没画完。喜欢是不用打草稿的,可我画的速写老是缺最后一笔。' },
+    diary_002: { 日期: '2024年3月13日', 日记正文: '宋昭姐什么都知道。她说我要是有一半她脑子就好了——不对,是她说我。反正卡片我揣着,背面的小人越画越多了。' }
+  },
+  宋昭日记: {
+    diary_001: { 日期: '2024年3月12日', 日记正文: '备忘录里那条八个字的,今天又翻出来看了一遍。没发。有些题卡两天也解不出来,第三天刷牙的时候突然就通了——但愿如此。' }
+  }
+};
+window.getVariables = async () => ({ stat_data: window.__mock });
+window.__fsHandler = null;
+window.eventOn = (ev, fn) => { window.__fsHandler = fn; };
+</script>
+<script type="text/plain" id="hlm-story-raw">
+<date>2024年3月15日 15时20分</date>
+<scene>文华区/澜川大学/图书馆/白天/晴</scene>
 
-<script type="text/plain" id="hlm-story-raw"></script>
+旁白:图书馆三楼，靠楼梯口这排桌子，椅背对着窗户，下午的太阳晒到半张桌面。{{user}}的胳膊压在摊开的笔记本上，脸埋在袖子里。宋昭坐他左手边，笔帽咬在嘴里。
+旁白:楼梯间里有人在背书。
+旁白:"古之善为士者，不积于形。形有盈缩，而道无增损……满而不溢者，天之中道；昭而不宣者，地之常德……"
+管理员 [男中年]: "同学，楼道里不要背书，声音传三楼都是。"
+旁白:背书声停了，隔着一扇门传来含混的应答。
+{{user}}: "好吵。"
+宋昭 [普通]: "谁让你在这儿睡觉的。这边靠楼梯口，有人在里面背书不是很正常吗。"
+{{user}}: "你不是说林小满要来找我吗，我就先来这边睡一会。"
+宋昭 [普通]: "我说的是她下午可能过来，可能，你听不懂可能两个字吗。"
+管理员 [男中年·离场]: "咳咳——那边说话的两位，图书馆保持安静。"
+旁白:楼梯口有脚步声，有人上楼。林小满站在书架尽头，头发散着，额头有汗，手里攥着手机。
+林小满 [害羞]: "宋昭姐……{{user}}也在啊。"
+宋昭 [普通]: "不是跟你说了他在这儿。"
+林小满 [普通]: "那个，{{user}}，你明天下午有没有事？商业街新开了家店，卖那种手工版画的明信片，我想去看看。"
+林小满 [害羞]: "你要是没事的话……一起去吧？"
+</script>
 
 <script>
 (function(){
@@ -571,7 +595,7 @@
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
    const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
-const BASE = 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@main/';
+const BASE = "";
 const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
 const HOME = { 晴:BASE+'background/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/user_home/livingroom/sunny_night.png', 阴:BASE+'background/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/user_home/livingroom/rainy_night.png' };
 const ASSETS = {
