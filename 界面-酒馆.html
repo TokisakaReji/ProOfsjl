@@ -715,6 +715,39 @@ html,body{margin:0!important;padding:0!important}
 (function(){
 'use strict';
 
+/* ════════ 酒馆助手 API 垫片(惰性转发) ════════
+   TH 的函数挂在 window.TavernHelper 对象上、不一定绑成全局裸名,且界面接管 body 的瞬间
+   TavernHelper 可能暂时不可见(酒馆助手在 DOM 变化后重绑 API——实测挂载瞬间拿不到对象)。
+   所以不做"等 TH 出现再镜像"——挂载瞬间就同步定义全局转发函数(typeof 恒为 'function',
+   模板各处的可用性判断全部通过),调用时才解析 TavernHelper;TH 迟到由各调用处的轮询
+   (watchGeneration 2s / fetchStat 600ms / 底部 500ms 初始化补跑)自然消化 */
+const __THFN = ['getChatMessages', 'getLastMessageId', 'triggerSlash', 'getVariables', 'eventOn', 'eventEmitOnce', 'substitudeMacros', 'saveSettingsDebounced', 'createChatMessages', 'setChatMessages', 'deleteChatMessages'];
+for (const __k of __THFN){
+  if (typeof window[__k] === 'undefined'){
+    window[__k] = function(...__args){
+      const TH = window.TavernHelper;
+      if (TH && typeof TH[__k] === 'function') return TH[__k].apply(TH, __args);
+      throw new Error('TavernHelper.' + __k + ' 未就绪');
+    };
+  }
+}
+/* TH 迟到补跑:就绪后若正文仍空(初始 API 读取因 TH 未就绪而失败)→ 补读+首渲染;并刷新楼层按钮 */
+let __n = 0; const __iv = setInterval(() => {
+  const ok = window.TavernHelper && typeof window.TavernHelper.getChatMessages === 'function';
+  if (ok || ++__n > 120){
+    clearInterval(__iv);
+    try {
+      if (!storyRaw && !window.__HLM_MSG && !window.__HLM_STORY && readStoryFromApi()){
+        loadStory(storyRaw);
+        applyLine(1, true);
+        applyWorld(null, true);
+        fetchStat(applyStat);
+      }
+      updateFloorBtns();
+    } catch(e){}
+  }
+}, 500);
+
 /* ════════ 素材配置 ════════
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
@@ -793,30 +826,43 @@ const stripPlanning = t => String(t || '').replace(/<konatan_planning~>[\s\S]*?(
 let planningText = '';   /* <konatan_planning~>思维链,顶栏"思路"查看 */
 let varPatchText = '';   /* <UpdateVariable>变量补丁,顶栏"状态"渲染 */
 let storyRaw = '';
+/* ③ API 读取(酒馆主路径):从末楼往前找最近带 <story> 的楼(末楼常是刚发出的用户输入楼,
+   最多回溯 6 层),msgFull/思维链/变量补丁/正文块一次填齐。取最后一个"完整的"<story>…</story>对,
+   思维链/tucao 里光提到<story>标签名(没有闭合对)不会被误认。不用 getCurrentMessageId——
+   酒馆助手已不提供它(实测)且恒指末楼无增量信息;酒馆助手迟到时由垫片(__thShim)补跑 */
+function readStoryFromApi(){
+  try {
+    if (typeof getChatMessages !== 'function' || typeof getLastMessageId !== 'function') return false;
+    for (let id = getLastMessageId(), back = 0; id >= 0 && back < 6; id--, back++){
+      const msgs = getChatMessages(id);
+      const full = (msgs && msgs[0] && msgs[0].message) || '';
+      if (!full || !/<story>/.test(stripPlanning(full))) continue;
+      msgFull = full;
+      const mp = full.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
+      if (mp) planningText = mp[1].trim();
+      const mv = stripPlanning(full).match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
+      if (mv) varPatchText = mv[0];
+      let mlast = null, mm;
+      const re = /<story>([\s\S]*?)<\/story>/g;
+      const noPlan = stripPlanning(full);
+      while ((mm = re.exec(noPlan))) mlast = mm;
+      if (!mlast) return false;
+      storyRaw = mlast[1];
+      return true;
+    }
+    return false;
+  } catch(e){ return false; }
+}
 try {
-  if (typeof getCurrentMessageId === 'function' && typeof getChatMessages === 'function'){
-    const msgs = getChatMessages(getCurrentMessageId());
-    msgFull = (msgs && msgs[0] && msgs[0].message) || '';
-    const mp = msgFull.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
-    if (mp) planningText = mp[1].trim();
-    const noPlan = stripPlanning(msgFull);
-    const mv = noPlan.match(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/);
-    if (mv) varPatchText = mv[0];
-  } else if (window.__HLM_MSG){ msgFull = window.__HLM_MSG; }   /* 本地预览:注入完整样例楼层,与酒馆同走③主路径 */
+  if (typeof getChatMessages === 'function' && typeof getLastMessageId === 'function'){
+    readStoryFromApi();
+  } else if (window.__HLM_MSG){ msgFull = window.__HLM_MSG; }   /* 本地预览:注入完整样例楼层,与酒馆同走解析主路径 */
 } catch(e) {}
 if (typeof window.__HLM_STORY === 'string' && window.__HLM_STORY.trim()){
   storyRaw = window.__HLM_STORY;                          /* ① 正则注入(首选) */
 } else if (($('#hlm-story-raw') || {}).textContent){
   storyRaw = $('#hlm-story-raw').textContent;             /* ② 本地预览 */
-} else {
-  /* ③ API 读取(酒馆主路径):取最后一个"完整的"<story>…</story>对。
-     思维链/tucao 里光提到<story>标签名(没有闭合对)不会被误认;一轮多块时新块覆盖旧块 */
-  let mlast = null, mm;
-  const re = /<story>([\s\S]*?)<\/story>/g;
-  const noPlan = stripPlanning(msgFull);
-  while ((mm = re.exec(noPlan))) mlast = mm;
-  if (mlast) storyRaw = mlast[1];
-}
+}   /* ③ API 读取:readStoryFromApi() 已同步跑过(storyRaw 已填),或酒馆助手未就绪等垫片补跑 */
 const world = { 日期:'', 时间:'', 昼夜:'', 天气:'', 路径:[] };   /* 世界状态:随正文标签输出,每楼必达 */
 let lines = [];
 /* 装载一段正文:解析<date>/<scene>标签并结构化行。可重复调用(如全屏中收到新回复时刷新) */
@@ -1516,6 +1562,7 @@ function watchGeneration(){
       if (block && block !== watchGeneration.last){
         clearInterval(timer);
         watchGeneration.last = block;
+        viewId = null;   /* 新回复到了:浏览态结束,回到跟随最新 */
         loadStory(block);
         applyLine(1, true);
         applyWorld(null, true);
@@ -1548,24 +1595,44 @@ inp.addEventListener('keydown', e => {
   if (e.key === 'Escape') { e.stopPropagation(); $('#hlm-inputbar').style.display = 'none'; }
 });
 
-/* ---------- 楼层导航:两侧 PREV/NEXT,全屏沉浸中直接翻楼 ----------
-   /go 同步酒馆楼层指针(滚动/激活楼/后续发送落点全部正确),轮询 id 到位后从目标楼原地重载:
-   正文(取最后一个完整 story 对)/世界状态/思维链/变量补丁/消息级变量一次刷齐。
+/* ---------- 楼层导航:菜单栏 PREV/NEXT,沉浸中翻看 AI 上一轮/下一轮回复 ----------
+   语义(2026-09-12 用户拍板):上一楼=AI 上一轮回复——第 2 楼点 PREV 到第 0 楼(开场白),
+   第 4 楼到第 2 楼:跳过夹在中间的用户输入楼,按"含 <story> 块的楼"逐一翻看。
+   纯前端浏览:实测踩坑,酒馆助手 getCurrentMessageId 恒指聊天末楼、/go 也不是跳楼层命令,
+   轮询指针永不就位=点了没反应;故不动酒馆指针,直接 getChatMessages(目标楼) 读内容原地渲染
+   ——零副作用,不影响生成落点,聊天流停在哪都不受影响。
+   viewId=null=跟随最新(收到新回复自动回跟随);浏览历史楼时状态面板保持激活楼数据
+   (message 级变量无按楼读取的接口),正文/立绘/世界状态/思维链/变量补丁照目标楼刷。
    立绘继承上一楼终态(loadStory 不清零)——在场的人切楼不消失、不重播出场动画 */
+let viewId = null;   /* 浏览指针:null=跟随最新楼 */
+function storyFloorIds(){
+  const out = [], last = getLastMessageId();
+  for (let i = 0; i <= last; i++){
+    try {
+      const m = getChatMessages(i);
+      if (!m || !m[0] || !m[0].message) continue;
+      if (m[0].is_user === true) continue;   /* 用户输入楼跳过;开场白/AI 回复都算可浏览楼(开场白常无 <story> 块) */
+      out.push(i);
+    } catch(e){}
+  }
+  return out;
+}
 function updateFloorBtns(){
   const prev = $('#hlm-fnav-prev'), next = $('#hlm-fnav-next');
-  if (typeof getCurrentMessageId !== 'function' || typeof getLastMessageId !== 'function'){
-    prev.style.display = 'none'; next.style.display = 'none';   /* 本地预览/无酒馆助手:整组隐藏 */
+  if (typeof getChatMessages !== 'function' || typeof getLastMessageId !== 'function'){
+    prev.style.display = 'none'; next.style.display = 'none';   /* 本地预览无伪API时:整组隐藏 */
     return;
   }
   try {
-    const cur = getCurrentMessageId(), last = getLastMessageId();
+    const ids = storyFloorIds();
+    if (!ids.length){ prev.classList.add('off'); next.classList.add('off'); return; }
     prev.style.display = ''; next.style.display = '';
-    prev.classList.toggle('off', !(cur > 0));
-    next.classList.toggle('off', !(last > 0 && cur < last));
+    const at = ids.indexOf((viewId === null) ? ids[ids.length - 1] : viewId);
+    prev.classList.toggle('off', at <= 0);
+    next.classList.toggle('off', viewId === null || at >= ids.length - 1);
   } catch(e){ prev.classList.add('off'); next.classList.add('off'); }
 }
-function reloadFloor(id){
+function reloadFloor(id, live){   /* live=目标楼就是最新楼(刷消息级变量);历史楼只换画面,状态面板保持激活楼 */
   try {
     const msgs = getChatMessages(id);
     const full = (msgs && msgs[0] && msgs[0].message) || '';
@@ -1574,39 +1641,40 @@ function reloadFloor(id){
     let mlast = null, mm;
     const re = /<story>([\s\S]*?)<\/story>/g;
     while ((mm = re.exec(noPlan))) mlast = mm;
-    if (!mlast) return;   /* 目标楼没有完整正文块(如纯输入楼):保持当前画面不动 */
+    /* 正文来源:最后一个 <story> 块;没有 story 块的 AI 楼(如手写开场白)→ 整楼当正文(剥思维链/变量块),
+       空楼(纯占位)不渲染保持画面 */
+    const storyText = mlast ? mlast[1]
+      : (noPlan.replace(/<UpdateVariable>[\s\S]*?<\/UpdateVariable>/g, '').replace(/<StatusPlaceHolderImpl\s*\/?>/g, '').trim() || null);
+    if (!storyText) return;
     const mp = full.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
     planningText = mp ? mp[1].trim() : '';   /* 顶栏"思路"跟楼走 */
     uiStat = null;                            /* 变量补丁是楼层增量:换楼后从目标楼重放 */
     watchGeneration.last = '';
-    loadStory(mlast[1]);
+    loadStory(storyText);
     applyLine(1, true);
     applyWorld(null, true);
-    applyVarPatch(full);
+    if (mlast) applyVarPatch(full);
     layoutSprites();
-    fetchStat(applyStat);   /* 消息级变量(好感度/是否消失)按激活楼刷新 */
+    if (live) fetchStat(applyStat);   /* 消息级变量只在激活楼可读,历史楼保持现有状态面板 */
     updateFloorBtns();
   } catch(e){}
 }
-function gotoFloor(delta){
-  if (typeof triggerSlash !== 'function' || typeof getCurrentMessageId !== 'function' || typeof getLastMessageId !== 'function') return;
-  let cur = 0, last = 0;
-  try { cur = getCurrentMessageId(); last = getLastMessageId(); } catch(e){ return; }
-  const target = cur + delta;
-  if (target < 0 || target > last) return;
-  if (watchGeneration.timer) { clearInterval(watchGeneration.timer); watchGeneration.timer = null; }   /* 翻楼优先于等待生成 */
-  try { triggerSlash('/go ' + target); } catch(e){ return; }
-  let tries = 0;
-  const iv = setInterval(() => {
-    tries++;
-    let id = null;
-    try { id = getCurrentMessageId(); } catch(e){}
-    if (id === target){ clearInterval(iv); reloadFloor(target); }
-    else if (tries > 25){ clearInterval(iv); updateFloorBtns(); }   /* /go 未生效:5s 兜底,恢复按钮态 */
-  }, 200);
+function browseFloor(dir){   /* dir=-1 上一轮回复 / +1 下一轮回复 */
+  if (typeof getChatMessages !== 'function' || typeof getLastMessageId !== 'function') return;
+  let ids;
+  try { ids = storyFloorIds(); } catch(e){ return; }
+  if (!ids.length) return;
+  if (viewId !== null && !ids.includes(viewId)) viewId = null;   /* 新楼层插入致指针失效:回跟随 */
+  const at = ids.indexOf((viewId === null) ? ids[ids.length - 1] : viewId);
+  const t = ids[at + dir];
+  if (t === undefined){ updateFloorBtns(); return; }
+  if (watchGeneration.timer){ clearInterval(watchGeneration.timer); watchGeneration.timer = null; }   /* 翻楼优先于等待生成 */
+  const isLatest = (at + dir === ids.length - 1);
+  viewId = isLatest ? null : t;   /* 翻回最新楼=回跟随态 */
+  reloadFloor(t, isLatest);
 }
-$('#hlm-fnav-prev').addEventListener('click', () => gotoFloor(-1));
-$('#hlm-fnav-next').addEventListener('click', () => gotoFloor(1));
+$('#hlm-fnav-prev').addEventListener('click', () => browseFloor(-1));
+$('#hlm-fnav-next').addEventListener('click', () => browseFloor(1));
 updateFloorBtns();
 
 let fsOn = false, savedStyle = null;
