@@ -160,9 +160,11 @@
     <div class="hlm-next" id="hlm-next" style="display:none"><div class="load-inner load-one"></div><div class="load-inner load-two"></div><div class="load-inner load-three"></div></div>
   </div>
 
-  <!-- 贴图按钮:底栏只剩功能菜单,右对齐对话框右缘 -->
+  <!-- 贴图按钮:菜单栏左组=楼层导航(上一楼/下一楼,/go 同步楼层指针后原地重载),右组=原功能键 -->
   <div class="hlm-navrow">
     <nav class="hlm-imgnav">
+    <button class="hlm-ibtn hlm-fnav" id="hlm-fnav-prev" data-tip="上一楼" data-name="prev"><i class="idle"></i><i class="hov"></i></button>
+    <button class="hlm-ibtn hlm-fnav" id="hlm-fnav-next" data-tip="下一楼" data-name="next"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-send"  data-tip="输入回复"   data-name="message"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-back"  data-tip="回上一行"   data-name="back"><i class="idle"></i><i class="hov"></i></button>
     <button class="hlm-ibtn" id="hlm-btn-auto"  data-tip="自动播放"   data-name="auto"><i class="idle"></i><i class="hov"></i></button>
@@ -438,28 +440,36 @@ html,body{margin:0!important;padding:0!important}
 .hlm-ibtn:hover .idle{opacity:0}
 .hlm-ibtn:hover .hov{opacity:1}
 .hlm-ibtn:active{transform:scale(.98);transition-duration:.08s}
-.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_message.png')}
-.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_message.png')}
-.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_back.png')}
-.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_back.png')}
-.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_auto.png')}
-.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_auto.png')}
-.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_log.png')}
-.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_log.png')}
-.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_hide.png')}
-.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_hide.png')}
-.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_diary.png')}
-.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_diary.png')}
-.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_full.png')}
-.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_full.png')}
-.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_plan.png')}
-.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_plan.png')}
-.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_vars.png')}
-.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_vars.png')}
-.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_map.png')}
-.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_map.png')}
-.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_calendar.png')}
-.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_calendar.png')}
+.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_message.png')}
+.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_message.png')}
+.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_back.png')}
+.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_back.png')}
+.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_auto.png')}
+.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_auto.png')}
+.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_log.png')}
+.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_log.png')}
+.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_hide.png')}
+.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_hide.png')}
+.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_diary.png')}
+.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_diary.png')}
+.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_full.png')}
+.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_calendar.png')}
+.hlm-ibtn[data-name=prev] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_prev.png')}
+.hlm-ibtn[data-name=prev] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_prev.png')}
+.hlm-ibtn[data-name=next] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_idle_next.png')}
+.hlm-ibtn[data-name=next] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/ui/paly/button_hover_next.png')}
+/* 楼层导航(上一楼/下一楼):固定在功能菜单栏最左(2026-09-12 用户拍板,两侧悬浮方案已驳回);
+   off=边界楼禁用;hideui 时随 navrow 一起藏 */
+.hlm-fnav.off{opacity:.25;pointer-events:none}
+#hlm-fnav-next{margin-right:auto}   /* 左组=翻楼,与右侧原功能键拉开距离 */
 /* AUTO 激活:强制显示 hover 图(粉色底) */
 .hlm-ibtn.on .hov{opacity:1}
 .hlm-ibtn.on .idle{opacity:0}
@@ -709,7 +719,7 @@ html,body{margin:0!important;padding:0!important}
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
    const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
-const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
+const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.9/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
 const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
 const KONBINI = { 晴:BASE+'background/General_Scenarios/konbini_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/konbini_sunnynight.png', 阴:BASE+'background/General_Scenarios/konbini_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/konbini_cloudynight.png', 雨:BASE+'background/General_Scenarios/konbini_rainyday.png', 雨夜:BASE+'background/General_Scenarios/konbini_rainynight.png' };
 const HOME = { 晴:BASE+'background/Qiwu_District/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/Qiwu_District/user_home/livingroom/sunny_night.png', 阴:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/Qiwu_District/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/Qiwu_District/user_home/livingroom/rainy_night.png' };
@@ -813,9 +823,10 @@ let lines = [];
 function loadStory(raw){
   world.日期 = ''; world.时间 = ''; world.昼夜 = ''; world.天气 = ''; world.路径 = [];
   world.在场 = {};
-  shown = 0; curSpeaker = ''; npcState = null;
-  curFace['林小满'] = '普通'; curFace['宋昭'] = '普通';
-  entered['林小满'] = false; entered['宋昭'] = false;
+  shown = 0;
+  /* 立绘跨楼继承(用户拍板"上一楼没离场的人,下一楼立绘别重新出来"):
+     entered/curFace/npcState/curSpeaker 一律不清零——computeState 以当前值为初值做增量重算,
+     本楼的<在场>标签(优先)/开口/exit 标记照常覆盖;首次加载时这些变量本就是初始空白,行为不变 */
   let text = raw;
   const grab = tag => {
     const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
@@ -1238,8 +1249,11 @@ function updateNpcSprite(){
    语义:NPC出场后持续在台上,直到 [名字/npc 离场] 标记行才消失(与主角一致,统一由标记管理);
    主角首次开口登场,标记行消失,再开口重新登场 */
 function computeState(n){
-  const en = { '林小满':false, '宋昭':false }, fc = { '林小满':'普通', '宋昭':'普通' };
-  let sp = '', npc = null, npcGone = false;
+  /* 初值=继承上一楼终态(在场/表情/说话人主位/NPC 立绘):
+     本楼有<在场>标签→标签优先覆盖;开口→登场或换表情;exit→离场;都没有→原样保留(立绘跨楼不断) */
+  const en = { '林小满':entered['林小满'], '宋昭':entered['宋昭'] };
+  const fc = { '林小满':curFace['林小满'], '宋昭':curFace['宋昭'] };
+  let sp = curSpeaker, npc = npcState, npcGone = false;
   const byTag = Object.keys(world.在场 || {}).length > 0;
   if (byTag){ en['林小满'] = !!world.在场['林小满']; en['宋昭'] = !!world.在场['宋昭']; }
   for (let i = 0; i < n; i++){
@@ -1488,6 +1502,7 @@ document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click
 const inp = $('#hlm-input');
 function watchGeneration(){
   let tries = 0;
+  if (watchGeneration.timer) clearInterval(watchGeneration.timer);   /* 重入:先清旧轮询(切楼时也要能打断等待) */
   const timer = setInterval(() => {
     tries++;
     try {
@@ -1504,9 +1519,11 @@ function watchGeneration(){
         loadStory(block);
         applyLine(1, true);
         applyWorld(null, true);
+        updateFloorBtns();   /* 新楼落位:楼层总数变了,重刷 PREV/NEXT 可用态 */
       } else if (tries > 120) clearInterval(timer);
     } catch(e){ if (tries > 120) clearInterval(timer); }
   }, 2000);
+  watchGeneration.timer = timer;
 }
 watchGeneration.last = '';
 function sendUser(){
@@ -1530,6 +1547,67 @@ inp.addEventListener('keydown', e => {
   if (e.key === 'Enter') { e.stopPropagation(); sendUser(); }
   if (e.key === 'Escape') { e.stopPropagation(); $('#hlm-inputbar').style.display = 'none'; }
 });
+
+/* ---------- 楼层导航:两侧 PREV/NEXT,全屏沉浸中直接翻楼 ----------
+   /go 同步酒馆楼层指针(滚动/激活楼/后续发送落点全部正确),轮询 id 到位后从目标楼原地重载:
+   正文(取最后一个完整 story 对)/世界状态/思维链/变量补丁/消息级变量一次刷齐。
+   立绘继承上一楼终态(loadStory 不清零)——在场的人切楼不消失、不重播出场动画 */
+function updateFloorBtns(){
+  const prev = $('#hlm-fnav-prev'), next = $('#hlm-fnav-next');
+  if (typeof getCurrentMessageId !== 'function' || typeof getLastMessageId !== 'function'){
+    prev.style.display = 'none'; next.style.display = 'none';   /* 本地预览/无酒馆助手:整组隐藏 */
+    return;
+  }
+  try {
+    const cur = getCurrentMessageId(), last = getLastMessageId();
+    prev.style.display = ''; next.style.display = '';
+    prev.classList.toggle('off', !(cur > 0));
+    next.classList.toggle('off', !(last > 0 && cur < last));
+  } catch(e){ prev.classList.add('off'); next.classList.add('off'); }
+}
+function reloadFloor(id){
+  try {
+    const msgs = getChatMessages(id);
+    const full = (msgs && msgs[0] && msgs[0].message) || '';
+    if (!full) return;
+    const noPlan = stripPlanning(full);
+    let mlast = null, mm;
+    const re = /<story>([\s\S]*?)<\/story>/g;
+    while ((mm = re.exec(noPlan))) mlast = mm;
+    if (!mlast) return;   /* 目标楼没有完整正文块(如纯输入楼):保持当前画面不动 */
+    const mp = full.match(/<konatan_planning~>([\s\S]*?)(<\/konatan_planning~>|$)/);
+    planningText = mp ? mp[1].trim() : '';   /* 顶栏"思路"跟楼走 */
+    uiStat = null;                            /* 变量补丁是楼层增量:换楼后从目标楼重放 */
+    watchGeneration.last = '';
+    loadStory(mlast[1]);
+    applyLine(1, true);
+    applyWorld(null, true);
+    applyVarPatch(full);
+    layoutSprites();
+    fetchStat(applyStat);   /* 消息级变量(好感度/是否消失)按激活楼刷新 */
+    updateFloorBtns();
+  } catch(e){}
+}
+function gotoFloor(delta){
+  if (typeof triggerSlash !== 'function' || typeof getCurrentMessageId !== 'function' || typeof getLastMessageId !== 'function') return;
+  let cur = 0, last = 0;
+  try { cur = getCurrentMessageId(); last = getLastMessageId(); } catch(e){ return; }
+  const target = cur + delta;
+  if (target < 0 || target > last) return;
+  if (watchGeneration.timer) { clearInterval(watchGeneration.timer); watchGeneration.timer = null; }   /* 翻楼优先于等待生成 */
+  try { triggerSlash('/go ' + target); } catch(e){ return; }
+  let tries = 0;
+  const iv = setInterval(() => {
+    tries++;
+    let id = null;
+    try { id = getCurrentMessageId(); } catch(e){}
+    if (id === target){ clearInterval(iv); reloadFloor(target); }
+    else if (tries > 25){ clearInterval(iv); updateFloorBtns(); }   /* /go 未生效:5s 兜底,恢复按钮态 */
+  }, 200);
+}
+$('#hlm-fnav-prev').addEventListener('click', () => gotoFloor(-1));
+$('#hlm-fnav-next').addEventListener('click', () => gotoFloor(1));
+updateFloorBtns();
 
 let fsOn = false, savedStyle = null;
 $('#hlm-btn-fs').addEventListener('click', toggleFs);
@@ -1831,7 +1909,11 @@ const playHoverSnd = (function(){
   paint(); progress();
 })();
 
-/* 调试钩子:仅供本地预览控制台使用,酒馆内无人调用 */
-window.__hlm = { world: world, applyWorld: applyWorld, advance: () => advance(true), back: back };
+/* 调试钩子:仅供本地预览控制台与冒烟测试使用,酒馆内无人调用 */
+window.__hlm = { world: world, applyWorld: applyWorld, advance: () => advance(true), back: back,
+  loadStory: loadStory, applyLine: applyLine,
+  state: () => ({ en: { '林小满': entered['林小满'], '宋昭': entered['宋昭'] },
+                  fc: { '林小满': curFace['林小满'], '宋昭': curFace['宋昭'] },
+                  sp: curSpeaker, npc: npcState, shown: shown, lines: lines.length }) };
 })();
 </script>
