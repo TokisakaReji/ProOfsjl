@@ -173,7 +173,7 @@
     </nav>
   </div>
 
-  <!-- 音乐播放器(左下角):波浪圆钮点击展开黑卡;网易云外链 BGM(歌单摘自 audio/BGM 外链.txt,"特殊"组按标注暂不收) -->
+  <!-- 音乐播放器(左下角):波浪圆钮点击展开黑卡;YouTube IFrame 外链 BGM(平台扛版权,仓库零存储) -->
   <div class="hlm-music" id="hlm-music">
     <div class="hlm-music-wave" id="hlm-music-wave" title="BGM"></div>
     <div class="hlm-music-card" id="hlm-music-card">
@@ -181,7 +181,7 @@
         <div class="hlm-mus-cover"><img id="hlm-mus-cover" alt="" referrerpolicy="no-referrer"></div>
         <div class="hlm-mus-info">
           <div class="hlm-mus-title" id="hlm-mus-title">BGM</div>
-          <div class="hlm-mus-artist" id="hlm-mus-artist">网易云外链</div>
+          <div class="hlm-mus-artist" id="hlm-mus-artist">YouTube 外链</div>
         </div>
       </div>
       <div class="hlm-mus-ctrls">
@@ -438,28 +438,28 @@ html,body{margin:0!important;padding:0!important}
 .hlm-ibtn:hover .idle{opacity:0}
 .hlm-ibtn:hover .hov{opacity:1}
 .hlm-ibtn:active{transform:scale(.98);transition-duration:.08s}
-.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_message.png')}
-.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_message.png')}
-.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_back.png')}
-.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_back.png')}
-.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_auto.png')}
-.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_auto.png')}
-.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_log.png')}
-.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_log.png')}
-.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_hide.png')}
-.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_hide.png')}
-.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_diary.png')}
-.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_diary.png')}
-.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_full.png')}
-.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_full.png')}
-.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_plan.png')}
-.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_plan.png')}
-.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_vars.png')}
-.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_vars.png')}
-.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_map.png')}
-.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_map.png')}
-.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_idle_calendar.png')}
-.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/ui/paly/button_hover_calendar.png')}
+.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_message.png')}
+.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_message.png')}
+.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_back.png')}
+.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_back.png')}
+.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_auto.png')}
+.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_auto.png')}
+.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_log.png')}
+.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_log.png')}
+.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_hide.png')}
+.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_hide.png')}
+.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_diary.png')}
+.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_diary.png')}
+.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_full.png')}
+.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/ui/paly/button_hover_calendar.png')}
 /* AUTO 激活:强制显示 hover 图(粉色底) */
 .hlm-ibtn.on .hov{opacity:1}
 .hlm-ibtn.on .idle{opacity:0}
@@ -709,7 +709,7 @@ html,body{margin:0!important;padding:0!important}
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
    const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
-const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.7/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
+const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.8/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
 const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
 const KONBINI = { 晴:BASE+'background/General_Scenarios/konbini_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/konbini_sunnynight.png', 阴:BASE+'background/General_Scenarios/konbini_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/konbini_cloudynight.png', 雨:BASE+'background/General_Scenarios/konbini_rainyday.png', 雨夜:BASE+'background/General_Scenarios/konbini_rainynight.png' };
 const HOME = { 晴:BASE+'background/Qiwu_District/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/Qiwu_District/user_home/livingroom/sunny_night.png', 阴:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/Qiwu_District/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/Qiwu_District/user_home/livingroom/rainy_night.png' };
@@ -1597,29 +1597,28 @@ const playHoverSnd = (function(){
   });
 })();
 
-/* ---------- 音乐播放器:网易云外链 BGM ----------
-   歌单摘自 audio/BGM 外链.txt:日常 7 首 + 氛围 4 首 + nsfw 2 首(「特殊」组按标注暂不收)。
-   直链 = music.163.com/song/media/outer/url?id=N.mp3(服务端 302 到真实音频,<audio> 直接吃);
-   版权/失效歌会触发 error → 自动跳下一首(连续全挂才停下)。
-   <audio> 单例挂在顶层窗口 <html> 上(iframe 之外):楼层刷新/界面重载后仍是同一个 audio,跨楼不断歌;
-   拿不到顶层窗口(跨域沙箱)时退化为本窗音频。UI 监听换实例时先拆旧的,防跨楼累积泄漏 */
+/* ---------- 音乐播放器:YouTube IFrame 外链 BGM ----------
+   歌单同旧网易云版(专辑全部核实:素晴らしき日々/向日葵の教会と長い夏休み/GINKA/D.C./Manie+/殻ノ少女)。
+   引擎 = YouTube 官方 IFrame API(用户拍板 2026-09-12):平台扛版权、只贴视频 ID、流式播放、仓库零存储;
+   视频画面整个藏掉(宿主 iframe 固定到屏外),黑卡 UI 照旧;12 个 ID 逐个核验过非 live、时长对表、可嵌入(playableInEmbed)。
+   キスキラリ -Orgel- 已删(2026-09-12 用户拍板:网上没有 Orgel 版,替位曲不是同一首歌)。
+   播放器单例挂在顶层窗口(iframe 之外):楼层刷新/界面重载后仍是同一个播放器,跨楼不断歌;
+   旧实例回调经 __hlmBgm.handlers 二段跳——重载只换 handlers,播放器实例本身复用 */
 (function(){
   const PL = [
-    { id:4937382,    name:'主よ、人の望みの喜びよ', artist:'ryo (supercell)', cover:'https://p1.music.126.net/3rtl6iK4Cue6mhE02ZNj2A==/109951166171557761.jpg' },
-    { id:4937362,    name:'リビングゲーム', artist:'ryo (supercell)', cover:'https://p1.music.126.net/3rtl6iK4Cue6mhE02ZNj2A==/109951166171557761.jpg' },
-    { id:28700043,   name:'永遠を願うとき', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
-    { id:28699494,   name:'それは、ささやかな――希望(あした)', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
-    { id:28699491,   name:'希望の前で待ち合わせ -Piano solo-', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
-    { id:28700055,   name:'陽ざしと笑顔', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
-    { id:28700047,   name:'祝福', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
-    { id:2643057383, name:'カタシロと願い', artist:'松本文紀', cover:'https://p1.music.126.net/RHG6ZOsf1YGyVYlRU77JTQ==/109951170117213677.jpg' },
-    { id:454182,     name:'美春の告白', artist:'菅野祐悟', cover:'https://p1.music.126.net/Au888ZB41EXPr1b8e403gg==/840026883620874.jpg' },
-    { id:29005311,   name:'久遠…', artist:'MANYO', cover:'https://p1.music.126.net/DIgG1vd9H5pGGS4SH00WPw==/6674035580676728.jpg' },
-    { id:28466087,   name:'Lilac', artist:'MANYO', cover:'https://p1.music.126.net/CmgKk9RF8DabNa9qysR-gQ==/109951170965331107.jpg' },
-    { id:28466103,   name:'White memory', artist:'MANYO', cover:'https://p1.music.126.net/CmgKk9RF8DabNa9qysR-gQ==/109951170965331107.jpg' },
-    { id:28699498,   name:'キスキラリ -Orgel-', artist:'松本文紀', cover:'https://p2.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' }
+    { yt:'pBpX4ojToqA', name:'主よ、人の望みの喜びよ', artist:'ryo (supercell)', cover:'https://p1.music.126.net/3rtl6iK4Cue6mhE02ZNj2A==/109951166171557761.jpg' },
+    { yt:'DORkeovyXzI', name:'リビングゲーム', artist:'ryo (supercell)', cover:'https://p1.music.126.net/3rtl6iK4Cue6mhE02ZNj2A==/109951166171557761.jpg' },
+    { yt:'dnXH88AB5FM', name:'永遠を願うとき', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { yt:'nLQPsG8NMNg', name:'それは、ささやかな――希望(あした)', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { yt:'UB61cV0s2AM', name:'希望の前で待ち合わせ -Piano solo-', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { yt:'Q_ZAZkb_RYo', name:'陽ざしと笑顔', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { yt:'QdF_KOwcl-s', name:'祝福', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { yt:'Ty96veBApJ0', name:'カタシロと願い', artist:'松本文紀', cover:'https://p1.music.126.net/RHG6ZOsf1YGyVYlRU77JTQ==/109951170117213677.jpg' },
+    { yt:'CB5WhIoohS0', name:'美春の告白', artist:'菅野祐悟', cover:'https://p1.music.126.net/Au888ZB41EXPr1b8e403gg==/840026883620874.jpg' },
+    { yt:'1AjvytUWSrU', name:'久遠…', artist:'MANYO', cover:'https://p1.music.126.net/DIgG1vd9H5pGGS4SH00WPw==/6674035580676728.jpg' },
+    { yt:'nPtN0CN721o', name:'Lilac', artist:'MANYO', cover:'https://p1.music.126.net/CmgKk9RF8DabNa9qysR-gQ==/109951170965331107.jpg' },
+    { yt:'fSSFwQ0L7EE', name:'White memory', artist:'MANYO', cover:'https://p1.music.126.net/CmgKk9RF8DabNa9qysR-gQ==/109951170965331107.jpg' }
   ];
-  const urlOf = t => 'https://music.163.com/song/media/outer/url?id=' + t.id + '.mp3';
   const root = $('#hlm-music'), waveEl = $('#hlm-music-wave'), card = $('#hlm-music-card');
   if (!root || !card) return;
   /* 波浪 DOM 生成(4 层 × 24 根,视觉同参考样式;触发区与迷你收起钮共用,缩放交给 CSS) */
@@ -1636,29 +1635,94 @@ const playHoverSnd = (function(){
   };
   buildWave(waveEl);
   buildWave($('#hlm-mus-back'));
-  /* 顶层窗口单例 audio(跨楼连续);拿不到就退化为本窗 */
-  let audio = null;
-  try {
-    const top = window.top;
-    if (top && top.document && top.document !== document){
-      if (!top.document.getElementById('hlm-bgm-audio')){
-        const a = top.document.createElement('audio');
-        a.id = 'hlm-bgm-audio'; a.preload = 'none';
-        top.document.documentElement.appendChild(a);   /* 挂 <html> 下:body 整体替换也带不走它 */
-      }
-      audio = top.document.getElementById('hlm-bgm-audio');
-    }
-  } catch(e){}
-  if (!audio){
-    audio = document.createElement('audio'); audio.id = 'hlm-bgm-audio'; audio.preload = 'none';
-    document.documentElement.appendChild(audio);   /* 退化路径也挂 <html> 下(无 controls 不占视觉),便于测试与统一 */
+  /* 顶层窗口单例(跨楼连续):宿主 iframe 与全部状态都挂 top 上;拿不到顶层窗口时退化为本窗。
+     默认音量 20/100(=旧 audio 的 0.2,用户两次减半的拍板沿用);老单例保留用户已调的音量 */
+  const topWin = (() => { try { const t = window.top; if (t && t.document && t.document !== document) return t; } catch(e){} return window; })();
+  const S = topWin.__hlmBgm || (topWin.__hlmBgm = {
+    yt: null, ready: false, apiPromise: null, pending: null, watchdog: null,
+    idx: 0, trackId: null, vol: 20, handlers: null
+  });
+  let idx = S.idx || 0, fails = 0, retryTimer = null, playing = false;
+  /* 挂掉时的保底:BGM 绝不放弃——30s 后静默换下一首重试。YT 的失败是按首的(禁嵌入/删除等不来),
+     轮转才能碰到能听的;玩家断网/关代理时等于每 30s 把歌单轮询一遍 */
+  function scheduleRetry(){
+    if (retryTimer) clearTimeout(retryTimer);
+    retryTimer = setTimeout(() => { retryTimer = null; load(idx + 1, true); }, 30000);
   }
-  if (!audio.__hlmInit){ audio.volume = 0.2; audio.__hlmInit = true; }   /* 默认音量 0.8→0.4→0.2(用户两次减半);老单例保留用户已调的音量 */
-  let idx = 0, fails = 0;
-  const LIST = [];
-  const on = (ev, fn) => { LIST.push([ev, fn]); audio.addEventListener(ev, fn); };
-  if (audio.__hlmClean){ try { audio.__hlmClean(); } catch(e){} }   /* 上一界面实例的监听拆掉,防跨楼累积 */
-  audio.__hlmClean = () => { LIST.forEach(p => { try { audio.removeEventListener(p[0], p[1]); } catch(e){} }); };
+  /* ---- 引擎:YT IFrame API 懒加载(首次播放才注入脚本);宿主 iframe 固定到屏外,视觉零打扰 ---- */
+  function ensureApi(){
+    if (S.yt && S.ready) return Promise.resolve();
+    if (!S.apiPromise){
+      S.apiPromise = new Promise((res, rej) => {
+        const done = () => { if (topWin.YT && topWin.YT.Player){ S.apiFail = false; res(); return true; } return false; };
+        if (done()) return;
+        let polls = 0;
+        const iv = setInterval(() => {
+          if (done()) clearInterval(iv);
+          else if (++polls > 100){ clearInterval(iv); S.apiPromise = null; S.apiFail = true; rej(new Error('yt api timeout')); }
+        }, 200);
+        const prev = topWin.onYouTubeIframeAPIReady;
+        topWin.onYouTubeIframeAPIReady = function(){ try { if (prev) prev(); } catch(e){} done(); };
+        const sc = topWin.document.createElement('script');
+        sc.src = 'https://www.youtube.com/iframe_api';
+        /* 脚本加载失败=网络层不可达(内置预览面板/断网/代理没放行 youtube.com),与单曲失败区分:
+           置 apiFail 一次就进重试态,不再空轮 3 首也不用等 15s 看门狗 */
+        sc.onerror = () => { clearInterval(iv); S.apiPromise = null; S.apiFail = true; rej(new Error('yt api load fail')); };
+        topWin.document.documentElement.appendChild(sc);
+      });
+    }
+    return S.apiPromise.then(() => {
+      if (S.yt) return;   /* 跨楼复用:实例已存在,回调会打到最新 handlers(见下),不重复建 */
+      const doc = topWin.document;
+      if (!doc.getElementById('hlm-bgm-yt')){
+        const st = doc.createElement('style');
+        st.textContent = '#hlm-bgm-yt{position:fixed!important;left:-9999px!important;top:0;width:200px;height:150px;border:0;pointer-events:none;}';
+        doc.documentElement.appendChild(st);
+        const host = doc.createElement('div'); host.id = 'hlm-bgm-yt';
+        doc.documentElement.appendChild(host);   /* 挂 <html> 下:body 整体替换也带不走它 */
+      }
+      S.ready = false;
+      S.yt = new topWin.YT.Player('hlm-bgm-yt', {
+        width: 200, height: 150,
+        playerVars: { controls: 0, disablekb: 1, playsinline: 1, rel: 0, fs: 0, iv_load_policy: 3 },
+        events: {
+          onReady: () => { const h = topWin.__hlmBgm.handlers; if (h) h.ready(); },
+          onStateChange: e => { const h = topWin.__hlmBgm.handlers; if (h) h.state(e.data); },
+          onError: e => { const h = topWin.__hlmBgm.handlers; if (h) h.error(e.data); },
+        }
+      });
+    });
+  }
+  /* 回调二段跳:楼层重载后旧播放器的回调永远打到最新界面实例的闭包上(不误伤已拆掉的旧 DOM) */
+  S.handlers = {
+    ready(){
+      S.ready = true;
+      if (S.watchdog){ clearTimeout(S.watchdog); S.watchdog = null; }
+      try { S.yt.setVolume(S.vol); } catch(e){}
+      if (S.pending === 'play') playCur();
+      else if (S.pending === 'cue') cueCur();
+      S.pending = null;
+      paint();
+    },
+    state(st){
+      if (st === 1){ playing = true; fails = 0; if (retryTimer){ clearTimeout(retryTimer); retryTimer = null; } }
+      else if (st === 0){ load(idx + 1, true); return; }   /* ENDED → 自动下一首 */
+      else if (st === 2 || st === 5){ playing = false; }   /* PAUSED / CUED;缓冲(3)与未开始(-1)不闪图标 */
+      paint();
+    },
+    error(){ onFail(); },
+  };
+  function cueCur(){ try { S.yt.cueVideoById(PL[idx].yt); } catch(e){} }
+  function playCur(){
+    try { S.yt.loadVideoById(PL[idx].yt); } catch(e){ onFail(); return; }
+    playing = true; paint();
+  }
+  function onFail(){
+    /* 连挂 3 首≈源整条不可达(关代理/断网):停止逐首打转,30s 后换下一首静默重试,绝不放弃;
+       单首挂(版权/禁嵌入/失效)仍自动跳下一首 */
+    if (++fails >= Math.min(3, PL.length)){ playing = false; paint(); scheduleRetry(); return; }
+    setTimeout(() => load(idx + 1, true), 800);
+  }
   const $m = id => document.getElementById(id);
   const titleEl = $m('hlm-mus-title'), artistEl = $m('hlm-mus-artist'), coverEl = $m('hlm-mus-cover');
   const curEl = $m('hlm-mus-cur'), remEl = $m('hlm-mus-rem');
@@ -1672,26 +1736,28 @@ const playHoverSnd = (function(){
     const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = t.name;
     const ar = document.createElement('span'); ar.className = 'ar'; ar.textContent = t.artist;
     it.appendChild(nm); it.appendChild(ar);
-    it.addEventListener('click', e => { e.stopPropagation(); load(i, true); });
+    it.addEventListener('click', e => { e.stopPropagation(); fails = 0; load(i, true); });
     listEl.appendChild(it);
     return it;
   });
   function paint(){
     const t = PL[idx];
+    const dead = fails >= 3;   /* 连挂 3 首=源暂不可达(玩家关了代理最常见),显示状态但绝不放弃 */
     titleEl.textContent = t.name;
-    artistEl.textContent = t.artist;   /* 不挂 1/13 计数(用户拍板) */
+    artistEl.textContent = dead ? '音频源不可达 · 自动重试中' : t.artist;   /* 不挂 1/12 计数(用户拍板) */
+    artistEl.style.color = dead ? '#b3543f' : '';
     coverEl.style.display = ''; coverEl.src = t.cover || '';
     coverEl.onerror = () => { coverEl.style.display = 'none'; };
-    const paused = audio.paused;
-    icPlay.style.display = paused ? '' : 'none';
-    icPause.style.display = paused ? 'none' : '';
+    icPlay.style.display = playing ? 'none' : '';
+    icPause.style.display = playing ? '' : 'none';
     items.forEach((it, i) => it.classList.toggle('on', i === idx));
     const cur = items[idx];
     if (cur && cur.scrollIntoView){ try { cur.scrollIntoView({ block: 'nearest' }); } catch(e){} }
     paintVol();
   }
   function progress(){
-    const d = audio.duration, c = audio.currentTime;
+    let d = 0, c = 0;
+    try { if (S.yt && S.ready){ d = S.yt.getDuration() || 0; c = S.yt.getCurrentTime() || 0; } } catch(e){}
     const p = (isFinite(d) && d > 0) ? (c / d * 100) : 0;
     fillEl.style.width = p + '%'; dotEl.style.left = p + '%';
     curEl.textContent = fmtT(c);
@@ -1699,60 +1765,70 @@ const playHoverSnd = (function(){
   }
   function load(i, autoplay){
     idx = (i + PL.length) % PL.length;
-    audio.src = urlOf(PL[idx]);
-    if (autoplay){ const p = audio.play(); if (p && p.catch) p.catch(() => {}); }
-    paint(); progress();
+    S.idx = idx; S.trackId = PL[idx].yt;
+    if (retryTimer){ clearTimeout(retryTimer); retryTimer = null; }   /* 任何切歌都取消待执行的重试,防鬼畜跳曲 */
+    playing = autoplay; paint(); progress();
+    ensureApi().then(() => {
+      if (!S.ready){   /* 播放器还在创建:挂起意图,onReady 时执行;15s 未就绪按失败处理下次重建 */
+        S.pending = autoplay ? 'play' : 'cue';
+        if (!S.watchdog) S.watchdog = setTimeout(() => { S.watchdog = null; if (!S.ready){ S.yt = null; S.apiPromise = null; onFail(); } }, 15000);
+        return;
+      }
+      if (autoplay) playCur(); else cueCur();
+    }).catch(() => { if (S.apiFail) fails = 2; onFail(); });   /* 网络层挂:fails=2→++=3 直接进重试态 */
   }
   function toggle(){
-    if (!audio.src){ load(0, true); return; }
-    if (audio.paused){ const p = audio.play(); if (p && p.catch) p.catch(() => {}); }
-    else audio.pause();
+    fails = 0;   /* 手动点播放=重新信任源,清掉快速失败计数 */
+    if (!S.yt || !S.ready){ load(0, true); return; }
+    let st = -1;
+    try { st = S.yt.getPlayerState(); } catch(e){}
+    if (st === 1){ try { S.yt.pauseVideo(); } catch(e){} playing = false; }
+    else { try { S.yt.playVideo(); } catch(e){} playing = true; }
+    paint();
   }
   $('#hlm-music').addEventListener('click', e => e.stopPropagation());   /* 播放器内任何点击都不冒泡到正文推进 */
   waveEl.addEventListener('click', () => { card.classList.add('show'); waveEl.style.display = 'none'; });
   $('#hlm-mus-back').addEventListener('click', e => { e.stopPropagation(); card.classList.remove('show'); waveEl.style.display = ''; });
   $('#hlm-mus-play').addEventListener('click', toggle);
-  $('#hlm-mus-prev').addEventListener('click', () => load(idx - 1, true));
-  $('#hlm-mus-next').addEventListener('click', () => load(idx + 1, true));
+  $('#hlm-mus-prev').addEventListener('click', () => { fails = 0; load(idx - 1, true); });
+  $('#hlm-mus-next').addEventListener('click', () => { fails = 0; load(idx + 1, true); });
   barEl.addEventListener('click', e => {
+    if (!S.yt || !S.ready) return;
     const r = barEl.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-    if (isFinite(audio.duration)) audio.currentTime = ratio * audio.duration;
+    try {
+      const d = S.yt.getDuration();
+      if (isFinite(d) && d > 0) S.yt.seekTo(ratio * d, true);
+    } catch(err){}
   });
   /* 音量:按钮弹出滑条(不显示数字);拖动即调,拖到 0 切静音图标;点别处收起 */
   const volBtn = $('#hlm-mus-vol'), volPop = $('#hlm-mus-volpop'), volRange = $('#hlm-mus-volrange');
   const icVol = $('#hlm-mus-ic-vol'), icMute = $('#hlm-mus-ic-mute');
   function paintVol(){
-    const muted = audio.volume <= 0.001;
+    const muted = S.vol <= 0;
     icVol.style.display = muted ? 'none' : '';
     icMute.style.display = muted ? '' : 'none';
-    if (document.activeElement !== volRange) volRange.value = Math.round(audio.volume * 100);
+    if (document.activeElement !== volRange) volRange.value = S.vol;
   }
   volBtn.addEventListener('click', e => { e.stopPropagation(); volPop.classList.toggle('open'); paintVol(); });
-  volRange.addEventListener('input', () => { audio.volume = volRange.value / 100; paintVol(); });
+  volRange.addEventListener('input', () => {
+    S.vol = +volRange.value;
+    try { if (S.yt && S.ready) S.yt.setVolume(S.vol); } catch(e){}
+    paintVol();
+  });
   volRange.addEventListener('click', e => e.stopPropagation());
   document.addEventListener('click', e => {
     if (volPop.classList.contains('open') && !e.target.closest('.hlm-mus-volpop') && !e.target.closest('#hlm-mus-vol')) volPop.classList.remove('open');
   });
-  on('timeupdate', progress);
-  on('playing', () => { fails = 0; paint(); });
-  on('pause', paint);
-  on('play', paint);
-  on('ended', () => load(idx + 1, true));
-  on('error', () => {
-    if (!audio.src || !/music\.163\.com/.test(audio.src)) return;
-    if (++fails >= PL.length){ paint(); return; }   /* 全军覆没:停下,不再打转 */
-    setTimeout(() => load(idx + 1, true), 800);
-  });
-  /* 单例已在播(跨楼重载场景):UI 反向对齐当前曲目与进度 */
-  if (audio.src){
-    const m = (audio.src.match(/[?&]id=(\d+)/) || []);
-    const i = PL.findIndex(t => String(t.id) === m[1]);
+  setInterval(progress, 500);   /* YT 无 timeupdate 事件,轮询驱动进度条(未就绪时 progress 内部自兜底) */
+  /* 单例已在播(跨楼重载场景):UI 反向对齐当前曲目与播放态 */
+  if (S.yt && S.ready && S.trackId){
+    const i = PL.findIndex(t => t.yt === S.trackId);
     if (i >= 0) idx = i;
-    paint(); progress();
-  } else {
-    paint();
+    let st = -1; try { st = S.yt.getPlayerState(); } catch(e){}
+    playing = (st === 1 || st === 3);
   }
+  paint(); progress();
 })();
 
 /* 调试钩子:仅供本地预览控制台使用,酒馆内无人调用 */
