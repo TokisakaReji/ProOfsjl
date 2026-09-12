@@ -173,6 +173,47 @@
     </nav>
   </div>
 
+  <!-- 音乐播放器(左下角):波浪圆钮点击展开黑卡;网易云外链 BGM(歌单摘自 audio/BGM 外链.txt,"特殊"组按标注暂不收) -->
+  <div class="hlm-music" id="hlm-music">
+    <div class="hlm-music-wave" id="hlm-music-wave" title="BGM"></div>
+    <div class="hlm-music-card" id="hlm-music-card">
+      <div class="hlm-mus-track">
+        <div class="hlm-mus-cover"><img id="hlm-mus-cover" alt="" referrerpolicy="no-referrer"></div>
+        <div class="hlm-mus-info">
+          <div class="hlm-mus-title" id="hlm-mus-title">BGM</div>
+          <div class="hlm-mus-artist" id="hlm-mus-artist">网易云外链</div>
+        </div>
+      </div>
+      <div class="hlm-mus-ctrls">
+        <div class="hlm-mus-time"><span id="hlm-mus-cur">0:00</span><span id="hlm-mus-rem">-0:00</span></div>
+        <div class="hlm-mus-bar" id="hlm-mus-bar"><div class="hlm-mus-fill" id="hlm-mus-fill"></div><div class="hlm-mus-dot" id="hlm-mus-dot"></div></div>
+        <div class="hlm-mus-btns">
+          <div class="hlm-mus-main">
+            <button id="hlm-mus-prev" title="上一首">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5"></path></svg>
+            </button>
+            <button id="hlm-mus-play" title="播放 / 暂停">
+              <svg id="hlm-mus-ic-play" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.314-1.233-.065-1.233-.696V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"></path></svg>
+              <svg id="hlm-mus-ic-pause" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 16 16" style="display:none"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"></path></svg>
+            </button>
+            <button id="hlm-mus-next" title="下一首">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.753l-6.267 3.636c-.54.313-1.233-.066-1.233-.697v-2.94l-6.267 3.636C.693 12.703 0 12.324 0 11.693V4.308c0-.63.693-1.01 1.233-.696L7.5 7.248v-2.94c0-.63.693-1.01 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"></path></svg>
+            </button>
+          </div>
+          <div class="hlm-mus-right">
+            <button id="hlm-mus-vol" title="音量">
+              <svg id="hlm-mus-ic-vol" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.7 2.32a.6.6 0 0 1 .3.52v10.32a.6.6 0 0 1-1.004.444L5.05 10.8H3.2A1.2 1.2 0 0 1 2 9.6V6.4a1.2 1.2 0 0 1 1.2-1.2h1.85l2.946-2.804a.6.6 0 0 1 .704-.076z"></path><path d="M11.2 5.2a.6.6 0 0 1 .847.047 4.3 4.3 0 0 1 0 5.506.6.6 0 1 1-.9-.794 3.1 3.1 0 0 0 0-3.918.6.6 0 0 1 .053-.841z"></path><path d="M13.05 3.45a.6.6 0 0 1 .848.017 6.9 6.9 0 0 1 0 9.066.6.6 0 1 1-.882-.814 5.7 5.7 0 0 0 0-7.438.6.6 0 0 1 .034-.831z"></path></svg>
+              <svg id="hlm-mus-ic-mute" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="display:none"><path d="M8.7 2.32a.6.6 0 0 1 .3.52v10.32a.6.6 0 0 1-1.004.444L5.05 10.8H3.2A1.2 1.2 0 0 1 2 9.6V6.4a1.2 1.2 0 0 1 1.2-1.2h1.85l2.946-2.804a.6.6 0 0 1 .704-.076z"></path><path d="M11.05 5.55a.6.6 0 0 1 .85 0l1 1 1-1a.6.6 0 1 1 .85.85l-1 1 1 1a.6.6 0 1 1-.85.85l-1-1-1 1a.6.6 0 1 1-.85-.85l1-1-1-1a.6.6 0 0 1 0-.85z"></path></svg>
+            </button>
+            <button id="hlm-mus-back" class="hlm-mus-back" title="收起"></button>
+            <div class="hlm-mus-volpop" id="hlm-mus-volpop"><input type="range" id="hlm-mus-volrange" min="0" max="100" value="20"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hlm-mus-list" id="hlm-mus-list"></div>
+    </div>
+  </div>
+
     <div class="hlm-inputbar" id="hlm-inputbar" style="display:none">
     <input id="hlm-input" type="text" maxlength="300" placeholder="以 {{user}} 的身份回应……(Enter 发送,Esc 收起)">
     <button id="hlm-btn-send2">发送 ➤</button>
@@ -397,28 +438,28 @@ html,body{margin:0!important;padding:0!important}
 .hlm-ibtn:hover .idle{opacity:0}
 .hlm-ibtn:hover .hov{opacity:1}
 .hlm-ibtn:active{transform:scale(.98);transition-duration:.08s}
-.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_message.png')}
-.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_message.png')}
-.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_back.png')}
-.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_back.png')}
-.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_auto.png')}
-.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_auto.png')}
-.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_log.png')}
-.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_log.png')}
-.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_hide.png')}
-.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_hide.png')}
-.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_diary.png')}
-.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_diary.png')}
-.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_full.png')}
-.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_full.png')}
-.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_plan.png')}
-.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_plan.png')}
-.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_vars.png')}
-.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_vars.png')}
-.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_map.png')}
-.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_map.png')}
-.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_idle_calendar.png')}
-.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/ui/button_hover_calendar.png')}
+.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_message.png')}
+.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_message.png')}
+.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_back.png')}
+.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_back.png')}
+.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_auto.png')}
+.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_auto.png')}
+.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_log.png')}
+.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_log.png')}
+.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_hide.png')}
+.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_hide.png')}
+.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_diary.png')}
+.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_diary.png')}
+.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_full.png')}
+.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/ui/paly/button_hover_calendar.png')}
 /* AUTO 激活:强制显示 hover 图(粉色底) */
 .hlm-ibtn.on .hov{opacity:1}
 .hlm-ibtn.on .idle{opacity:0}
@@ -454,7 +495,7 @@ html,body{margin:0!important;padding:0!important}
   text-shadow:0 0 6px rgba(255,255,255,.75),0 1px 2px rgba(255,255,255,.5)}
 #hlm-app ::-webkit-scrollbar{width:4px}
 #hlm-app ::-webkit-scrollbar-thumb{background:rgba(120,125,132,.3);border-radius:2px}
-.hlm-story p{margin:0;text-indent:2em}
+.hlm-story p{margin:0}   /* 旁白顶格(2026-09-12 用户要求去掉首行缩进) */
 .hlm-story p + p{margin-top:.6em}
 .hlm-story b{color:var(--rose);font-weight:700}
 /* 发送栏 */
@@ -466,8 +507,7 @@ html,body{margin:0!important;padding:0!important}
 .hlm-inputrow button{background:none;color:var(--rose);border:1px solid rgba(40,44,53,.55);border-radius:2px;padding:7px 22px;
   font-size:13px;cursor:pointer;font-family:'Noto Serif SC','SimSun',serif;letter-spacing:4px;font-weight:700;transition:all .15s}
 .hlm-inputrow button:hover{background:rgba(40,44,53,.12)}
-/* 对话行:台词顶格,说话人显示在左上角名牌(统一颜色,不再按角色区分) */
-.hlm-story .hlm-dlg{margin:0;text-indent:0}
+/* 对话行与旁白同款顶格(缩进已按要求移除);hlm-dlg 类保留作语义标记 */
 /* 待续指示:三弧旋转(用户提供 loader 代码,去掉 LOADING 文字)— 缩到和原立方体同尺寸 19px,颜色三种灰 */
 .hlm-next{position:absolute;right:20px;bottom:12px;cursor:pointer;z-index:2;
   display:flex;align-items:center;justify-content:center;width:19px;height:19px;perspective:148px}
@@ -536,6 +576,100 @@ html,body{margin:0!important;padding:0!important}
 .hlm-plan-text{margin:0;white-space:pre-wrap;font-family:'Noto Serif SC','SimSun',serif;font-size:13px;
   line-height:2;color:#3c4047;letter-spacing:.5px}
 
+/* ── 音乐播放器(左下角):波浪触发 ↔ 音乐卡;视觉按用户参考样式 1:1 ──
+   220px 波浪圆(#23232e 底,白系 bars 居中裁切)/纯黑 #000 卡 35px 圆角 420px 宽/52px 圆钮;
+   bars 常动(参考原样);迷你收起钮=缩小的波浪(scale .22) */
+.hlm-music{position:absolute;left:16px;bottom:14px;z-index:8}   /* 容器不缩放;波浪钮与卡片各自独立缩放(卡片用户反馈点开后太小) */
+#hlm-app.hideui .hlm-music{display:none}
+.hlm-music-wave{position:relative;display:block;width:220px;height:220px;border-radius:50%;cursor:pointer;overflow:hidden;
+  background:#23232e;transition:transform .3s ease;transform:scale(.5);transform-origin:left bottom}   /* 圆钮=参考原尺寸的 1/4 */
+.hlm-music-wave:hover{transform:scale(.52)}
+.hlm-wavebox{position:absolute;left:50%;top:50%;width:220px;height:220px;transform:translate(-50%,-50%) scale(1);pointer-events:none}
+.hlm-wave{position:absolute;inset:0;display:flex;align-items:flex-end}
+.hlm-wave i{display:block;box-sizing:border-box;flex:0 0 auto;margin:0 auto}   /* auto 边距=参考样式原效果:24 根 bar 均分铺满整圆(之前挤在圆心成一条白线) */
+.hlm-wave:nth-child(1) i{width:2px;height:220px;background-color:#ccc}
+.hlm-wave[data-level] i{animation:hlm-barH 3.9s infinite ease-in-out alternate,hlm-barSkew 3.9s infinite ease-in-out alternate}
+.hlm-wave[data-level="1"] i{width:11px;background-color:#fff;--f:-0.24375s;--h:40px}
+.hlm-wave[data-level="2"] i{width:8px;background-color:#eee;--f:-0.4875s;--h:100px}
+.hlm-wave[data-level="3"] i{width:5px;background-color:#ddd;--f:-0.325s;--h:120px}
+.hlm-wave i:nth-child(1){animation-delay:calc(var(--f)*0),calc(var(--f)*0 - 1.95s)}
+.hlm-wave i:nth-child(2){animation-delay:calc(var(--f)*1),calc(var(--f)*1 - 1.95s)}
+.hlm-wave i:nth-child(3){animation-delay:calc(var(--f)*2),calc(var(--f)*2 - 1.95s)}
+.hlm-wave i:nth-child(4){animation-delay:calc(var(--f)*3),calc(var(--f)*3 - 1.95s)}
+.hlm-wave i:nth-child(5){animation-delay:calc(var(--f)*4),calc(var(--f)*4 - 1.95s)}
+.hlm-wave i:nth-child(6){animation-delay:calc(var(--f)*5),calc(var(--f)*5 - 1.95s)}
+.hlm-wave i:nth-child(7){animation-delay:calc(var(--f)*6),calc(var(--f)*6 - 1.95s)}
+.hlm-wave i:nth-child(8){animation-delay:calc(var(--f)*7),calc(var(--f)*7 - 1.95s)}
+.hlm-wave i:nth-child(9){animation-delay:calc(var(--f)*8),calc(var(--f)*8 - 1.95s)}
+.hlm-wave i:nth-child(10){animation-delay:calc(var(--f)*9),calc(var(--f)*9 - 1.95s)}
+.hlm-wave i:nth-child(11){animation-delay:calc(var(--f)*10),calc(var(--f)*10 - 1.95s)}
+.hlm-wave i:nth-child(12){animation-delay:calc(var(--f)*11),calc(var(--f)*11 - 1.95s)}
+.hlm-wave i:nth-child(13){animation-delay:calc(var(--f)*12),calc(var(--f)*12 - 1.95s)}
+.hlm-wave i:nth-child(14){animation-delay:calc(var(--f)*13),calc(var(--f)*13 - 1.95s)}
+.hlm-wave i:nth-child(15){animation-delay:calc(var(--f)*14),calc(var(--f)*14 - 1.95s)}
+.hlm-wave i:nth-child(16){animation-delay:calc(var(--f)*15),calc(var(--f)*15 - 1.95s)}
+.hlm-wave i:nth-child(17){animation-delay:calc(var(--f)*16),calc(var(--f)*16 - 1.95s)}
+.hlm-wave i:nth-child(18){animation-delay:calc(var(--f)*17),calc(var(--f)*17 - 1.95s)}
+.hlm-wave i:nth-child(19){animation-delay:calc(var(--f)*18),calc(var(--f)*18 - 1.95s)}
+.hlm-wave i:nth-child(20){animation-delay:calc(var(--f)*19),calc(var(--f)*19 - 1.95s)}
+.hlm-wave i:nth-child(21){animation-delay:calc(var(--f)*20),calc(var(--f)*20 - 1.95s)}
+.hlm-wave i:nth-child(22){animation-delay:calc(var(--f)*21),calc(var(--f)*21 - 1.95s)}
+.hlm-wave i:nth-child(23){animation-delay:calc(var(--f)*22),calc(var(--f)*22 - 1.95s)}
+.hlm-wave i:nth-child(24){animation-delay:calc(var(--f)*23),calc(var(--f)*23 - 1.95s)}
+@keyframes hlm-barH{from{height:var(--h)}to{height:calc(var(--h) + 50px)}}
+@keyframes hlm-barSkew{from{transform:skewY(30deg)}to{transform:skewY(-30deg)}}
+.hlm-mus-back .hlm-wavebox{transform:translate(-50%,-50%) scale(.22)}
+.hlm-mus-back .hlm-wavebox .hlm-wave:nth-child(1) i{background-color:#666}
+/* 音乐卡(参考原样:纯黑 #000、圆角 35px、420px 宽、内距 18px;浮在波浪钮上方)
+   bottom 132 = 波浪钮视觉高 110(220×.5) + 22 间隙;scale .75 = 参考原尺寸的 3/4(用户:点开后太小) */
+.hlm-music-card{display:none;position:absolute;left:0;bottom:132px;width:420px;max-width:calc(100vw - 32px);padding:18px;
+  border-radius:35px;background:#000;box-shadow:0 8px 20px rgba(0,0,0,.4);
+  flex-direction:column;gap:14px;color:#fff;font-family:-apple-system,system-ui,sans-serif;
+  transform:scale(.75);transform-origin:left bottom}
+.hlm-music-card.show{display:flex;animation:hlm-cardIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes hlm-cardIn{from{opacity:0;transform:scale(.64)}to{opacity:1;transform:scale(.75)}}
+.hlm-mus-track{display:flex;align-items:center;gap:12px}
+.hlm-mus-cover{width:64px;height:64px;border-radius:16px;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);box-shadow:0 4px 10px rgba(0,0,0,.5);transition:transform .3s ease}
+.hlm-mus-cover:hover{transform:scale(1.05)}
+.hlm-mus-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.hlm-mus-info{flex-grow:1;overflow:hidden}
+.hlm-mus-title{font-size:1.3em;font-weight:600;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.hlm-mus-artist{font-size:.9em;color:#d1d1d6;margin-top:2px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.hlm-mus-ctrls{display:flex;flex-direction:column;gap:8px}
+.hlm-mus-time{display:flex;justify-content:space-between;font-size:.8em;color:#8e8e93;font-variant-numeric:tabular-nums}
+.hlm-mus-bar{width:100%;height:4px;background-color:rgba(255,255,255,.1);border-radius:2px;position:relative;cursor:pointer}
+.hlm-mus-fill{height:100%;width:0;background:linear-gradient(90deg,#00c6ff,#0072ff);border-radius:2px}
+.hlm-mus-dot{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);width:10px;height:10px;
+  background-color:#fff;border-radius:50%;box-shadow:0 0 6px rgba(0,0,0,.5);pointer-events:none}
+.hlm-mus-btns{display:flex;justify-content:space-between;gap:12px;margin-top:2%}
+.hlm-mus-btns button{width:52px;height:52px;border-radius:50%;border:none;background:none;color:#fff;
+  display:flex;justify-content:center;align-items:center;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.hlm-mus-btns button:hover{background:rgba(255,255,255,.1);transform:scale(1.05)}
+.hlm-mus-main{display:flex;margin-left:10%;gap:20%}
+.hlm-mus-right{position:relative;display:flex;align-items:center;gap:8px}
+/* 音量调节:按钮弹出滑条,不显示数字 */
+.hlm-mus-volpop{display:none;position:absolute;right:0;bottom:calc(100% + 10px);width:120px;height:28px;
+  background:#000;border:1px solid rgba(255,255,255,.2);border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.5);
+  align-items:center;padding:0 10px;box-sizing:border-box}
+.hlm-mus-volpop.open{display:flex}
+.hlm-mus-volpop input{width:100%;margin:0;accent-color:#0072ff;cursor:pointer}
+/* 右下角收起钮:迷你波浪 */
+.hlm-mus-back{position:relative;overflow:hidden}
+/* 歌单滚动列表:歌名+歌手,点击切歌,当前曲高亮 */
+.hlm-mus-list{max-height:176px;overflow-y:auto;overscroll-behavior:contain;margin:2px -6px 0;padding:0 6px;
+  display:flex;flex-direction:column;gap:2px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent}
+.hlm-mus-list::-webkit-scrollbar{width:4px}
+.hlm-mus-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:2px}
+.hlm-mus-list::-webkit-scrollbar-track{background:transparent}
+.hlm-mus-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:10px;cursor:pointer;
+  color:#c9c9ce;font-size:.85em;line-height:1.35;transition:background .15s,color .15s}
+.hlm-mus-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.hlm-mus-item.on{background:rgba(255,255,255,.13);color:#fff}
+.hlm-mus-item .nm{flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hlm-mus-item .ar{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#8e8e93;font-size:.9em;text-align:right}
+.hlm-mus-item.on .ar{color:#b8c8ff}
+
 /* ── 手机横屏适配:小屏时铺满视口、压缩字号间距 ── */
 @media (max-height:600px){
   #hlm-app{height:720px;border-radius:14px;box-shadow:0 10px 40px rgba(30,50,70,.35)}
@@ -558,6 +692,7 @@ html,body{margin:0!important;padding:0!important}
   .hlm-story{max-height:120px;font-size:13.5px;line-height:1.8}
   .hlm-next{right:14px;bottom:10px;width:16px;height:16px;perspective:125px}
   .hlm-corner{--cell-size:12px}
+  .hlm-music{left:8px;bottom:8px}   /* 小屏只挪位置;缩放各自挂在波浪钮(.5)与卡片(.75)上 */
   .hlm-sheet{width:84%;padding:12px 5% 16px}
   .hlm-kv{padding:6px 2px;font-size:12px}
 }
@@ -574,12 +709,13 @@ html,body{margin:0!important;padding:0!important}
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
    const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
-const BASE = 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.4/';
+const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.5/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
 const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
 const KONBINI = { 晴:BASE+'background/General_Scenarios/konbini_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/konbini_sunnynight.png', 阴:BASE+'background/General_Scenarios/konbini_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/konbini_cloudynight.png', 雨:BASE+'background/General_Scenarios/konbini_rainyday.png', 雨夜:BASE+'background/General_Scenarios/konbini_rainynight.png' };
 const HOME = { 晴:BASE+'background/Qiwu_District/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/Qiwu_District/user_home/livingroom/sunny_night.png', 阴:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/Qiwu_District/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/Qiwu_District/user_home/livingroom/rainy_night.png' };
 const ASSETS = {
   地图: BASE+'background/map.png',
+  音效: { hover: BASE+'audio/se/hover.ogg' },   /* 悬停音效(仓库 audio/se/hover.ogg,随 @vN 版本走);预览时由 __HLM_ASSETS 覆盖为本地相对路径 */
   立绘: {
     '林小满': { 普通:BASE+'Character Standee/Linxiaoman/lxm_default.png', 开心:BASE+'Character Standee/Linxiaoman/lxm_happy.png', 生气:BASE+'Character Standee/Linxiaoman/lxm_angry.png', 难过:BASE+'Character Standee/Linxiaoman/lxm_sad.png', 害羞:BASE+'Character Standee/Linxiaoman/lxm_shy.png', 惊讶:BASE+'Character Standee/Linxiaoman/lxm_shock.png' },
     '宋昭':   { 普通:BASE+'Character Standee/Songshao/ss_default.png', 开心:BASE+'Character Standee/Songshao/ss_happy.png', 生气:BASE+'Character Standee/Songshao/ss_angry.png', 难过:BASE+'Character Standee/Songshao/ss_sad.png', 害羞:BASE+'Character Standee/Songshao/ss_shy.png', 惊讶:BASE+'Character Standee/Songshao/ss_shock.png' }
@@ -1229,13 +1365,14 @@ function toggleLog(){
 }
 /* 交互:点击推进(隐藏态先恢复);键盘:空格/回车推进 ←回退 →前进 A自动 H隐藏 L记录 */
 app.addEventListener('click', e => {
-  if (e.target.closest('.hlm-modal') || e.target.closest('button') || e.target.closest('input')) return;   /* 按钮/输入框自己的事,不推进也不恢复 */
+  if (e.target.closest('.hlm-modal') || e.target.closest('button') || e.target.closest('input') || e.target.closest('.hlm-music')) return;   /* 按钮/输入框/音乐播放器自己的事,不推进也不恢复 */
   if (hideOn){ setHide(false); return; }
   advance(true);
 });
 document.addEventListener('keydown', e => {
   const tag = (e.target.tagName || '').toLowerCase();
   if (tag === 'input' || tag === 'textarea') return;
+  if (e.target.closest && e.target.closest('.hlm-music')) return;   /* 音乐卡聚焦时空格/回车归播放器,不推进正文 */
   if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); if (hideOn) setHide(false); else advance(true); }
   else if (e.key === 'ArrowLeft') back();
   else if (e.key === 'ArrowRight') advance(true);
@@ -1417,6 +1554,206 @@ function toggleFs(){
   }
 }
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && fsOn) toggleFs(); });
+
+/* ---------- UI 音效:hover.ogg ----------
+   鼠标悬停到可点按控件(贴图按钮/关闭✕/日记页签/发送/好感卡/续读圈/音乐挂件)上时播一声。
+   文件随仓库 audio/se/hover.ogg 走 @vN 版本 URL(预览由 __HLM_ASSETS 覆盖为本地路径);
+   自动播放策略拦下首次悬停/格式不支持(如 Safari 不吃 ogg)时静默忽略 */
+const playHoverSnd = (function(){
+  let snd = null;
+  try {
+    snd = new Audio((ASSETS.音效 && ASSETS.音效.hover) || BASE + 'audio/se/hover.ogg');
+    snd.volume = 0.4; snd.preload = 'auto'; snd.load();
+  } catch(e){ snd = null; }
+  /* 自动播放解锁:首次任意点击/按键时静音播一遍拿到"已交互"资格,此后悬停即可出声 */
+  if (snd){
+    const unlock = () => {
+      try {
+        snd.muted = true; snd.currentTime = 0;
+        const p = snd.play();
+        if (p && p.finally) p.finally(() => { snd.muted = false; snd.currentTime = 0; });
+      } catch(e){}
+      document.removeEventListener('pointerdown', unlock);
+      document.removeEventListener('keydown', unlock);
+    };
+    document.addEventListener('pointerdown', unlock);
+    document.addEventListener('keydown', unlock);
+  }
+  return function(){
+    if (!snd) return;
+    try { snd.currentTime = 0; const p = snd.play(); if (p && p.catch) p.catch(() => {}); } catch(e){}
+  };
+})();
+(function(){
+  const SEL = '.hlm-ibtn,.hlm-x,.hlm-tab,.hlm-inputbar button,.favor-card,.hlm-next';   /* 音乐播放器不要音效(用户拍板) */
+  let lastHover = null;
+  document.addEventListener('mouseover', e => {
+    const t = e.target.closest(SEL);
+    if (t && t !== lastHover){ lastHover = t; playHoverSnd(); }
+  });
+  document.addEventListener('mouseout', e => {
+    const t = e.target.closest(SEL);
+    if (t && t === lastHover && !(e.relatedTarget && t.contains(e.relatedTarget))) lastHover = null;
+  });
+})();
+
+/* ---------- 音乐播放器:网易云外链 BGM ----------
+   歌单摘自 audio/BGM 外链.txt:日常 7 首 + 氛围 4 首 + nsfw 2 首(「特殊」组按标注暂不收)。
+   直链 = music.163.com/song/media/outer/url?id=N.mp3(服务端 302 到真实音频,<audio> 直接吃);
+   版权/失效歌会触发 error → 自动跳下一首(连续全挂才停下)。
+   <audio> 单例挂在顶层窗口 <html> 上(iframe 之外):楼层刷新/界面重载后仍是同一个 audio,跨楼不断歌;
+   拿不到顶层窗口(跨域沙箱)时退化为本窗音频。UI 监听换实例时先拆旧的,防跨楼累积泄漏 */
+(function(){
+  const PL = [
+    { id:4937382,    name:'主よ、人の望みの喜びよ', artist:'ryo (supercell)', cover:'https://p1.music.126.net/3rtl6iK4Cue6mhE02ZNj2A==/109951166171557761.jpg' },
+    { id:4937362,    name:'リビングゲーム', artist:'ryo (supercell)', cover:'https://p1.music.126.net/3rtl6iK4Cue6mhE02ZNj2A==/109951166171557761.jpg' },
+    { id:28700043,   name:'永遠を願うとき', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { id:28699494,   name:'それは、ささやかな――希望(あした)', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { id:28699491,   name:'希望の前で待ち合わせ -Piano solo-', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { id:28700055,   name:'陽ざしと笑顔', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { id:28700047,   name:'祝福', artist:'松本文紀', cover:'https://p1.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' },
+    { id:2643057383, name:'カタシロと願い', artist:'松本文紀', cover:'https://p1.music.126.net/RHG6ZOsf1YGyVYlRU77JTQ==/109951170117213677.jpg' },
+    { id:454182,     name:'美春の告白', artist:'菅野祐悟', cover:'https://p1.music.126.net/Au888ZB41EXPr1b8e403gg==/840026883620874.jpg' },
+    { id:29005311,   name:'久遠…', artist:'MANYO', cover:'https://p1.music.126.net/DIgG1vd9H5pGGS4SH00WPw==/6674035580676728.jpg' },
+    { id:28466087,   name:'Lilac', artist:'MANYO', cover:'https://p1.music.126.net/CmgKk9RF8DabNa9qysR-gQ==/109951170965331107.jpg' },
+    { id:28466103,   name:'White memory', artist:'MANYO', cover:'https://p1.music.126.net/CmgKk9RF8DabNa9qysR-gQ==/109951170965331107.jpg' },
+    { id:28699498,   name:'キスキラリ -Orgel-', artist:'松本文紀', cover:'https://p2.music.126.net/wdxy0Kzt2QjnxVd_-CrB4g==/3396391420156647.jpg' }
+  ];
+  const urlOf = t => 'https://music.163.com/song/media/outer/url?id=' + t.id + '.mp3';
+  const root = $('#hlm-music'), waveEl = $('#hlm-music-wave'), card = $('#hlm-music-card');
+  if (!root || !card) return;
+  /* 波浪 DOM 生成(4 层 × 24 根,视觉同参考样式;触发区与迷你收起钮共用,缩放交给 CSS) */
+  const buildWave = el => {
+    el.innerHTML = '';
+    const box = document.createElement('div'); box.className = 'hlm-wavebox';
+    for (let w = 0; w < 4; w++){
+      const wave = document.createElement('div'); wave.className = 'hlm-wave';
+      if (w) wave.dataset.level = String(w);
+      for (let i = 0; i < 24; i++) wave.appendChild(document.createElement('i'));
+      box.appendChild(wave);
+    }
+    el.appendChild(box);
+  };
+  buildWave(waveEl);
+  buildWave($('#hlm-mus-back'));
+  /* 顶层窗口单例 audio(跨楼连续);拿不到就退化为本窗 */
+  let audio = null;
+  try {
+    const top = window.top;
+    if (top && top.document && top.document !== document){
+      if (!top.document.getElementById('hlm-bgm-audio')){
+        const a = top.document.createElement('audio');
+        a.id = 'hlm-bgm-audio'; a.preload = 'none';
+        top.document.documentElement.appendChild(a);   /* 挂 <html> 下:body 整体替换也带不走它 */
+      }
+      audio = top.document.getElementById('hlm-bgm-audio');
+    }
+  } catch(e){}
+  if (!audio){
+    audio = document.createElement('audio'); audio.id = 'hlm-bgm-audio'; audio.preload = 'none';
+    document.documentElement.appendChild(audio);   /* 退化路径也挂 <html> 下(无 controls 不占视觉),便于测试与统一 */
+  }
+  if (!audio.__hlmInit){ audio.volume = 0.2; audio.__hlmInit = true; }   /* 默认音量 0.8→0.4→0.2(用户两次减半);老单例保留用户已调的音量 */
+  let idx = 0, fails = 0;
+  const LIST = [];
+  const on = (ev, fn) => { LIST.push([ev, fn]); audio.addEventListener(ev, fn); };
+  if (audio.__hlmClean){ try { audio.__hlmClean(); } catch(e){} }   /* 上一界面实例的监听拆掉,防跨楼累积 */
+  audio.__hlmClean = () => { LIST.forEach(p => { try { audio.removeEventListener(p[0], p[1]); } catch(e){} }); };
+  const $m = id => document.getElementById(id);
+  const titleEl = $m('hlm-mus-title'), artistEl = $m('hlm-mus-artist'), coverEl = $m('hlm-mus-cover');
+  const curEl = $m('hlm-mus-cur'), remEl = $m('hlm-mus-rem');
+  const barEl = $m('hlm-mus-bar'), fillEl = $m('hlm-mus-fill'), dotEl = $m('hlm-mus-dot');
+  const icPlay = $m('hlm-mus-ic-play'), icPause = $m('hlm-mus-ic-pause');
+  const fmtT = s => { if (!isFinite(s)) return '0:00'; s = Math.max(0, Math.round(s)); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); };
+  /* 歌单滚动列表:歌名+歌手(不显示序号计数),点击切歌,当前曲高亮 */
+  const listEl = $m('hlm-mus-list');
+  const items = PL.map((t, i) => {
+    const it = document.createElement('div'); it.className = 'hlm-mus-item';
+    const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = t.name;
+    const ar = document.createElement('span'); ar.className = 'ar'; ar.textContent = t.artist;
+    it.appendChild(nm); it.appendChild(ar);
+    it.addEventListener('click', e => { e.stopPropagation(); load(i, true); });
+    listEl.appendChild(it);
+    return it;
+  });
+  function paint(){
+    const t = PL[idx];
+    titleEl.textContent = t.name;
+    artistEl.textContent = t.artist;   /* 不挂 1/13 计数(用户拍板) */
+    coverEl.style.display = ''; coverEl.src = t.cover || '';
+    coverEl.onerror = () => { coverEl.style.display = 'none'; };
+    const paused = audio.paused;
+    icPlay.style.display = paused ? '' : 'none';
+    icPause.style.display = paused ? 'none' : '';
+    items.forEach((it, i) => it.classList.toggle('on', i === idx));
+    const cur = items[idx];
+    if (cur && cur.scrollIntoView){ try { cur.scrollIntoView({ block: 'nearest' }); } catch(e){} }
+    paintVol();
+  }
+  function progress(){
+    const d = audio.duration, c = audio.currentTime;
+    const p = (isFinite(d) && d > 0) ? (c / d * 100) : 0;
+    fillEl.style.width = p + '%'; dotEl.style.left = p + '%';
+    curEl.textContent = fmtT(c);
+    remEl.textContent = '-' + fmtT(isFinite(d) ? Math.max(0, d - c) : 0);
+  }
+  function load(i, autoplay){
+    idx = (i + PL.length) % PL.length;
+    audio.src = urlOf(PL[idx]);
+    if (autoplay){ const p = audio.play(); if (p && p.catch) p.catch(() => {}); }
+    paint(); progress();
+  }
+  function toggle(){
+    if (!audio.src){ load(0, true); return; }
+    if (audio.paused){ const p = audio.play(); if (p && p.catch) p.catch(() => {}); }
+    else audio.pause();
+  }
+  $('#hlm-music').addEventListener('click', e => e.stopPropagation());   /* 播放器内任何点击都不冒泡到正文推进 */
+  waveEl.addEventListener('click', () => { card.classList.add('show'); waveEl.style.display = 'none'; });
+  $('#hlm-mus-back').addEventListener('click', e => { e.stopPropagation(); card.classList.remove('show'); waveEl.style.display = ''; });
+  $('#hlm-mus-play').addEventListener('click', toggle);
+  $('#hlm-mus-prev').addEventListener('click', () => load(idx - 1, true));
+  $('#hlm-mus-next').addEventListener('click', () => load(idx + 1, true));
+  barEl.addEventListener('click', e => {
+    const r = barEl.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+    if (isFinite(audio.duration)) audio.currentTime = ratio * audio.duration;
+  });
+  /* 音量:按钮弹出滑条(不显示数字);拖动即调,拖到 0 切静音图标;点别处收起 */
+  const volBtn = $('#hlm-mus-vol'), volPop = $('#hlm-mus-volpop'), volRange = $('#hlm-mus-volrange');
+  const icVol = $('#hlm-mus-ic-vol'), icMute = $('#hlm-mus-ic-mute');
+  function paintVol(){
+    const muted = audio.volume <= 0.001;
+    icVol.style.display = muted ? 'none' : '';
+    icMute.style.display = muted ? '' : 'none';
+    if (document.activeElement !== volRange) volRange.value = Math.round(audio.volume * 100);
+  }
+  volBtn.addEventListener('click', e => { e.stopPropagation(); volPop.classList.toggle('open'); paintVol(); });
+  volRange.addEventListener('input', () => { audio.volume = volRange.value / 100; paintVol(); });
+  volRange.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', e => {
+    if (volPop.classList.contains('open') && !e.target.closest('.hlm-mus-volpop') && !e.target.closest('#hlm-mus-vol')) volPop.classList.remove('open');
+  });
+  on('timeupdate', progress);
+  on('playing', () => { fails = 0; paint(); });
+  on('pause', paint);
+  on('play', paint);
+  on('ended', () => load(idx + 1, true));
+  on('error', () => {
+    if (!audio.src || !/music\.163\.com/.test(audio.src)) return;
+    if (++fails >= PL.length){ paint(); return; }   /* 全军覆没:停下,不再打转 */
+    setTimeout(() => load(idx + 1, true), 800);
+  });
+  /* 单例已在播(跨楼重载场景):UI 反向对齐当前曲目与进度 */
+  if (audio.src){
+    const m = (audio.src.match(/[?&]id=(\d+)/) || []);
+    const i = PL.findIndex(t => String(t.id) === m[1]);
+    if (i >= 0) idx = i;
+    paint(); progress();
+  } else {
+    paint();
+  }
+})();
 
 /* 调试钩子:仅供本地预览控制台使用,酒馆内无人调用 */
 window.__hlm = { world: world, applyWorld: applyWorld, advance: () => advance(true), back: back };
