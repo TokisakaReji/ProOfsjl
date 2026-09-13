@@ -144,6 +144,10 @@
 
     <div class="hlm-speaker"><span id="hlm-speaker">幻想肥皂泡</span></div>
       <div class="hlm-band">
+    <!-- 标题水印:压在对话框右下角,若隐若现(2026-09-13 v1.0.15)
+         用 CSS 背景图而不是 <img>:build_regex.mjs 只把 CSS 里的 url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/...')
+         改写成 CDN 绝对地址,写成 <img src="ui/..."> 在酒馆里会解析到酒馆域名 404 -->
+    <div class="hlm-title-wm" aria-hidden="true"></div>
     <!-- 角落装饰:仅左上角 3×3 灰阶格子,不规则呼吸(各格时长/延迟错开,慢速) -->
     <!-- 角落装饰:左上角 6×6 阶梯形灰阶格子(行宽 6/5/4/3/2/1,即 3×3 中 1·2·3·4·5·7 位放大到 6×6)
          直角切边(配尖角框体);不规则呼吸:每格独立时长 --t、延迟 --d、灰度 --c -->
@@ -440,32 +444,32 @@ html,body{margin:0!important;padding:0!important}
 .hlm-ibtn:hover .idle{opacity:0}
 .hlm-ibtn:hover .hov{opacity:1}
 .hlm-ibtn:active{transform:scale(.98);transition-duration:.08s}
-.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_message.png')}
-.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_message.png')}
-.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_back.png')}
-.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_back.png')}
-.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_auto.png')}
-.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_auto.png')}
-.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_log.png')}
-.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_log.png')}
-.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_hide.png')}
-.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_hide.png')}
-.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_diary.png')}
-.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_diary.png')}
-.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_full.png')}
-.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_full.png')}
-.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_plan.png')}
-.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_plan.png')}
-.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_vars.png')}
-.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_vars.png')}
-.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_map.png')}
-.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_map.png')}
-.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_calendar.png')}
-.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_calendar.png')}
-.hlm-ibtn[data-name=prev] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_prev.png')}
-.hlm-ibtn[data-name=prev] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_prev.png')}
-.hlm-ibtn[data-name=next] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_idle_next.png')}
-.hlm-ibtn[data-name=next] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/ui/paly/button_hover_next.png')}
+.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_message.png')}
+.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_message.png')}
+.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_back.png')}
+.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_back.png')}
+.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_auto.png')}
+.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_auto.png')}
+.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_log.png')}
+.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_log.png')}
+.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_hide.png')}
+.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_hide.png')}
+.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_diary.png')}
+.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_diary.png')}
+.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_full.png')}
+.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_calendar.png')}
+.hlm-ibtn[data-name=prev] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_prev.png')}
+.hlm-ibtn[data-name=prev] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_prev.png')}
+.hlm-ibtn[data-name=next] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_next.png')}
+.hlm-ibtn[data-name=next] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_next.png')}
 /* 楼层导航(上一楼/下一楼):固定在功能菜单栏最左(2026-09-12 用户拍板,两侧悬浮方案已驳回);
    off=边界楼禁用;hideui 时随 navrow 一起藏 */
 .hlm-fnav.off{opacity:.25;pointer-events:none}
@@ -482,8 +486,20 @@ html,body{margin:0!important;padding:0!important}
 /* ── 正文:平坦半透明白条(参考 textbox.png:均匀 80% 白、直边) ──
    宽度砍 1/3(margin 5%→20%);高度加倍(min-height 190px) */
 .hlm-band{position:relative;z-index:5;margin:0 20%;
-  background:repeating-linear-gradient(45deg,rgba(255,255,255,.8),rgba(255,255,255,.8) 5px,rgba(216,220,225,.8) 5px,rgba(216,220,225,.8) 10px);
-  min-height:190px;padding:34px 14% 44px;overflow:visible}
+background:repeating-linear-gradient(45deg,rgba(255,255,255,.8),rgba(255,255,255,.8) 5px,rgba(216,220,225,.8) 5px,rgba(216,220,225,.8) 10px);
+min-height:190px;padding:34px 14% 44px;overflow:visible}
+/* ── 标题水印:对话框右下角,只留字(无边框),小字贴底 ────────────────
+   素材 title_love_triangle_wm.png 出图时**紧裁过**(素材框 == 画面框),所以下面
+   这几个 % 说的是"字本身占对话框多少",不是"画布占多少"。
+   背景锚在 right bottom:即使被 max-height 夹住,也是往右下角缩,不会飘走。
+   旋钮:--wm-w 宽 / --wm-right 离右缘 / --wm-bottom 离下缘 / --wm-op 浓淡 */
+.hlm-title-wm{--wm-w:17%;--wm-right:6%;--wm-bottom:10%;--wm-op:.22;
+  position:absolute;right:var(--wm-right);bottom:var(--wm-bottom);
+  width:var(--wm-w);aspect-ratio:2000/975;max-height:82%;
+  background:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/title/title_love_triangle_wm.png') right bottom/contain no-repeat;
+  opacity:var(--wm-op);pointer-events:none;z-index:0;user-select:none}
+/* 窄屏(手机/窄窗)对话框更矮:水印缩一号,别顶到正文 */
+@media (max-width:900px){.hlm-title-wm{--wm-w:46%;--wm-right:4%;--wm-op:.16}}
 /* 右上角小黑块(参考 textbox.png:21×21 纯黑 80%) */
 .hlm-corner-mark{position:absolute;top:0;right:0;width:21px;height:21px;background:rgba(0,0,0,.8);z-index:3;pointer-events:none}
 /* 角落装饰:左上角 6×6 阶梯形灰阶格子(行宽 6/5/4/3/2/1)
@@ -752,7 +768,7 @@ let __n = 0; const __iv = setInterval(() => {
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
    const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
-const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.14/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
+const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
 const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
 const KONBINI = { 晴:BASE+'background/General_Scenarios/konbini_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/konbini_sunnynight.png', 阴:BASE+'background/General_Scenarios/konbini_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/konbini_cloudynight.png', 雨:BASE+'background/General_Scenarios/konbini_rainyday.png', 雨夜:BASE+'background/General_Scenarios/konbini_rainynight.png' };
 const HOME = { 晴:BASE+'background/Qiwu_District/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/Qiwu_District/user_home/livingroom/sunny_night.png', 阴:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/Qiwu_District/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/Qiwu_District/user_home/livingroom/rainy_night.png' };
