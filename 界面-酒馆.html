@@ -1,5 +1,10 @@
 <meta charset="utf-8">
 <div id="hlm-app" data-weather="晴">
+  <!-- 开场封面:点一下进入正文。图片全走 CSS 背景(理由见样式里第 ② 条) -->
+  <div id="hlm-cover">
+    <div class="cov-lockup"></div>
+    <div class="cov-touch"><i></i><i class="ink"></i></div>
+  </div>
   <div class="hlm-bg" id="hlm-bg">
     <i class="hlm-cloud c1"></i><i class="hlm-cloud c2"></i><i class="hlm-cloud c3"></i>
     <i class="hlm-sun"></i>
@@ -145,7 +150,7 @@
     <div class="hlm-speaker"><span id="hlm-speaker">幻想肥皂泡</span></div>
       <div class="hlm-band">
     <!-- 标题水印:压在对话框右下角,若隐若现(2026-09-13 v1.0.15)
-         用 CSS 背景图而不是 <img>:build_regex.mjs 只把 CSS 里的 url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/...')
+         用 CSS 背景图而不是 <img>:build_regex.mjs 只把 CSS 里的 url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/...')
          改写成 CDN 绝对地址,写成 <img src="ui/..."> 在酒馆里会解析到酒馆域名 404 -->
     <div class="hlm-title-wm" aria-hidden="true"></div>
     <!-- 角落装饰:仅左上角 3×3 灰阶格子,不规则呼吸(各格时长/延迟错开,慢速) -->
@@ -287,6 +292,25 @@ html,body{margin:0!important;padding:0!important}
   box-shadow:0 10px 40px rgba(30,50,70,.35)}
 #hlm-app.fs{height:100vh;border-radius:0}
 #hlm-app *,#hlm-app *::before,#hlm-app *::after{box-sizing:border-box}
+
+/* ── 开场封面(2026-09-13)─────────────────────────────────────────────
+   白底 + 标题锁版 + TOUCH TO START 呼吸。点任意处淡出,本次会话内不再出现。
+   ① 铺法用 **absolute 铺满 #hlm-app**(它 height:720px + 圆角 + overflow:hidden):
+      预览里正好盖住那张 720px 卡片,线上全屏时正好盖住整个界面。
+      用 fixed 反而会在本地预览里盖掉整个浏览器窗口(不是想要的效果)。
+   ② 图片一律走 **CSS 背景**:build_regex 只改写 CSS 里的 url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/...');
+      写成 <img src="ui/..."> 注入酒馆后会解析到酒馆域名 404(踩过)。
+   ③ 排查开关:URL 带 ?cover=1 强制显示 / ?cover=0 跳过(线上 iframe 地址固定,误触不了)。 */
+#hlm-cover{position:absolute;inset:0;z-index:30;background:#fff;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7.4vh;
+  transition:opacity .55s ease}
+#hlm-cover.gone{opacity:0}
+#hlm-cover .cov-lockup{width:min(46%,520px);aspect-ratio:814/137;
+  background:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/title/title_cover_lockup.png') center/contain no-repeat}
+#hlm-cover .cov-touch{position:relative;width:min(18%,206px);aspect-ratio:412/19}
+#hlm-cover .cov-touch i{position:absolute;inset:0;display:block;
+  background:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/title/title_touch_dim.png') center/contain no-repeat}
+#hlm-cover .cov-touch i.ink{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/title/title_touch_ink.png');opacity:0}
 
 /* ── 背景:通栏无遮挡 ── */
 .hlm-bg{position:absolute;inset:0;background-size:cover;background-position:center;
@@ -444,32 +468,32 @@ html,body{margin:0!important;padding:0!important}
 .hlm-ibtn:hover .idle{opacity:0}
 .hlm-ibtn:hover .hov{opacity:1}
 .hlm-ibtn:active{transform:scale(.98);transition-duration:.08s}
-.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_message.png')}
-.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_message.png')}
-.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_back.png')}
-.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_back.png')}
-.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_auto.png')}
-.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_auto.png')}
-.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_log.png')}
-.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_log.png')}
-.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_hide.png')}
-.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_hide.png')}
-.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_diary.png')}
-.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_diary.png')}
-.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_full.png')}
-.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_full.png')}
-.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_plan.png')}
-.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_plan.png')}
-.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_vars.png')}
-.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_vars.png')}
-.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_map.png')}
-.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_map.png')}
-.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_calendar.png')}
-.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_calendar.png')}
-.hlm-ibtn[data-name=prev] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_prev.png')}
-.hlm-ibtn[data-name=prev] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_prev.png')}
-.hlm-ibtn[data-name=next] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_idle_next.png')}
-.hlm-ibtn[data-name=next] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/paly/button_hover_next.png')}
+.hlm-ibtn[data-name=message] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_message.png')}
+.hlm-ibtn[data-name=message] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_message.png')}
+.hlm-ibtn[data-name=back] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_back.png')}
+.hlm-ibtn[data-name=back] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_back.png')}
+.hlm-ibtn[data-name=auto] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_auto.png')}
+.hlm-ibtn[data-name=auto] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_auto.png')}
+.hlm-ibtn[data-name=log] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_log.png')}
+.hlm-ibtn[data-name=log] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_log.png')}
+.hlm-ibtn[data-name=hide] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_hide.png')}
+.hlm-ibtn[data-name=hide] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_hide.png')}
+.hlm-ibtn[data-name=diary] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_diary.png')}
+.hlm-ibtn[data-name=diary] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_diary.png')}
+.hlm-ibtn[data-name=full] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_full.png')}
+.hlm-ibtn[data-name=full] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_full.png')}
+.hlm-ibtn[data-name=plan] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_plan.png')}
+.hlm-ibtn[data-name=plan] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_plan.png')}
+.hlm-ibtn[data-name=vars] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_vars.png')}
+.hlm-ibtn[data-name=vars] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_vars.png')}
+.hlm-ibtn[data-name=map] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_map.png')}
+.hlm-ibtn[data-name=map] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_map.png')}
+.hlm-ibtn[data-name=calendar] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_calendar.png')}
+.hlm-ibtn[data-name=calendar] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_calendar.png')}
+.hlm-ibtn[data-name=prev] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_prev.png')}
+.hlm-ibtn[data-name=prev] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_prev.png')}
+.hlm-ibtn[data-name=next] .idle{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_idle_next.png')}
+.hlm-ibtn[data-name=next] .hov{background-image:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/paly/button_hover_next.png')}
 /* 楼层导航(上一楼/下一楼):固定在功能菜单栏最左(2026-09-12 用户拍板,两侧悬浮方案已驳回);
    off=边界楼禁用;hideui 时随 navrow 一起藏 */
 .hlm-fnav.off{opacity:.25;pointer-events:none}
@@ -496,7 +520,7 @@ min-height:190px;padding:34px 14% 44px;overflow:visible}
 .hlm-title-wm{--wm-w:17%;--wm-right:6%;--wm-bottom:10%;--wm-op:.22;
   position:absolute;right:var(--wm-right);bottom:var(--wm-bottom);
   width:var(--wm-w);aspect-ratio:2000/975;max-height:82%;
-  background:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/ui/title/title_love_triangle_wm.png') right bottom/contain no-repeat;
+  background:url('https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/ui/title/title_love_triangle_wm.png') right bottom/contain no-repeat;
   opacity:var(--wm-op);pointer-events:none;z-index:0;user-select:none}
 /* 窄屏(手机/窄窗)对话框更矮:水印缩一号,别顶到正文 */
 @media (max-width:900px){.hlm-title-wm{--wm-w:46%;--wm-right:4%;--wm-op:.16}}
@@ -768,7 +792,7 @@ let __n = 0; const __iv = setInterval(() => {
    本地预览:保持 BASE 为空即可(相对路径,和本文件同目录的素材)。
    酒馆部署:把 BASE 填成素材仓库前缀,例如
    const BASE = 'https://cdn.jsdelivr.net/gh/你的用户名/仓库名@main/Love Triangle A Fantasy Soap Bubble Turned Real/'; */
-const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.15/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
+const BASE = (window.__HLM_BASE != null) ? window.__HLM_BASE : 'https://cdn.jsdelivr.net/gh/TokisakaReji/ProOfsjl@v1.0.16/';   /* 预览注入 __HLM_BASE='' → 全素材走本地相对路径;酒馆版无此变量走 CDN(发版烙 @vN) */
 const ROAD = { 晴:BASE+'background/General_Scenarios/road_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/road_sunnynight.png', 阴:BASE+'background/General_Scenarios/road_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/road_cloudynight.png', 雨:BASE+'background/General_Scenarios/road_rainyday.png', 雨夜:BASE+'background/General_Scenarios/road_rainynight.png' };
 const KONBINI = { 晴:BASE+'background/General_Scenarios/konbini_sunnyday.png', 晴夜:BASE+'background/General_Scenarios/konbini_sunnynight.png', 阴:BASE+'background/General_Scenarios/konbini_cloudyday.png', 阴夜:BASE+'background/General_Scenarios/konbini_cloudynight.png', 雨:BASE+'background/General_Scenarios/konbini_rainyday.png', 雨夜:BASE+'background/General_Scenarios/konbini_rainynight.png' };
 const HOME = { 晴:BASE+'background/Qiwu_District/user_home/livingroom/sunny_day.png', 晴夜:BASE+'background/Qiwu_District/user_home/livingroom/sunny_night.png', 阴:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_day.png', 阴夜:BASE+'background/Qiwu_District/user_home/livingroom/cloudy_night.png', 雨:BASE+'background/Qiwu_District/user_home/livingroom/rainy_day.png', 雨夜:BASE+'background/Qiwu_District/user_home/livingroom/rainy_night.png' };
@@ -2055,5 +2079,29 @@ window.__hlm = { world: world, applyWorld: applyWorld, advance: () => advance(tr
   state: () => ({ en: { '林小满': entered['林小满'], '宋昭': entered['宋昭'] },
                   fc: { '林小满': curFace['林小满'], '宋昭': curFace['宋昭'] },
                   sp: curSpeaker, npc: npcState, shown: shown, lines: lines.length }) };
+})();
+
+/* 开场封面:点一下淡出;本次会话只出现一次;?cover=1 强制看 / ?cover=0 跳过 */
+(function(){
+  const cov = document.getElementById('hlm-cover'); if (!cov) return;
+  let q = ''; try { q = String(location.search || ''); } catch(e){}
+  if (/cover=0/.test(q)){ cov.remove(); return; }
+  let seen = false; try { seen = sessionStorage.getItem('hlmCover') === '1'; } catch(e){}
+  if (seen && !/cover=1/.test(q)){ cov.remove(); return; }        /* 切楼/重渲染不会再弹 */
+  const ink = cov.querySelector('.cov-touch .ink');
+  const still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (ink && !still){
+    const T = 1700, t0 = performance.now();                       /* 呼吸:与封面预览同一个节奏 */
+    (function tick(now){
+      const p = ((now - t0) % T) / T;
+      ink.style.opacity = (0.12 + 0.88 * (0.5 - 0.5 * Math.cos(p * 2 * Math.PI))).toFixed(3);
+      requestAnimationFrame(tick);
+    })(t0);
+  } else if (ink){ ink.style.opacity = '1'; }
+  cov.addEventListener('click', () => {
+    cov.classList.add('gone');
+    try { sessionStorage.setItem('hlmCover', '1'); } catch(e){}
+    setTimeout(() => { if (cov.parentNode) cov.parentNode.removeChild(cov); }, 700);
+  });
 })();
 </script>
